@@ -14,6 +14,13 @@ export default function About() {
             <Typography variant="body1" paragraph>
                 Chúng tôi hoạt động với các chuyên khoa sâu, kết hợp nghiên cứu – đào tạo – điều trị – tuyên truyền, lan tỏa yêu thương đến cộng đồng.
             </Typography>
+            <Box
+                component="img"
+                src="/intro.png" // ✅ ảnh trong public/
+                alt="Blood Types"
+                sx={{ mt: 3, maxWidth: "100%", borderRadius: 2 }}
+            />
         </Container>
+
     );
 }
