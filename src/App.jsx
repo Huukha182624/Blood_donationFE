@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import ProfileForm from './pages/ProfileForm';
 import BloodDonation from './pages/BloodDonation';
 import Faq from './pages/Faq';
+import Contact from './pages/Contact';
 function App() {
     return (
         <Router>
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/ho-so" element={<ProfileForm />} />
                     <Route path="hien-mau" element={<BloodDonation />} />
                     <Route path="/hoi-dap" element={<Faq />} />
+                    <Route path="/lien-he" element={<Contact />} />
 
                 </Route>
             </Routes>
