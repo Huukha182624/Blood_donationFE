@@ -3,8 +3,7 @@ import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Container } from '@mui/material';
-import BannerSlider from '../components/BannerSlider'; // Đảm bảo đúng path nếu nằm trong components
-
+import BannerSlider from '../components/BannerSlider';
 const MainLayout = () => {
     const location = useLocation();
     const isHomePage = location.pathname === '/';
@@ -13,8 +12,6 @@ const MainLayout = () => {
         <>
             <Header />
             <Navbar />
-
-            {/* Hiển thị BannerSlider chỉ khi ở trang chủ */}
             {isHomePage && <BannerSlider />}
 
             <Container sx={{ my: 4 }}>
