@@ -8,7 +8,7 @@ export default function Navbar() {
         { label: 'Hỏi đáp', path: '/hoi-dap' },
         { label: 'Hiến máu', path: '/hien-mau' },
         { label: 'Tin tức', path: '/tin-tuc' },
-        { label: 'Thông tin cần biết', path: '/thong-tin' },
+        { label: 'Liên Hệ', path: '/lien-he' },
     ];
 
     return (
