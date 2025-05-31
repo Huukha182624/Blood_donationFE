@@ -36,6 +36,8 @@ export default function Navbar() {
 
                 {/* Nút đăng nhập bên phải */}
                 <Button
+                    component={Link}
+                    to="/dang-nhap"
                     sx={{
                         color: 'white',
                         backgroundColor: '#b90618',
@@ -44,11 +46,15 @@ export default function Navbar() {
                         px: 2,
                         py: 1,
                         borderRadius: 2,
-                        zIndex: 2
+                        zIndex: 2,
+                        '&:hover': {
+                            backgroundColor: '#9e0514'
+                        }
                     }}
                 >
                     Đăng nhập
                 </Button>
+
             </Toolbar>
 
             {/* Thanh menu màu đỏ */}
