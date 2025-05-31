@@ -5,7 +5,7 @@ export default function Navbar() {
     const navItems = [
         { label: 'Trang chủ', path: '/' },
         { label: 'Giới thiệu', path: '/gioi-thieu' },
-        { label: 'Chuyên môn', path: '/chuyen-mon' },
+        { label: 'Hỏi đáp', path: '/hoi-dap' },
         { label: 'Hiến máu', path: '/hien-mau' },
         { label: 'Tin tức', path: '/tin-tuc' },
         { label: 'Thông tin cần biết', path: '/thong-tin' },
