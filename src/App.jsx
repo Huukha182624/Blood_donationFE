@@ -6,7 +6,8 @@ import About from './pages/About'; // Giới thiệu
 import Login from './components/Login';
 import Register from './pages/Register';
 import ProfileForm from './pages/ProfileForm';
-
+import BloodDonation from './pages/BloodDonation';
+import Faq from './pages/Faq';
 function App() {
     return (
         <Router>
@@ -17,6 +18,9 @@ function App() {
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="/dang-ky" element={<Register />} />
                     <Route path="/ho-so" element={<ProfileForm />} />
+                    <Route path="hien-mau" element={<BloodDonation />} />
+                    <Route path="/hoi-dap" element={<Faq />} />
+
                 </Route>
             </Routes>
         </Router>
