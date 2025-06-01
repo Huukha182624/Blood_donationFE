@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 // import banner from "../assets/banner.png";
-
+import Services from "./Services";
 
 export default function MainContent() {
     return (
@@ -29,6 +29,8 @@ export default function MainContent() {
                     sx={{ mt: 3, maxWidth: "100%", borderRadius: 2 }}
                 />
             </Container>
+
+            <Services />
         </>
     );
 }
