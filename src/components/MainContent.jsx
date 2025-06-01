@@ -2,6 +2,7 @@ import { Box, Container, Typography } from "@mui/material";
 
 import BloodGroups from "./BloodGroups";
 
+import Notes from "./Notes"
 export default function MainContent() {
     return (
         <>
@@ -81,6 +82,7 @@ export default function MainContent() {
             </Container>
 
             <BloodGroups />
+            <Notes />
 
         </>
     );
