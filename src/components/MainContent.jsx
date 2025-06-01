@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import Services from "./Services";
+
 import BloodGroups from "./BloodGroups";
 
 export default function MainContent() {
@@ -81,8 +81,7 @@ export default function MainContent() {
             </Container>
 
             <BloodGroups />
-            <Box sx={{ height: 40 }} />
-            <Services />
+
         </>
     );
 }
