@@ -15,29 +15,36 @@ const BannerSlider = () => {
     const settings = {
         dots: true,
         infinite: true,
-        speed: 800,
+        speed: 1000,
         autoplay: true,
         autoplaySpeed: 7000,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: true
+        arrows: true,
+        fade: true,
     };
 
     return (
-        <Box sx={{ width: '100%', mt: 2 }}>
+        <Box sx={{ width: '100%' }}>
             <Slider {...settings}>
                 {banners.map((img, index) => (
                     <Box key={index}>
                         <img
                             src={img}
                             alt={`Banner ${index + 1}`}
-                            style={{ width: '100%', height: '100%', borderRadius: '8px' }}
+                            style={{
+                                width: '100%',
+                                maxHeight: '400px',
+                                objectFit: 'cover',
+                                borderRadius: '8px'
+                            }}
                         />
                     </Box>
                 ))}
             </Slider>
         </Box>
     );
+
 };
 
 export default BannerSlider;
