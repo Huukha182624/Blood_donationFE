@@ -27,10 +27,10 @@ export default function Navbar() {
                     zIndex: 1
                 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
-                        VIỆN HUYẾT HỌC - TRUYỀN MÁU TRUNG ƯƠNG
+                        HIẾN MÁU NHÂN ÁI VIỆT
                     </Typography>
                     <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#343a40' }}>
-                        National Institute of Hematology and Blood Transfusion (NIHBT)
+                        Ngôi nhà của những tấm lòng nguyện hiến máu (HMNAV)
                     </Typography>
                 </Box>
 
