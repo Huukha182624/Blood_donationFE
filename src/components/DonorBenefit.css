@@ -28,7 +28,8 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #ffe066;
+
+
     /* fallback nếu ảnh không load */
     color: #003366;
     display: flex;
@@ -36,6 +37,8 @@
     justify-content: flex-start;
     padding: 25px;
     border-radius: 20px;
+    filter: blur(1px);
+
 }
 
 .left-column h2 {
