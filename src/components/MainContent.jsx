@@ -3,9 +3,13 @@ import { Box, Container, Typography } from "@mui/material";
 import BloodGroups from "./BloodGroups";
 
 import Notes from "./Notes"
+import ScheduleForm from "./Schedule";
+
 export default function MainContent() {
     return (
         <>
+
+            <ScheduleForm />
             <Container sx={{ mt: 4 }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
                     Nhóm máu và nhóm máu hiếm
