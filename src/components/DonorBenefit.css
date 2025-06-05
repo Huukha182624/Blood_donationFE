@@ -1,60 +1,75 @@
 .slider-container {
     display: flex;
     justify-content: center;
-    /* Căn giữa ngang */
-    align-items: center;
-    /* Căn giữa dọc nếu cần */
+    align-items: stretch;
     max-width: 900px;
-    /* Giảm chiều rộng tổng thể */
     margin: 40px auto;
-    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.left-column,
-.right-column {
-    flex: 1;
-    max-width: 420px;
-    /* Đảm bảo hai cột bằng nhau */
-    min-height: 450px;
-    /* Đặt chiều cao tối thiểu */
-    border-radius: 20px;
-    padding: 25px;
-    box-sizing: border-box;
-}
-
+/* Cột trái */
 .left-column {
+    position: relative;
+    flex: 1;
+    max-width: 50%;
+    padding: 25px;
+    color: #003366;
     background-image: url('/heart.jpg');
-    /* ← tên file trong public */
+    /* Đảm bảo ảnh trong public/ */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
-
-    /* fallback nếu ảnh không load */
-    color: #003366;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right: 0;
+    /* Loại bỏ viền phải */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 25px;
-    border-radius: 20px;
-    filter: blur(1px);
-
+    overflow: hidden;
 }
 
-.left-column h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: #003366;
+/* Lớp mờ */
+.left-column::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    filter: blur(3px);
+    z-index: 1;
+    transform: scale(1.05);
 }
 
+/* Nội dung chữ nằm trên lớp mờ */
+.left-column h1,
 .left-column p {
-    font-size: 16px;
-    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
 }
 
+/* Cột phải */
 .right-column {
+    flex: 1;
+    max-width: 50%;
     background-color: #004080;
-    color: #fff;
+    color: white;
+    padding: 25px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Đảm bảo không có khoảng trắng giữa 2 cột */
+.left-column,
+.right-column {
+    margin: 0;
+}
+
+/* Slide */
+.slide-content {
+    padding: 5px;
 }
 
 .slide-content h3 {
@@ -71,17 +86,40 @@
     line-height: 1.6;
 }
 
-/* Tuỳ chọn nút điều hướng */
+/* Slick arrows */
 .slick-prev,
 .slick-next {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     width: 30px;
     height: 30px;
+    z-index: 10;
 }
 
 .slick-prev:before,
 .slick-next:before {
     color: white;
     font-size: 20px;
+}
+
+/* Dots */
+.slick-dots li button:before {
+    color: white;
+}
+
+.slick-dots li.slick-active button:before {
+    color: #ffcc00;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .slider-container {
+        flex-direction: column;
+    }
+
+    .left-column,
+    .right-column {
+        max-width: 100%;
+        border-radius: 20px;
+    }
 }
