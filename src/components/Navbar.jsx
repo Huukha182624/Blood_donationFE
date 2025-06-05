@@ -26,7 +26,7 @@ export default function Navbar() {
                     textAlign: 'center',
                     zIndex: 1
                 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
                         HIẾN MÁU NHÂN ÁI VIỆT
                     </Typography>
                     <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#343a40' }}>
