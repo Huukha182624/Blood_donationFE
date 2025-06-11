@@ -9,6 +9,7 @@ const BloodDonation = () => {
         <>
             <DonorBenefits />
             <BloodDonationStandards />
+            <div style={{ marginTop: "40px" }}></div>
             <Tips />
         </>
     );
