@@ -1,5 +1,6 @@
 import { Box, Typography, Container } from '@mui/material';
 import Services from "../components/Services";
+import Doctors from '../components/Doctors';
 
 export default function About() {
     return (
@@ -41,15 +42,10 @@ export default function About() {
                     />
                 </Box>
 
-                {/* ✅ HÌNH ẢNH */}
-                <Box
-                    component="img"
-                    src="/intro.jpg"
-                    alt="Blood Types"
-                    sx={{ mt: 3, maxWidth: "100%", borderRadius: 2 }}
-                />
-            </Container>
 
+            </Container>
+            <Doctors />
+            <div style={{ marginTop: "40px" }}></div>
             <Services />
         </>
     );
