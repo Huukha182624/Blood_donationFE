@@ -20,7 +20,7 @@ export default function ImportantNotes() {
                 gutterBottom
                 sx={{ color: '#1a4aa8', fontSize: { xs: '28px', md: '36px' } }}
             >
-                Blogs chia sẻ kinh nghiệm
+                Lưu ý quan trọng cần biết
             </Typography>
 
             <Box sx={{ maxWidth: 800, mx: 'auto', textAlign: 'left' }}>

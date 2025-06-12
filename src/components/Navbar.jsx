@@ -7,6 +7,8 @@ export default function Navbar() {
         { label: 'Giới thiệu', path: '/gioi-thieu' },
         { label: 'Hiến máu', path: '/hien-mau' },
         { label: 'Hỏi đáp', path: '/hoi-dap' },
+        { label: 'Tin tức', path: '/tin-tuc' },
+        { label: 'Đăng ký hiến máu', path: '/dang-ky-hien-mau' },
         { label: 'Liên Hệ', path: '/lien-he' },
     ];
 
@@ -25,7 +27,7 @@ export default function Navbar() {
                     textAlign: 'center',
                     zIndex: 1
                 }}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
                         HIẾN MÁU NHÂN ÁI VIỆT
                     </Typography>
                     <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#343a40' }}>
