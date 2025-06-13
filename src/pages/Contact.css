@@ -1,0 +1,48 @@
+.contact-container {
+    padding: 40px;
+    background-color: #f5faff;
+    min-height: 100vh;
+}
+
+/* Cả hai cột cùng padding */
+.contact-left,
+.contact-right {
+    padding: 32px;
+    background-color: #ffffff;
+    border-radius: 16px;
+}
+
+/* Icon row layout */
+.contact-icon-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* Icon */
+.contact-icon {
+    font-size: 28px;
+    color: #1976d2;
+}
+
+/* Sub text */
+.contact-inner-text {
+    margin-left: 40px;
+    margin-top: 8px;
+    color: #333;
+}
+
+/* Divider spacing */
+.contact-divider {
+    margin: 24px 0;
+}
+
+/* Submit button */
+.contact-submit-button {
+    background-color: #1976d2 !important;
+    color: white !important;
+    font-weight: bold !important;
+    padding: 12px 0;
+    border-radius: 8px;
+}

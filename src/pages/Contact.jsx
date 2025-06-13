@@ -9,125 +9,136 @@ import {
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
+import './Contact.css';
 
-const ContactPage = () => {
+const Contact = () => {
     return (
-        <Box sx={{ px: { xs: 1, md: 4 }, py: 6, bgcolor: "#f8fbfd" }}>
-            <Grid
-                container
-                spacing={4}
-                alignItems="stretch"
-                sx={{ height: "100%" }} // giúp grid item căn đều theo chiều cao
-            >
-                {/* CỘT TRÁI */}
-                <Grid item xs={12} md={6}>
-                    <Box sx={{ height: "100%", display: "flex" }}>
-                        <Paper
-                            sx={{
-                                bgcolor: "#347bd2",
-                                color: "#fff",
-                                borderRadius: 4,
-                                p: 4,
-                                display: "flex",
-                                flexDirection: "column",
-                                flex: 1,
-                            }}
-                            elevation={3}
-                        >
-                            <Typography variant="h4" gutterBottom fontWeight="bold">
-                                Liên hệ
-                            </Typography>
+        <Box
+            className="contact-container"
+            sx={{
+                width: '100%',
+                maxWidth: '1200px',
+                margin: '0 auto',
+                padding: '32px 16px',
+            }}
+        >
+            <Grid container spacing={4}>
+                {/* CỘT TRÁI - LIÊN HỆ */}
+                <Grid item xs={12} md={4}>
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            background: '#3973d6',
+                            color: '#fff',
+                            borderRadius: '48px 48px 48px 48px',
+                            height: '100%',
+                            padding: { xs: 3, md: 5 },
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                        }}
+                    >
+                        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ color: '#fff', textAlign: 'left', width: '100%' }}>
+                            Liên hệ
+                        </Typography>
 
-                            <Box sx={{ display: "flex", alignItems: "center", mt: 3 }}>
-                                <EmailIcon sx={{ mr: 1, fontSize: 30 }} />
-                                <Typography variant="h6">Email</Typography>
-                            </Box>
-                            <Typography sx={{ ml: 5, mt: 1 }}>gmv@intelin.vn</Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                            <EmailIcon sx={{ mr: 1, color: '#fff', fontSize: 36 }} />
+                            <Typography variant="h6" sx={{ color: '#fff' }}>Email</Typography>
+                        </Box>
+                        <Typography sx={{ ml: 7, mb: 2, color: '#fff' }}>gmv@intelin.vn</Typography>
 
-                            <Divider sx={{ my: 3, borderColor: "#ffffff66" }} />
+                        <Divider sx={{ my: 2, background: 'rgba(255,255,255,0.3)' }} />
 
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <PhoneIcon sx={{ mr: 1, fontSize: 30 }} />
-                                <Typography variant="h6">Hotline</Typography>
-                            </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                            <PhoneIcon sx={{ mr: 1, color: '#fff', fontSize: 36 }} />
+                            <Typography variant="h6" sx={{ color: '#fff' }}>Hotline</Typography>
+                        </Box>
 
-                            <Box sx={{ ml: 5, mt: 1 }}>
-                                <Typography>TT Hiến Máu Nhân Đạo:</Typography>
-                                <Typography>028 3868 5509</Typography>
-                                <Typography>028 3868 5507</Typography>
+                        <Box sx={{ ml: 7 }}>
+                            <Typography sx={{ color: '#fff', fontWeight: 400 }}>TT Hiến Máu Nhân Đạo:</Typography>
+                            <Typography sx={{ color: '#fff', fontWeight: 700 }}>028 3868 5509</Typography>
+                            <Typography sx={{ color: '#fff', fontWeight: 700, mb: 2 }}>028 3868 5507</Typography>
 
-                                <Typography sx={{ mt: 2 }}>Bệnh viện BTH:</Typography>
-                                <Typography>028 3957 1342</Typography>
-                                <Typography>028 3955 7858</Typography>
+                            <Typography sx={{ color: '#fff', fontWeight: 400 }}>Bệnh viện BTH:</Typography>
+                            <Typography sx={{ color: '#fff', fontWeight: 700 }}>028 3957 1342</Typography>
+                            <Typography sx={{ color: '#fff', fontWeight: 700, mb: 2 }}>028 3955 7858</Typography>
 
-                                <Typography sx={{ mt: 2 }}>TT truyền máu Chợ Rẫy:</Typography>
-                                <Typography>028 3955 5885</Typography>
-                            </Box>
-                        </Paper>
-                    </Box>
+                            <Typography sx={{ color: '#fff', fontWeight: 400 }}>TT truyền máu Chợ Rẫy:</Typography>
+                            <Typography sx={{ color: '#fff', fontWeight: 700 }}>028 3955 5885</Typography>
+                        </Box>
+                    </Paper>
                 </Grid>
 
-                {/* CỘT PHẢI */}
-                <Grid item xs={12} md={6}>
-                    <Box sx={{ height: "100%", display: "flex" }}>
-                        <Paper
-                            sx={{
-                                bgcolor: "#fff",
-                                borderRadius: 4,
-                                p: 4,
-                                display: "flex",
-                                flexDirection: "column",
-                                flex: 1,
-                            }}
-                            elevation={3}
-                        >
-                            <Typography
-                                variant="h5"
-                                color="primary"
-                                fontWeight="bold"
-                                gutterBottom
-                            >
-                                Gửi lời nhắn cho chúng tôi
-                            </Typography>
-                            <Typography sx={{ mb: 3 }}>
-                                Nếu bạn có bất kỳ thắc mắc nào liên quan đến các hoạt động hiến máu tình nguyện,
-                                xin vui lòng liên hệ với chúng tôi qua địa chỉ email{" "}
-                                <strong style={{ color: "#1a73e8" }}>gmv@intelin.vn</strong> hoặc gửi thông tin
-                                cho chúng tôi theo mẫu bên dưới:
-                            </Typography>
+                {/* CỘT PHẢI - GỬI LỜI NHẮN */}
+                <Grid item xs={12} md={8}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            textAlign: 'left',
+                            height: '100%',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography variant="h4" color="primary" fontWeight="bold" gutterBottom>
+                            Gửi lời nhắn cho chúng tôi
+                        </Typography>
 
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Họ và tên"
-                                        placeholder="Vui lòng nhập họ và tên"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Email"
-                                        placeholder="Vui lòng nhập email"
-                                        type="email"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Lời nhắn"
-                                        placeholder="Vui lòng nhập lời nhắn"
-                                        multiline
-                                        rows={4}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button variant="contained" fullWidth sx={{ bgcolor: "#a9d0ff", color: "#fff" }}>
-                                        Gửi lời nhắn
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </Paper>
+                        <Typography
+                            sx={{
+                                mb: 3,
+                                maxWidth: '600px',
+                                lineHeight: 1.6,
+                            }}
+                        >
+                            Nếu bạn có bất kỳ thắc mắc nào liên quan đến các hoạt động hiến máu tình nguyện,
+                            xin vui lòng liên hệ với chúng tôi qua địa chỉ email{" "}
+                            <strong style={{ color: "#1a73e8" }}>gmv@intelin.vn</strong> hoặc gửi thông tin
+                            cho chúng tôi theo mẫu bên dưới:
+                        </Typography>
+
+                        {/* FORM */}
+                        <Box
+                            component="form"
+                            noValidate
+                            autoComplete="off"
+                            sx={{
+                                width: '100%',
+                                maxWidth: '600px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 2,
+                            }}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Họ và tên"
+                                placeholder="Vui lòng nhập họ và tên"
+                            />
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                placeholder="Vui lòng nhập email"
+                                type="email"
+                            />
+                            <TextField
+                                fullWidth
+                                label="Lời nhắn"
+                                placeholder="Vui lòng nhập lời nhắn"
+                                multiline
+                                rows={4}
+                            />
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                type="submit"
+                                className="contact-submit-button"
+                            >
+                                Gửi lời nhắn
+                            </Button>
+                        </Box>
                     </Box>
                 </Grid>
             </Grid>
@@ -135,4 +146,4 @@ const ContactPage = () => {
     );
 };
 
-export default ContactPage;
+export default Contact;
