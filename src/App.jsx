@@ -12,27 +12,31 @@ import Contact from './pages/Contact';
 import NewsDetail from './pages/NewsDetail';
 import NewsList from './pages/Newslist';
 import RegisterForm from './pages/RegisterForm';
+import ConfirmRegister from './pages/ConfirmRegister';
+import { UserProvider } from './store/userStore.jsx'; // Đúng đường dẫn
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<MainLayout />}>
-                    <Route index element={<MainContent />} />
-                    <Route path="gioi-thieu" element={<About />} />
-                    <Route path="dang-nhap" element={<Login />} />
-                    <Route path="/dang-ky" element={<Register />} />
-                    <Route path="/ho-so" element={<ProfileForm />} />
-                    <Route path="hien-mau" element={<BloodDonation />} />
-                    <Route path="/hoi-dap" element={<Faq />} />
-                    <Route path="/lien-he" element={<Contact />} />
-                    <Route path="tin-tuc" element={<NewsList />} />
-                    <Route path="tin-tuc/:id" element={<NewsDetail />} />
-                    <Route path="/dang-ky-hien-mau" element={<RegisterForm />} />
-
-                </Route>
-            </Routes>
-        </Router>
+        <UserProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<MainLayout />}>
+                        <Route index element={<MainContent />} />
+                        <Route path="gioi-thieu" element={<About />} />
+                        <Route path="dang-nhap" element={<Login />} />
+                        <Route path="/dang-ky" element={<Register />} />
+                        <Route path="/ho-so" element={<ProfileForm />} />
+                        <Route path="hien-mau" element={<BloodDonation />} />
+                        <Route path="/hoi-dap" element={<Faq />} />
+                        <Route path="/lien-he" element={<Contact />} />
+                        <Route path="tin-tuc" element={<NewsList />} />
+                        <Route path="tin-tuc/:id" element={<NewsDetail />} />
+                        <Route path="/dang-ky-hien-mau" element={<RegisterForm />} />
+                        <Route path="/xac-thuc/:token" element={<ConfirmRegister />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </UserProvider>
     );
 }
 

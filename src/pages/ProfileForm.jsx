@@ -17,21 +17,20 @@ import {
     MenuItem,
     IconButton
 } from '@mui/material';
+import { useUser } from '../store/userStore.jsx';
+
+const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const ProfileForm = () => {
-    const [avatarUrl, setAvatarUrl] = useState(null);
-    const [fullname, setFullname] = useState('Nguyễn Trung Kiên');
-    const [email, setEmail] = useState('kienntvn@gmail.com');
-    const [phone, setPhone] = useState('0912656836');
-    const [gender, setGender] = useState('male');
-    const [role, setRole] = useState('Role 1');
-    const [status, setStatus] = useState('Active');
-    const [company, setCompany] = useState('FPT');
-    const [school, setSchool] = useState('');
-    const [address, setAddress] = useState('');
-    const [cccd, setCCCD] = useState('');
-    const [issueDate, setIssueDate] = useState('');
-    const [note, setNote] = useState('');
+    const { user } = useUser();
+    const [avatarUrl, setAvatarUrl] = useState(user?.avatar_image || null);
+    const [fullName, setFullName] = useState(user?.full_name || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [phone, setPhone] = useState(user?.phone_number || '');
+    const [gender, setGender] = useState(user?.gender || 'male');
+    const [birthday, setBirthday] = useState(user?.birthday ? user.birthday.slice(0, 10) : '');
+    const [bloodType, setBloodType] = useState(user?.blood_type || '');
+    const [address, setAddress] = useState(user?.address || '');
 
     const handleAvatarChange = (event) => {
         const file = event.target.files[0];
@@ -50,13 +49,14 @@ const ProfileForm = () => {
 
     return (
         <Paper
-            elevation={3}
+            elevation={4}
             sx={{
-                maxWidth: 900,
+                maxWidth: 600,
                 mx: 'auto',
                 my: 4,
                 p: 4,
-                borderRadius: 3,
+                borderRadius: 4,
+                background: 'rgba(255,255,255,0.95)'
             }}
         >
             {/* Avatar */}
@@ -72,9 +72,9 @@ const ProfileForm = () => {
                     <IconButton component="span">
                         <Avatar
                             src={avatarUrl}
-                            sx={{ width: 100, height: 100 }}
+                            sx={{ width: 110, height: 110, border: '3px solid #d32f2f' }}
                         >
-                            {!avatarUrl && 'U'}
+                            {!avatarUrl && (fullName ? fullName[0] : 'U')}
                         </Avatar>
                     </IconButton>
                 </label>
@@ -83,20 +83,42 @@ const ProfileForm = () => {
                 </Typography>
             </Box>
 
-            <Typography variant="h5" fontWeight="bold" gutterBottom align="center">
+            <Typography variant="h5" fontWeight="bold" gutterBottom align="center" color="#d32f2f">
                 Thông tin người dùng
             </Typography>
 
             <Grid container spacing={2}>
-                {/* Họ tên | Giới tính */}
+                {/* Họ tên */}
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        label="Họ và tên"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                    />
+                </Grid>
+                {/* Email */}
                 <Grid item xs={12} md={6}>
                     <TextField
                         fullWidth
-                        label="Họ tên"
-                        value={fullname}
-                        onChange={(e) => setFullname(e.target.value)}
+                        label="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
                     />
                 </Grid>
+                {/* Số điện thoại */}
+                <Grid item xs={12} md={6}>
+                    <TextField
+                        fullWidth
+                        label="Số điện thoại"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                    />
+                </Grid>
+                {/* Giới tính */}
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                         <FormLabel>Giới tính</FormLabel>
@@ -107,126 +129,58 @@ const ProfileForm = () => {
                         >
                             <FormControlLabel value="male" control={<Radio />} label="Nam" />
                             <FormControlLabel value="female" control={<Radio />} label="Nữ" />
-                            <FormControlLabel value="other" control={<Radio />} label="Chưa rõ" />
+                            <FormControlLabel value="other" control={<Radio />} label="Khác" />
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-
-                {/* Mobile | Email */}
+                {/* Ngày sinh */}
                 <Grid item xs={12} md={6}>
                     <TextField
                         fullWidth
-                        label="Mobile"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        label="Ngày sinh"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        value={birthday}
+                        onChange={(e) => setBirthday(e.target.value)}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        label="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </Grid>
-
-                {/* Roles | Status */}
+                {/* Nhóm máu */}
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
-                        <InputLabel>Roles</InputLabel>
+                        <InputLabel>Nhóm máu</InputLabel>
                         <Select
-                            value={role}
-                            label="Roles"
-                            onChange={(e) => setRole(e.target.value)}
+                            value={bloodType}
+                            label="Nhóm máu"
+                            onChange={(e) => setBloodType(e.target.value)}
+                            sx={{ backgroundColor: '#fff', borderRadius: 1 }}
                         >
-                            <MenuItem value="Role 1">Role 1</MenuItem>
-                            <MenuItem value="Role 2">Role 2</MenuItem>
+                            {bloodTypes.map((type) => (
+                                <MenuItem key={type} value={type}>{type}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>
+                {/* Địa chỉ */}
                 <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                        <InputLabel>Status</InputLabel>
-                        <Select
-                            value={status}
-                            label="Status"
-                            onChange={(e) => setStatus(e.target.value)}
-                        >
-                            <MenuItem value="Active">Active</MenuItem>
-                            <MenuItem value="Inactive">Inactive</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-
-                {/* Công ty | Trường học */}
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        label="Công ty"
-                        value={company}
-                        onChange={(e) => setCompany(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        label="Trường học"
-                        value={school}
-                        onChange={(e) => setSchool(e.target.value)}
-                    />
-                </Grid>
-
-                {/* Địa chỉ (full width) */}
-                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         label="Địa chỉ"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
                     />
                 </Grid>
-
-                {/* CCCD | Ngày cấp */}
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        label="Số CCCD"
-                        value={cccd}
-                        onChange={(e) => setCCCD(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        type="date"
-                        label="Ngày cấp"
-                        InputLabelProps={{ shrink: true }}
-                        value={issueDate}
-                        onChange={(e) => setIssueDate(e.target.value)}
-                    />
-                </Grid>
-
-                {/* Ghi chú bệnh án */}
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        label="Ghi chú bệnh án"
-                        multiline
-                        minRows={3}
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                    />
-                </Grid>
-
                 {/* Nút Submit */}
                 <Grid item xs={12}>
                     <Button
                         fullWidth
                         variant="contained"
                         color="primary"
+                        sx={{ fontWeight: 'bold', fontSize: 18, py: 1.5, borderRadius: 2, background: '#d32f2f' }}
                         onClick={handleSubmit}
                     >
-                        Submit
+                        Lưu thông tin
                     </Button>
                 </Grid>
             </Grid>
