@@ -1,4 +1,4 @@
-import React from 'react';
+import  { useState } from 'react';
 import {
     Box,
     Button,
@@ -7,14 +7,41 @@ import {
     TextField,
     Typography,
     InputAdornment,
+    Alert,
 } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../store/userStore';
+import { loginUser, getUserById } from '../services/user.service';
 
 const Login = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const { login } = useUser();
+
+    const handleLogin = async () => {
+        setError('');
+        setLoading(true);
+        try {
+            const res = await loginUser(email, password);
+            if (res.user) {
+                const userDetail = await getUserById(res.user.user_id);
+                login(userDetail);
+                navigate('/');
+            } else {
+                setError(res.message || 'Đăng nhập thất bại');
+            }
+        } catch (err) {
+            setError(err.message || 'Đăng nhập thất bại');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Box
@@ -31,8 +58,6 @@ const Login = () => {
                 px: 2,
             }}
         >
-
-
             <Box
                 sx={{
                     backgroundColor: 'rgba(251, 183, 183, 0.5)',
@@ -50,14 +75,18 @@ const Login = () => {
                     </Typography>
                 </Box>
 
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
                 <TextField
                     fullWidth
-                    placeholder="Tên đăng nhập"
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     sx={{ mb: 2, backgroundColor: '#fff', borderRadius: 1 }}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <PersonIcon color="action" />
+                                <EmailIcon color="action" />
                             </InputAdornment>
                         ),
                     }}
@@ -67,6 +96,8 @@ const Login = () => {
                     fullWidth
                     placeholder="Mật khẩu"
                     type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     sx={{ mb: 2, backgroundColor: '#fff', borderRadius: 1 }}
                     InputProps={{
                         startAdornment: (
@@ -87,7 +118,7 @@ const Login = () => {
                 >
                     <FormControlLabel
                         control={<Checkbox size="small" />}
-                        label={<Typography variant="body2">Nhớ tên đăng nhập</Typography>}
+                        label={<Typography variant="body2">Nhớ tài khoản</Typography>}
                     />
                     <Typography
                         variant="body2"
@@ -111,6 +142,8 @@ const Login = () => {
                             backgroundColor: 'rgb(255, 5, 5)',
                         },
                     }}
+                    onClick={handleLogin}
+                    disabled={loading}
                 >
                     ĐĂNG NHẬP
                 </Button>
