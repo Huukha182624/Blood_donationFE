@@ -10,9 +10,9 @@ import BloodDonation from './pages/BloodDonation';
 import Faq from './pages/Faq';
 import Contact from './pages/Contact';
 import NewsDetail from './pages/NewsDetail';
-import NewsList from './pages/Newslist';
+import News from './pages/News';
 import ConfirmRegister from './pages/ConfirmRegister';
-import { UserProvider } from './store/userStore.jsx'; // Đúng đường dẫn
+import { UserProvider } from './store/userStore.jsx';
 import ScheduleForm from "./components/Schedule";
 import Events from "./pages/Events";
 
@@ -30,8 +30,8 @@ function App() {
                         <Route path="hien-mau" element={<BloodDonation />} />
                         <Route path="/hoi-dap" element={<Faq />} />
                         <Route path="/lien-he" element={<Contact />} />
-                        <Route path="tin-tuc" element={<NewsList />} />
-                        <Route path="tin-tuc/:id" element={<NewsDetail />} />
+                        <Route path="tin-tuc" element={<News />} />
+                        <Route path="news/:id" element={<NewsDetail />} />
                         <Route path="/xac-thuc/:token" element={<ConfirmRegister />} />
                     </Route>
                     <Route path="/" element={<ScheduleForm />} />
