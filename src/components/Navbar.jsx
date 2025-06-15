@@ -1,5 +1,7 @@
-import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Box, Button, Avatar, Menu, MenuItem, IconButton } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../store/userStore.jsx';
+import { useState } from 'react';
 
 export default function Navbar() {
     const navItems = [
@@ -11,10 +13,29 @@ export default function Navbar() {
         { label: 'Đăng ký hiến máu', path: '/dang-ky-hien-mau' },
         { label: 'Liên Hệ', path: '/lien-he' },
     ];
+    const { user, logout } = useUser();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate();
+
+    const handleAvatarClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleLogout = () => {
+        logout();
+        handleClose();
+        navigate('/dang-nhap');
+    };
+    const handleProfile = () => {
+        handleClose();
+        navigate('/ho-so');
+    };
 
     return (
         <AppBar position="static" sx={{ backgroundColor: 'rgb(240, 221, 221)', boxShadow: 'none' }}>
-            {/* Thanh trên gồm: logo - tiêu đề ở giữa - đăng nhập */}
+            {/* Thanh trên gồm: logo - tiêu đề ở giữa - đăng nhập/avatar */}
             <Toolbar sx={{ px: 2, justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
                 {/* Logo bên trái */}
                 <Box component="img" src="/logo.png" alt="Logo" sx={{ height: 100 }} />
@@ -35,26 +56,38 @@ export default function Navbar() {
                     </Typography>
                 </Box>
 
-                {/* Nút đăng nhập bên phải */}
-                <Button
-                    component={Link}
-                    to="/dang-nhap"
-                    sx={{
-                        color: 'white',
-                        backgroundColor: '#b90618',
-                        textTransform: 'none',
-                        fontWeight: 'bold',
-                        px: 2,
-                        py: 1,
-                        borderRadius: 2,
-                        zIndex: 2,
-                        '&:hover': {
-                            backgroundColor: '#9e0514'
-                        }
-                    }}
-                >
-                    Đăng nhập
-                </Button>
+                {/* Nút đăng nhập/avatar bên phải */}
+                {user ? (
+                    <>
+                        <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
+                            <Avatar src={user.avatar_image || undefined} alt={user.full_name || 'User'} />
+                        </IconButton>
+                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                            <MenuItem onClick={handleProfile}>Xem hồ sơ</MenuItem>
+                            <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+                        </Menu>
+                    </>
+                ) : (
+                    <Button
+                        component={Link}
+                        to="/dang-nhap"
+                        sx={{
+                            color: 'white',
+                            backgroundColor: '#b90618',
+                            textTransform: 'none',
+                            fontWeight: 'bold',
+                            px: 2,
+                            py: 1,
+                            borderRadius: 2,
+                            zIndex: 2,
+                            '&:hover': {
+                                backgroundColor: '#9e0514'
+                            }
+                        }}
+                    >
+                        Đăng nhập
+                    </Button>
+                )}
 
             </Toolbar>
 
