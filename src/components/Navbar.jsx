@@ -10,7 +10,6 @@ export default function Navbar() {
         { label: 'Hiến máu', path: '/hien-mau' },
         { label: 'Hỏi đáp', path: '/hoi-dap' },
         { label: 'Tin tức', path: '/tin-tuc' },
-        { label: 'Đăng ký hiến máu', path: '/dang-ky-hien-mau' },
         { label: 'Liên Hệ', path: '/lien-he' },
     ];
     const { user, logout } = useUser();
