@@ -1,5 +1,6 @@
 // src/components/BloodGroups.jsx
 import { Box, Typography, Card, CardMedia, CardContent, Chip, Stack, Grid } from "@mui/material";
+import { useState } from "react";
 
 const bloodGroups = [
     {
@@ -59,79 +60,80 @@ const bloodGroups = [
         canReceiveFrom: ["Tất cả nhóm máu"]
     }
 ];
-const BloodGroupCard = ({ group }) => (
-    <Card sx={{ width: 280, flexShrink: 0, m: 2, borderRadius: 7, boxShadow: 20 }}>
+
+const BloodGroupCard = ({ group, expanded, onClick }) => (
+    <Card
+        sx={{ width: 230, flexShrink: 0, m: 2, borderRadius: 7, boxShadow: 8, cursor: "pointer" }}
+        onClick={onClick}
+    >
         <CardMedia
             component="img"
             height="160"
-            image={group.image} // Sửa tại đây
+            image={group.image}
             alt={`Nhóm máu ${group.type}`}
             sx={{ objectFit: "contain", p: 2 }}
         />
-        <CardContent>
+        <Box sx={{ textAlign: 'center', mt: 1 }}>
             <Typography variant="h6" color="error" fontWeight="bold">
                 Nhóm máu {group.type}
             </Typography>
-            <Typography fontSize={14}>
-                Tỉ lệ dân số: <strong>{group.percentage}</strong>
-            </Typography>
-
-            <Typography mt={2} fontWeight="bold" fontSize={14}>
-                Có thể cho:
-            </Typography>
-            <Stack direction="row" spacing={1} flexWrap="wrap" mt={0.5}>
-                {group.canDonateTo.map((to, idx) => (
-                    <Chip key={idx} label={to} color="primary" size="small" />
-                ))}
-            </Stack>
-
-            <Typography mt={2} fontWeight="bold" fontSize={14}>
-                Có thể nhận:
-            </Typography>
-            <Stack direction="row" spacing={1} flexWrap="wrap" mt={0.5}>
-                {group.canReceiveFrom.map((from, idx) => (
-                    <Chip key={idx} label={from} color="success" size="small" />
-                ))}
-            </Stack>
-        </CardContent>
+        </Box>
+        {expanded && (
+            <CardContent>
+                <Typography fontSize={14}>
+                    Tỉ lệ dân số: <strong>{group.percentage}</strong>
+                </Typography>
+                <Typography mt={2} fontWeight="bold" fontSize={14}>
+                    Có thể cho:
+                </Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap" mt={0.5}>
+                    {group.canDonateTo.map((to, idx) => (
+                        <Chip key={idx} label={to} color="primary" size="small" />
+                    ))}
+                </Stack>
+                <Typography mt={2} fontWeight="bold" fontSize={14}>
+                    Có thể nhận:
+                </Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap" mt={0.5}>
+                    {group.canReceiveFrom.map((from, idx) => (
+                        <Chip key={idx} label={from} color="success" size="small" />
+                    ))}
+                </Stack>
+            </CardContent>
+        )}
     </Card>
 );
 
 export default function BloodGroups() {
+    const [expandedIdx, setExpandedIdx] = useState(null);
+
     return (
         <Box sx={{ mt: 5 }}>
             <Typography variant="h4" fontWeight="bold" gutterBottom textAlign="center">
-                Thông tin chi tiết các nhóm máu
+                Lựa chọn nhóm máu của bạn
             </Typography>
 
-            <Box
-                sx={{
-                    display: "flex",
-                    overflowX: "auto",
-                    py: 2,
-                    px: 1,
-                    scrollbarWidth: "auto",
-                    "&::-webkit-scrollbar": {
-                        height: "20px",
-
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                        backgroundColor: "#888",
-                        borderRadius: "10px",
-                        border: "4px solid transparent",
-                        backgroundClip: "content-box"
-                    },
-                    "&::-webkit-scrollbar-track": {
-                        backgroundColor: "#eee"
-                    }
-                }}
-            >
-
-
-                {bloodGroups.map((group, idx) => (
-                    <BloodGroupCard key={idx} group={group} />
-                ))}
-            </Box>
+            {expandedIdx === null ? (
+                <Grid container spacing={2} justifyContent="center">
+                    {bloodGroups.map((group, idx) => (
+                        <Grid item xs={12} sm={6} md={3} key={idx} display="flex" justifyContent="center">
+                            <BloodGroupCard
+                                group={group}
+                                expanded={false}
+                                onClick={() => setExpandedIdx(idx)}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                <Box display="flex" justifyContent="center">
+                    <BloodGroupCard
+                        group={bloodGroups[expandedIdx]}
+                        expanded={true}
+                        onClick={() => setExpandedIdx(null)}
+                    />
+                </Box>
+            )}
         </Box>
     );
 }

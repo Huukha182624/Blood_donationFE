@@ -11,9 +11,10 @@ import Faq from './pages/Faq';
 import Contact from './pages/Contact';
 import NewsDetail from './pages/NewsDetail';
 import NewsList from './pages/Newslist';
-import RegisterForm from './pages/RegisterForm';
 import ConfirmRegister from './pages/ConfirmRegister';
 import { UserProvider } from './store/userStore.jsx'; // Đúng đường dẫn
+import ScheduleForm from "./components/Schedule";
+import Events from "./pages/Events";
 
 function App() {
     return (
@@ -31,9 +32,10 @@ function App() {
                         <Route path="/lien-he" element={<Contact />} />
                         <Route path="tin-tuc" element={<NewsList />} />
                         <Route path="tin-tuc/:id" element={<NewsDetail />} />
-                        <Route path="/dang-ky-hien-mau" element={<RegisterForm />} />
                         <Route path="/xac-thuc/:token" element={<ConfirmRegister />} />
                     </Route>
+                    <Route path="/" element={<ScheduleForm />} />
+                    <Route path="/events" element={<Events />} />
                 </Routes>
             </Router>
         </UserProvider>

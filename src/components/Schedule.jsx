@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Schedule.css";
+import { useNavigate } from "react-router-dom";
 
 function ScheduleForm() {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const navigate = useNavigate();
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -13,14 +15,14 @@ function ScheduleForm() {
             alert("Vui lòng chọn đầy đủ khoảng thời gian!");
             return;
         }
-        alert(`Tìm kiếm lịch từ ${startDate.toLocaleDateString()} đến ${endDate.toLocaleDateString()}`);
+        navigate(`/events?start=${startDate.toISOString()}&end=${endDate.toISOString()}`);
     };
 
     return (
         <div className="schedule-container">
             <label className="schedule-label">
                 <i className="fa fa-calendar" style={{ marginRight: "8px" }}></i>
-                Bạn cần đặt lịch vào thời gian nào?
+                Bạn cần đặt lịch hiến máu vào thời gian nào?
             </label>
             <form className="schedule-form" onSubmit={handleSearch}>
                 <div className="date-range">
