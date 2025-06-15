@@ -30,19 +30,6 @@ export default function About() {
                     Chúng tôi hoạt động với các chuyên khoa sâu, kết hợp nghiên cứu – đào tạo – điều trị – tuyên truyền, lan tỏa yêu thương đến cộng đồng.
                 </Typography>
 
-                {/* ✅ VIDEO */}
-                <Box sx={{ mt: 4 }}>
-                    <Typography variant="h6" gutterBottom>Video giới thiệu</Typography>
-                    <Box
-                        component="video"
-                        src="/video/intro.mp4"
-                        controls
-                        width="100%"
-                        sx={{ borderRadius: 2, boxShadow: 3 }}
-                    />
-                </Box>
-
-
             </Container>
             <Doctors />
             <div style={{ marginTop: "40px" }}></div>

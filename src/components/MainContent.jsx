@@ -4,7 +4,9 @@ import BloodGroups from "./BloodGroups";
 
 import Notes from "./Notes"
 import ScheduleForm from "./Schedule";
-
+import DonorBenefits from "../components/DonorBenefit";
+import BloodDonationStandards from "../components/BloodDonationStandards";
+import Tips from "./Tips";
 export default function MainContent() {
     return (
         <>
@@ -83,10 +85,24 @@ export default function MainContent() {
                         Nhóm máu hiếm Rh(D) âm như các nhóm máu khác; người có nhóm máu hiếm có cuộc sống sinh hoạt, học tập, lao động như tất cả những người mang nhóm máu Rh(D) dương (trên 99% người Việt Nam).
                     </Typography>
                 </Box>
+                <Box sx={{ mt: 4 }}>
+                    <Typography variant="h6" gutterBottom>Video giới thiệu</Typography>
+                    <Box
+                        component="video"
+                        src="/video/intro.mp4"
+                        controls
+                        width="100%"
+                        sx={{ borderRadius: 2, boxShadow: 3 }}
+                    />
+                </Box>
             </Container>
 
             <BloodGroups />
+            <DonorBenefits />
+            <BloodDonationStandards />
             <Notes />
+            <Tips />
+
 
         </>
     );
