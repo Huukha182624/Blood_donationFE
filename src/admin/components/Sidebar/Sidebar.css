@@ -126,15 +126,15 @@
 .adminInfo {
   display: flex;
   align-items: center;
-  padding: 15px 20px; /* Padding xung quanh hộp thoại */
-  background-color: #fff; /* Nền trắng như trong ảnh */
-  border-top: 1px solid #eee; /* Đường kẻ phân cách */
-  margin-top: auto; /* Đẩy hộp thoại xuống cuối sidebar */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); /* Bóng nhẹ ở trên */
-  gap: 10px; /* Khoảng cách giữa các item */
+  padding: 15px 20px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+  gap: 10px;
   border-radius: 8px;
+  position: relative;
 }
-
 .adminAvatar {
   width: 40px; /* Kích thước ảnh đại diện */
   height: 40px;
@@ -177,17 +177,30 @@
 }
 
 .adminOptions {
-    position: absolute;
-    bottom: 100%; /* Position above the adminInfo div */
-    left: 0;
-    right: 0;
-    background-color: #fff; /* Or your sidebar background color */
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    z-index: 1000; /* Ensure it's above other content */
-    overflow: hidden; /* For rounded corners */
-    margin-bottom: 5px; /* Small gap above adminInfo */
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  z-index: 1000;
+  overflow: hidden;
+  margin-bottom: 5px;
+
+  /* Hiệu ứng chuyển động */
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Khi hiển thị */
+.adminOptions.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .optionItem {

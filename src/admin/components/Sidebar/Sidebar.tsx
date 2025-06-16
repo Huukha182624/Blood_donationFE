@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import   "./Sidebar.css"; // Import CSS Module
+import "./Sidebar.css"; // Import CSS Module
 
 // Định nghĩa kiểu cho props của Sidebar
 interface SidebarProps {
@@ -76,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           ⚙️
         </span>
         {showAdminOptions && (
-          <div className={"adminOptions"}>
+          <div className={`adminOptions ${showAdminOptions ? "show" : ""}`}>
             <div className={"optionItem"} onClick={onViewProfileClick}>
               Xem Hồ sơ
             </div>

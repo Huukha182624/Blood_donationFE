@@ -8,11 +8,9 @@ interface Employee {
     gender: 'Nam' | 'Nữ' | 'Khác';
     phone: string;
     email: string;
-    position: string;
-    department: string;
+    position: string;   
     bloodGroup: string;
     rhFactor: 'Rh+' | 'Rh-';
-    username: string;
     accessLevel: string;
 }
 
@@ -25,10 +23,8 @@ const initialEmployees: Employee[] = [
         phone: '0901234567',
         email: 'anv@bloodcenter.vn',
         position: 'Y tá',
-        department: 'Phòng Tiếp nhận',
         bloodGroup: 'A',
         rhFactor: 'Rh+',
-        username: 'anv',
         accessLevel: 'Nhập liệu & Tiếp nhận',
     },
     {
@@ -39,10 +35,8 @@ const initialEmployees: Employee[] = [
         phone: '0907654321',
         email: 'btt@bloodcenter.vn',
         position: 'Bác sĩ',
-        department: 'Phòng Khám sàng lọc',
         bloodGroup: 'O',
         rhFactor: 'Rh+',
-        username: 'btt',
         accessLevel: 'Y tế & Xét nghiệm',
     },
     {
@@ -53,10 +47,8 @@ const initialEmployees: Employee[] = [
         phone: '0912345678',
         email: 'cvl@bloodcenter.vn',
         position: 'Điều phối viên',
-        department: 'Phòng Điều phối',
         bloodGroup: 'B',
         rhFactor: 'Rh-',
-        username: 'cvl',
         accessLevel: 'Quản lý chiến dịch',
     },
     {
@@ -67,10 +59,8 @@ const initialEmployees: Employee[] = [
         "phone": "0934567890",
         "email": "dnt@bloodcenter.vn",
         "position": "Bác sĩ",
-        "department": "Phòng Y tế",
         "bloodGroup": "A",
         "rhFactor": "Rh+",
-        "username": "dnt",
         "accessLevel": "Quản lý hiến máu"
     },
     {
@@ -81,10 +71,8 @@ const initialEmployees: Employee[] = [
         "phone": "0987654321",
         "email": "evp@bloodcenter.vn",
         "position": "Nhân viên kỹ thuật",
-        "department": "Phòng Xét nghiệm",
         "bloodGroup": "O",
         "rhFactor": "Rh+",
-        "username": "evp",
         "accessLevel": "Xét nghiệm"
     },
     {
@@ -95,10 +83,8 @@ const initialEmployees: Employee[] = [
         "phone": "0978123456",
         "email": "ftt@bloodcenter.vn",
         "position": "Thư ký",
-        "department": "Văn phòng",
         "bloodGroup": "AB",
         "rhFactor": "Rh-",
-        "username": "ftt",
         "accessLevel": "Nhập liệu"
     },
     {
@@ -109,10 +95,8 @@ const initialEmployees: Employee[] = [
         "phone": "0903456789",
         "email": "gdm@bloodcenter.vn",
         "position": "Trưởng phòng",
-        "department": "Phòng Điều phối",
         "bloodGroup": "B",
         "rhFactor": "Rh+",
-        "username": "gdm",
         "accessLevel": "Quản trị hệ thống"
     },
     {
@@ -123,10 +107,8 @@ const initialEmployees: Employee[] = [
         "phone": "0967890123",
         "email": "hlt@bloodcenter.vn",
         "position": "Điều dưỡng",
-        "department": "Phòng Y tế",
         "bloodGroup": "O",
         "rhFactor": "Rh-",
-        "username": "hlt",
         "accessLevel": "Chăm sóc người hiến"
     }
 ];
@@ -144,10 +126,8 @@ const EmployeeManagement: React.FC = () => {
         phone: '',
         email: '',
         position: '',
-        department: '',
         bloodGroup: 'A',
         rhFactor: 'Rh+',
-        username: '',
         accessLevel: 'Nhập liệu & Tiếp nhận',
     });
 
@@ -174,10 +154,8 @@ const EmployeeManagement: React.FC = () => {
             phone: '',
             email: '',
             position: '',
-            department: '',
             bloodGroup: 'A',
             rhFactor: 'Rh+',
-            username: '',
             accessLevel: 'Nhập liệu & Tiếp nhận',
         });
         setShowAddForm(false);
@@ -205,7 +183,7 @@ const EmployeeManagement: React.FC = () => {
                     setEditingEmployee(null); // Reset editing state when opening for add
                     setNewEmployee({ // Clear form fields
                         id: '', fullName: '', dateOfBirth: '', gender: 'Nam', phone: '', email: '',
-                        position: '', department: '', bloodGroup: 'A', rhFactor: 'Rh+', username: '',
+                        position: '',  bloodGroup: 'A', rhFactor: 'Rh+', 
                         accessLevel: 'Nhập liệu & Tiếp nhận'
                     });
                 }}>
@@ -253,10 +231,6 @@ const EmployeeManagement: React.FC = () => {
                             <input type="text" id="position" name="position" value={newEmployee.position} onChange={handleInputChange} required />
                         </div>
 
-                        <div className={"formGroup"}>
-                            <label htmlFor="department">Phòng ban/Đơn vị:</label>
-                            <input type="text" id="department" name="department" value={newEmployee.department} onChange={handleInputChange} required />
-                        </div>
 
                         <div className={"formGroup"}>
                             <label htmlFor="bloodGroup">Nhóm máu:</label>
@@ -276,10 +250,6 @@ const EmployeeManagement: React.FC = () => {
                             </select>
                         </div>
 
-                        <div className={"formGroup"}>
-                            <label htmlFor="username">Tên đăng nhập:</label>
-                            <input type="text" id="username" name="username" value={newEmployee.username} onChange={handleInputChange} required />
-                        </div>
 
                         <div className={"formGroup"}>
                             <label htmlFor="accessLevel">Quyền truy cập:</label>
@@ -314,10 +284,8 @@ const EmployeeManagement: React.FC = () => {
                             <th>SĐT</th>
                             <th>Email</th>
                             <th>Vị trí</th>
-                            <th>Phòng ban</th>
                             <th>Nhóm máu</th>
                             <th>Rh</th>
-                            <th>Tên ĐN</th>
                             <th>Quyền truy cập</th>
                             <th>Hành động</th>
                         </tr>
@@ -332,10 +300,8 @@ const EmployeeManagement: React.FC = () => {
                                 <td>{employee.phone}</td>
                                 <td>{employee.email}</td>
                                 <td>{employee.position}</td>
-                                <td>{employee.department}</td>
                                 <td>{employee.bloodGroup}</td>
                                 <td>{employee.rhFactor}</td>
-                                <td>{employee.username}</td>
                                 <td>{employee.accessLevel}</td>
                                 <td className={"actionsCell"}>
                                     <button className={"editButton"} onClick={() => handleEditEmployee(employee)}>Sửa</button>
