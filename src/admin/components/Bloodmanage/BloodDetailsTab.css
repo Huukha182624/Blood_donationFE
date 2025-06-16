@@ -1,0 +1,243 @@
+/* src/components/BloodDetailsTab.css */
+
+.blood-details-tab {
+  padding: 1.5rem; /* p-6 */
+  background-color: #fcfcfc; /* Lighter background, almost white */
+  min-height: 100vh; /* min-h-screen */
+  font-family: 'Arial', sans-serif; /* A more common, readable font */
+}
+
+.blood-details-title {
+  font-size: 1.875rem; /* Slightly larger heading for emphasis */
+  font-weight: 700; /* Bolder heading */
+  color: #c0392b; /* Primary red for headings */
+  margin-bottom: 1.5rem; /* mb-6 */
+  text-align: center; /* Center align title */
+}
+
+/* Filter and Search Controls */
+.filter-controls {
+  background-color: #ffffff; /* Pure white background */
+  padding: 1.25rem; /* Slightly more padding */
+  border-radius: 0.75rem; /* More rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+  margin-bottom: 1.5rem; /* mb-6 */
+  border: 1px solid #eee; /* Subtle border for definition */
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr)); /* grid-cols-1 */
+  gap: 1rem; /* gap-4 */
+  margin-bottom: 1.25rem; /* Slightly more margin */
+}
+
+@media (min-width: 768px) { /* md */
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
+  }
+}
+
+@media (min-width: 1024px) { /* lg */
+  .filter-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)); /* lg:grid-cols-4 */
+  }
+}
+
+.filter-input,
+.filter-select {
+  padding: 0.625rem 0.75rem; /* Slightly more padding for input/select */
+  border: 1px solid #ccc; /* Softer border color */
+  border-radius: 0.5rem; /* Rounded corners */
+  outline: none;
+  font-size: 0.9375rem; /* Slightly larger text */
+  color: #333; /* Darker text for readability */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  border-color: #e74c3c; /* Red border on focus */
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3); /* Soft red glow on focus */
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem; /* Gap between buttons */
+}
+
+.clear-filters-button {
+  padding: 0.625rem 1.25rem; /* Increased padding */
+  background-color: #f1f1f1; /* Light gray background */
+  color: #555; /* Darker text */
+  border-radius: 0.5rem;
+  border: 1px solid #ddd; /* Light gray border */
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  font-size: 0.9375rem;
+}
+
+.clear-filters-button:hover {
+  background-color: #e0e0e0; /* Darker gray on hover */
+  border-color: #bbb;
+}
+
+.add-unit-button {
+  padding: 0.625rem 1.25rem;
+  background-color: #e74c3c; /* Primary red for action button */
+  color: #ffffff; /* White text */
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  font-weight: 600; /* Bolder text for action */
+  font-size: 0.9375rem;
+}
+
+.add-unit-button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+.add-unit-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.5); /* Stronger red glow on focus */
+}
+
+
+/* Data Table */
+.data-table-container {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #eee; /* Subtle border for the table container */
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.blood-units-table {
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.blood-units-table thead {
+  background-color: #f8f8f8; /* Very light gray for table header */
+  border-bottom: 2px solid #e74c3c; /* Stronger red line under header */
+}
+
+.table-header-cell {
+  padding: 0.875rem 1.5rem; /* Increased padding */
+  text-align: left;
+  font-size: 0.8125rem; /* Slightly larger text */
+  font-weight: 600; /* Bolder header text */
+  color: #666; /* Darker gray for header text */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #eee; /* Subtle border between header cells */
+}
+
+.table-header-cell.sortable {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.table-header-cell.sortable:hover {
+  color: #e74c3c; /* Red text on hover for sortable headers */
+}
+
+.table-body .table-row:hover {
+  background-color: #fcf1f1; /* Very light red hover for rows */
+}
+
+.table-cell {
+  padding: 1rem 1.5rem;
+  white-space: nowrap;
+  font-size: 0.9375rem; /* text-sm */
+  color: #444; /* Darker text for readability */
+  border-bottom: 1px solid #eee; /* Subtle border between cells */
+}
+
+.table-cell.font-medium {
+  font-weight: 500;
+  color: #222; /* Even darker for important IDs */
+}
+
+.actions-cell {
+  text-align: center; /* Center actions for better alignment */
+  font-weight: 500;
+}
+
+.edit-button,
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem; /* Small padding for clickable area */
+  font-size: 0.875rem;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  text-decoration: underline; /* Add underline for better affordance */
+}
+
+.edit-button {
+  color: #2980b9; /* A professional blue for edit */
+  margin-right: 0.75rem; /* Slightly less margin */
+}
+
+.edit-button:hover {
+  color: #3498db; /* Lighter blue on hover */
+}
+
+.delete-button {
+  color: #c0392b; /* A strong red for delete */
+}
+
+.delete-button:hover {
+  color: #e74c3c; /* Lighter red on hover */
+}
+
+/* Expiry Date Colors (adjusted for the new theme) */
+.text-gray {
+  color: #777; /* Softer gray */
+}
+
+.text-red {
+  color: #c0392b; /* Primary red for expired */
+  font-weight: 600; /* Bolder for expired */
+}
+
+.text-orange {
+  color: #e67e22; /* Orange for expiring soon */
+  font-weight: 500;
+}
+
+.text-green {
+  color: #27ae60; /* Green for available */
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.no-data-cell {
+  padding: 1.5rem; /* Increased padding */
+  text-align: center;
+  color: #777;
+  font-style: italic; /* Italicize "no data" message */
+}
+
+.pagination-info {
+  padding: 1rem 1.5rem; /* Consistent padding */
+  border-top: 1px solid #eee; /* Light border */
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.875rem;
+  color: #666;
+  background-color: #fcfcfc; /* Match background */
+}

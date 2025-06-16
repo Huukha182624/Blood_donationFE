@@ -1,0 +1,47 @@
+.info-card {
+  background: #f3f4f6;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+}
+
+.info-card-content h3 {
+  font-size: 16px;
+  color: #4b5563;
+  margin-bottom: 6px;
+}
+
+.info-card-content p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.info-card-icon {
+  font-size: 24px;
+}
+
+/* Màu tuỳ chỉnh nếu muốn dùng class name như "blue", "yellow", "red" */
+.info-card.blue {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+}
+
+.info-card.yellow {
+  background-color: #fef9c3;
+  color: #92400e;
+}
+
+.info-card.red {
+  background-color: #fee2e2;
+  color: #991b1b;
+}

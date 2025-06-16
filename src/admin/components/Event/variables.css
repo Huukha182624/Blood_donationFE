@@ -1,0 +1,8 @@
+:root {
+  --primary-color: #e53935; /* Màu đỏ của hiến máu */
+  --secondary-color: #4CAF50; /* Màu xanh lá cây */
+  --text-color: #333;
+  --bg-light: #f4f7f6;
+  --border-color: #ddd;
+  --button-hover: #c62828;
+}

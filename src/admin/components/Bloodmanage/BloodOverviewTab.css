@@ -1,0 +1,128 @@
+/* BloodOverviewTab.css */
+.container {
+  padding: 1.5rem; /* 24px */
+  background-color: #fcfcfc; /* Very light background, almost white */
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif; /* Consistent font */
+}
+
+.title {
+  font-size: 1.875rem; /* Slightly larger heading for emphasis */
+  font-weight: 700; /* Bolder heading */
+  color: #c0392b; /* Primary red for headings */
+  margin-bottom: 1.5rem; /* 24px */
+  text-align: center; /* Center align title */
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem; /* 24px */
+  margin-bottom: 2rem; /* 32px */
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem; /* 24px */
+  margin-bottom: 2rem; /* 32px */
+}
+
+@media (min-width: 1024px) {
+  .card-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background-color: #ffffff; /* Pure white background */
+  padding: 1.5rem; /* 24px */
+  border-radius: 0.75rem; /* 12px, more rounded */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+  border: 1px solid #eee; /* Subtle border for definition */
+}
+
+.card-title {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600; /* Bolder title */
+  color: #e74c3c; /* A slightly brighter red for card titles */
+  margin-bottom: 1rem; /* 16px */
+}
+
+.chart-placeholder {
+  height: 16rem; /* 256px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8; /* Very light gray for charts */
+  color: #777; /* Softer gray text */
+  border-radius: 0.5rem; /* 8px */
+  border: 1px dashed #ddd; /* Dashed border for placeholder */
+  font-style: italic;
+}
+
+.table-wrapper {
+  background-color: #ffffff; /* Pure white background */
+  padding: 1.5rem; /* 24px */
+  border-radius: 0.75rem; /* 12px, more rounded */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+  border: 1px solid #eee; /* Subtle border for definition */
+  overflow-x: auto; /* Ensure table is scrollable if content overflows */
+}
+
+.table-title {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600; /* Bolder title */
+  color: #e74c3c; /* A slightly brighter red for table titles */
+  margin-bottom: 1rem; /* 16px */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem; /* 14px, slightly larger for readability */
+}
+
+thead {
+  background-color: #fcf1f1; /* Very light red background for table header */
+  border-bottom: 2px solid #e74c3c; /* Stronger red line under header */
+}
+
+th, td {
+  text-align: left;
+  padding: 0.875rem 1.5rem; /* 14px 24px, consistent padding */
+  border-bottom: 1px solid #eee; /* Subtle border between cells */
+}
+
+th {
+  text-transform: uppercase;
+  color: #666; /* Darker gray for header text */
+  font-weight: 600; /* Bolder header text */
+  letter-spacing: 0.03em;
+}
+
+td {
+  color: #444; /* Darker text for readability */
+}
+
+.expiring {
+  color: #e67e22; /* Orange for expiring soon (consistent with BloodDetailsTab) */
+  font-weight: 500;
+}
+
+.expired {
+  color: #c0392b; /* Primary red for expired (consistent with BloodDetailsTab) */
+  font-weight: 700; /* Extra bold for expired */
+}
