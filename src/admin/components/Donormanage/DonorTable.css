@@ -1,0 +1,122 @@
+/* src/components/donor/DonorTable.css */
+
+.donor-table-container {
+    overflow-x: auto; /* Ensures table is scrollable on smaller screens */
+    background-color: #FFFFFF; /* Nền trắng, nhất quán */
+    border-radius: 8px; /* Bo góc nhẹ nhàng */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Đổ bóng mạnh hơn, nhất quán với các thẻ dashboard */
+    margin-top: 25px; /* Khoảng cách từ thanh tìm kiếm, nhất quán với gap giữa các phần */
+    padding: 20px; /* Thêm padding bên trong container để bảng không bị sát cạnh */
+}
+
+.donor-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem; /* Kích thước chữ vừa phải */
+    min-width: 800px; /* Tăng min-width để bảng trông ít cramped hơn trên màn hình vừa */
+}
+
+.donor-table thead tr {
+    background-color: #F8F8F8; /* Nền header nhẹ nhàng */
+    color: #666666; /* Màu chữ xám đậm hơn */
+    text-align: left;
+    border-bottom: 2px solid #E74C3C; /* Đường kẻ dưới header màu đỏ nổi bật */
+}
+
+.donor-table th,
+.donor-table td {
+    padding: 15px 20px; /* Tăng padding để có không gian thoáng hơn */
+    border-bottom: 1px solid #EEEEEE; /* Đường kẻ phân cách giữa các hàng nhẹ nhàng hơn */
+    color: #333333; /* Màu chữ nội dung */
+}
+
+.donor-table th {
+    font-weight: 600; /* Font weight vừa phải */
+    text-transform: uppercase;
+    letter-spacing: 0.7px; /* Tăng khoảng cách chữ nhẹ */
+    font-size: 0.8rem; /* Kích thước chữ header nhỏ hơn một chút, chuyên nghiệp hơn */
+}
+
+.donor-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.donor-table tbody tr:hover {
+    background-color: #F0F8FF; /* Màu xanh nhẹ khi hover, giữ nguyên */
+    cursor: pointer;
+}
+
+.donor-table td p {
+    margin: 0;
+    color: #333333;
+}
+
+/* --- Action Buttons --- */
+.donor-table .actions {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.actions button {
+    background: none;
+    border: none; /* Loại bỏ border mặc định */
+    padding: 10px 15px; /* Tăng padding cho nút */
+    margin: 0 5px;
+    border-radius: 5px; /* Bo góc cho nút */
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500; /* Làm chữ nút đậm hơn */
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px; /* Tăng min-width cho nút để trông đồng đều hơn */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Thêm đổ bóng nhẹ cho nút */
+}
+
+.actions button:hover {
+    transform: translateY(-2px); /* Nhấc lên rõ ràng hơn khi hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Đổ bóng mạnh hơn khi hover */
+}
+
+.actions .btn-view {
+    color: #3498DB; /* Màu xanh dương chuyên nghiệp hơn */
+    background-color: #EBF5FB; /* Nền xanh nhạt */
+}
+
+.actions .btn-view:hover {
+    background-color: #3498DB;
+    color: white;
+}
+
+.actions .btn-edit {
+    color: #2ECC71; /* Màu xanh lá cây cho edit */
+    background-color: #E8F8F5; /* Nền xanh lá nhạt */
+}
+
+.actions .btn-edit:hover {
+    background-color: #2ECC71;
+    color: white;
+}
+
+.actions .btn-delete {
+    color: #E74C3C; /* Màu đỏ chủ đạo của bạn */
+    background-color: #FDEDEC; /* Nền đỏ nhạt */
+}
+
+.actions .btn-delete:hover {
+    background-color: #E74C3C;
+    color: white;
+}
+
+/* --- No Data Message --- */
+.no-data-message {
+    text-align: center;
+    padding: 4rem; /* Tăng padding */
+    font-style: italic;
+    color: #999; /* Màu xám nhạt hơn */
+    background-color: #FDFDFD; /* Nền gần trắng */
+    border-top: 1px solid #EEEEEE; /* Đường kẻ nhẹ */
+    border-radius: 0 0 8px 8px; /* Chỉ bo góc dưới */
+    box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.03); /* Đổ bóng nhẹ vào trong */
+}

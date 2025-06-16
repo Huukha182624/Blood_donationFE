@@ -1,0 +1,33 @@
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white; /* Màu đỏ */
+  padding: 10px 20px;
+  color: rgba(228, 23, 1, 0.89);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admin-navbar .brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.admin-navbar .user-info {
+  display: flex;
+  align-items: center;
+}
+
+.admin-navbar .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 2px solid white;
+}
+
+.admin-navbar .username {
+  font-size: 1rem;
+  font-weight: 500;
+}

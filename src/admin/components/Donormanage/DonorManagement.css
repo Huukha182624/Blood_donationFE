@@ -1,0 +1,149 @@
+/* src/pages/DonorManagement/DonorManagement.css */
+
+/* --- Layout chung (có thể được định nghĩa ở một file CSS global hơn) --- */
+.admin-layout {
+    display: flex;
+    /* Nếu bạn có sidebar, đây sẽ là flex container */
+    min-height: 100vh;
+    width: 100%;
+    /* Đảm bảo layout chiếm toàn bộ chiều cao màn hình */
+    background-color: #F5F5F5;
+    /* Màu nền nhẹ nhàng, thống nhất với dashboard */
+}
+
+.main-content-donor {
+    flex-grow: 1;
+    /* Cho phép nội dung chính chiếm hết không gian còn lại */
+    padding: 20px 40px;
+    /* Padding xung quanh nội dung, thống nhất với dashboard */
+    overflow-y: auto;
+    /* Cho phép cuộn nếu nội dung dài */
+}
+
+/* --- Trang quản lý người hiến máu --- */
+.donor-management-page {
+    background-color: #FFFFFF;
+    /* Nền trắng cho khu vực nội dung chính */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Đổ bóng tương tự như các thẻ dashboard */
+    width: 100%;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    /* Khoảng cách dưới tiêu đề */
+    border-bottom: 2px solid #E74C3C;
+    /* Đường kẻ dưới tiêu đề màu đỏ */
+    padding-bottom: 15px;
+    /* Khoảng cách giữa tiêu đề và đường kẻ */
+}
+
+.page-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #c00;
+}
+
+.add-button-dm {
+    background-color: #E74C3C;
+    /* Màu đỏ nổi bật */
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-button-dm:hover {
+    background-color: #C0392B;
+    /* Đậm hơn khi hover */
+}
+
+/* --- Phần tìm kiếm và lọc --- */
+.search-filter-section {
+    margin-bottom: 25px;
+    display: flex;
+    /* Dễ dàng căn chỉnh các input và filter sau này */
+    gap: 15px;
+    /* Khoảng cách giữa các phần tử tìm kiếm/lọc nếu có nhiều */
+}
+
+.search-input {
+    flex-grow: 1;
+    /* Cho phép input chiếm hết không gian */
+    padding: 12px 15px;
+    border: 1px solid #DDDDDD;
+    /* Viền nhẹ nhàng */
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333333;
+    transition: border-color 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #AAAAAA;
+    /* Màu chữ gợi ý */
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #E74C3C;
+    /* Viền đỏ khi focus */
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    /* Hiệu ứng focus nhẹ */
+}
+
+/* --- Trạng thái tải và lỗi --- */
+.loading-message,
+.error-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1rem;
+    color: #666666;
+    background-color: #F8F8F8;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.error-message {
+    color: #D32F2F;
+    /* Màu đỏ cho thông báo lỗi */
+    background-color: #FFEBEE;
+    /* Nền đỏ nhạt cho lỗi */
+    border: 1px solid #EF9A9A;
+}
+
+/* --- CSS cho DonorTable (nếu bạn muốn các nút action có màu sắc) --- */
+/* (Thêm vào nếu DonorTable.tsx không có styles riêng hoặc bạn muốn override) */
+/* .action-button {
+    background-color: #3498DB; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.action-button.edit {
+    background-color: #2ECC71; 
+}
+
+.action-button.delete {
+    background-color: #E74C3C;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+} */

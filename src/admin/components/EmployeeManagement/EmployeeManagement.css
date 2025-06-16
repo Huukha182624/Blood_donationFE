@@ -1,0 +1,388 @@
+/* EmployeeManagement.module.css */
+
+/* Variables for easier theme management */
+:root {
+    --primary-red: #E74C3C; /* Đỏ tươi, hiện đại */
+    --darker-red: #C0392B;  /* Đỏ đậm hơn cho hover */
+    --text-color: #333333;  /* Xám đậm cho chữ chính - Adjusted for consistency */
+    --light-gray: #F5F5F5; /* Xám nhạt cho nền - Adjusted for consistency */
+    --white: #FFFFFF;      /* Màu trắng */
+    --border-color: #DDDDDD; /* Màu border tinh tế - Adjusted for consistency */
+    --shadow-light: rgba(0, 0, 0, 0.08); /* Đổ bóng nhẹ */
+    --shadow-medium: rgba(0, 0, 0, 0.15); /* Đổ bóng vừa */
+    --transition-speed: 0.3s ease;
+    --border-radius: 8px; /* Bo góc mềm mại */
+    --input-focus-shadow: rgba(231, 76, 60, 0.2); /* Shadow for input focus */
+}
+
+/* Global reset for basic styling consistency */
+body {
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Font hiện đại */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--light-gray); /* Unified background */
+}
+
+/* --- Main container for the employee management page --- */
+.employeeManagementContainer {
+    background-color: var(--white); /* White background for the main content area */
+    padding: 30px; /* Consistent padding */
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px var(--shadow-light); /* Consistent shadow */
+    /* width: 100%; */
+    max-width: 100vw; 
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    box-sizing: border-box;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    margin: 20px 40px; /* Add margin to create spacing around the main content box */
+    align-self: center; /* Center if used within a flex container like admin-layout */
+}
+
+/* --- Page Header (Title and Add Button) --- */
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--primary-red); /* Red border bottom */
+    padding-bottom: 15px;
+}
+
+.pageTitle {
+    color: #c00;
+    font-size: 1.5rem; /* Adjusted for consistency */
+    font-weight: 700;
+    margin: 0; /* Remove default margin */
+    text-align: left; /* Align to left as per donor management */
+    /* Removed text-shadow as it's not in the donor management style */
+}
+
+.addButton {
+    background-color: var(--primary-red);
+    color: var(--white);
+    padding: 12px 25px; /* Giữ padding để nút có kích thước hợp lý */
+    border: none; /* Không viền */
+    border-radius: 6px; /* Bo góc nhẹ nhàng, hiện đại */
+    cursor: pointer;
+    font-size: 1.05rem; /* Hơi lớn hơn một chút để dễ nhìn và bấm */
+    font-weight: 600; /* Đậm hơn để nổi bật */
+    transition: background-color var(--transition-speed), transform 0.2s ease, box-shadow 0.2s ease; /* Thêm hiệu ứng chuyển động mượt mà hơn */
+    outline: none; /* Bỏ viền khi focus */
+    width: auto; /* Chiều rộng tự động theo nội dung */
+    white-space: nowrap; /* Đảm bảo chữ không bị xuống dòng nếu nút quá nhỏ */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ để tạo chiều sâu */
+    display: inline-flex; /* Dùng flexbox để căn giữa nội dung nếu có icon */
+    align-items: center; /* Căn giữa icon và chữ */
+    gap: 8px; /* Khoảng cách giữa icon và chữ */
+}
+
+.addButton:hover {
+    background-color: var(--darker-red); /* Đậm hơn khi hover */
+    transform: translateY(-2px); /* Nâng nút lên nhẹ */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng đậm hơn khi hover */
+}
+
+.addButton:active {
+    transform: translateY(0); /* Nhấn xuống khi click */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng giảm nhẹ */
+}
+
+/* --- Employee Form (Modal) --- */
+.formOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay for consistency */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s forwards;
+}
+
+.employeeForm {
+    background-color: var(--white);
+    padding: 35px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 30px var(--shadow-medium);
+    width: 90%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    color: var(--text-color);
+    position: relative;
+    animation: slideIn 0.4s forwards cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.employeeForm h2 {
+    color: var(--primary-red);
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="date"],
+.formGroup input[type="tel"],
+.formGroup input[type="email"],
+.formGroup select {
+    width: 100%;
+    padding: 12px 15px; /* Consistent padding with search input */
+    border: 1px solid var(--border-color); /* Consistent border color */
+    border-radius: 5px; /* Consistent border radius */
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    color: var(--text-color); /* Ensure text color is dark */
+}
+
+.formGroup input[type="text"]:focus,
+.formGroup input[type="date"]:focus,
+.formGroup input[type="tel"]:focus,
+.formGroup input[type="email"]:focus,
+.formGroup select:focus {
+    border-color: var(--primary-red);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--input-focus-shadow); /* Consistent focus shadow */
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.submitButton, .cancelButton {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: var(--transition-speed);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    outline: none;
+}
+
+.submitButton {
+    background-color: var(--primary-red);
+    color: var(--white);
+}
+
+.submitButton:hover {
+    background-color: var(--darker-red);
+    box-shadow: 0 4px 10px var(--shadow-medium);
+    transform: translateY(-1px);
+}
+
+.cancelButton {
+    background-color: #BDC3C7; /* Xám bạc */
+    color: var(--text-color);
+}
+
+.cancelButton:hover {
+    background-color: #95A5A6; /* Xám đậm hơn */
+    box-shadow: 0 4px 10px var(--shadow-medium);
+    transform: translateY(-1px);
+}
+
+/* --- Employee List Table --- */
+.employeeTableContainer {
+    background-color: var(--white); /* White background for the table container */
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px var(--shadow-light); /* Consistent shadow for the table */
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 20px; /* Add padding around the table inside its container */
+    box-sizing: border-box;
+}
+
+.employeeTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1200px;
+}
+
+.employeeTable th,
+.employeeTable td {
+    border: none;
+    padding: 15px 18px;
+    text-align: left;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+.employeeTable th {
+    background-color: var(--primary-red); /* Header background as primary red */
+    color: var(--white);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    white-space: nowrap;
+
+    /* Bo góc cho header đầu tiên và cuối cùng - Removed specific styling here
+       as the container itself has border-radius, and table-collapse handles borders differently.
+       If you need rounded corners on headers, you might need to use a different table structure
+       or pseudo-elements, but for consistency with donor management, flat top is fine. */
+}
+
+/* Remove direct border-radius on th elements when border-collapse is separate if they cause issues.
+   The container's border-radius should be sufficient for the overall table appearance. */
+.employeeTable thead th:first-child {
+    border-top-left-radius: 6px; /* Slightly smaller radius for table corners */
+}
+.employeeTable thead th:last-child {
+    border-top-right-radius: 6px; /* Slightly smaller radius for table corners */
+}
+
+
+/* Alternating row effect */
+.employeeTable tbody tr:nth-child(even) {
+    background-color: #F8F8F8;
+}
+
+/* Hover effect for rows */
+.employeeTable tbody tr:hover {
+    background-color: #EFEFEF;
+    transition: background-color var(--transition-speed);
+}
+
+.actionsCell {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.editButton,
+.deleteButton {
+    padding: 8px 12px; /* Adjusted padding for consistency */
+    margin: 0 5px; /* Consistent margin */
+    border: none;
+    border-radius: 4px; /* Consistent border radius */
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color var(--transition-speed); /* Only background-color transition */
+    /* Removed box-shadow on buttons for consistency with donor management's simple action buttons */
+    outline: none;
+}
+
+.editButton {
+    background-color: #2ECC71; /* Green color for edit (consistent with donor management's edit) */
+    color: var(--white);
+}
+
+.editButton:hover {
+    background-color: #27AE60; /* Darker green on hover */
+}
+
+.deleteButton {
+    background-color: var(--primary-red); /* Red for delete (consistent) */
+    color: var(--white);
+}
+
+.deleteButton:hover {
+    background-color: var(--darker-red); /* Darker red on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .employeeManagementContainer {
+        margin: 15px 20px;
+    }
+    .employeeTable {
+        min-width: 1000px;
+    }
+}
+
+@media (max-width: 768px) {
+    .employeeManagementContainer {
+        padding: 20px;
+        margin: 15px;
+    }
+
+    .pageHeader {
+        flex-direction: column; /* Stack header elements */
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .pageTitle {
+        font-size: 1.8rem;
+        margin-bottom: 15px; /* Add space below title when stacked */
+    }
+
+
+
+    .employeeForm {
+        padding: 25px;
+        max-width: 95%;
+    }
+
+    .employeeForm h2 {
+        font-size: 1.6em;
+    }
+
+    .formActions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .submitButton, .cancelButton {
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .employeeTable th,
+    .employeeTable td {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .employeeManagementContainer {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .pageTitle {
+        font-size: 1.5rem;
+    }
+
+    .employeeForm {
+        padding: 20px;
+    }
+}

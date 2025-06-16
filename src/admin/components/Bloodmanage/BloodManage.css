@@ -1,0 +1,59 @@
+/* src/BloodManage.css */
+
+.blood-manage-page {
+    display: flex; /* Nếu bạn có sidebar, đây sẽ là flex container */
+    min-height: 100vh;
+    width: 100%; /* Đảm bảo layout chiếm toàn bộ chiều cao màn hình */
+    background-color: #F5F5F5; /* Màu nền nhẹ nhàng, thống nhất với dashboard */
+    padding: 20px 40px;
+
+}
+
+/* Add basic styles for the main content to ensure it fills the available space */
+.main-content-blood-mn {
+    flex-grow: 1; /* Cho phép nội dung chính chiếm hết không gian còn lại */
+    padding: 20px 40px; /* Padding xung quanh nội dung, thống nhất với dashboard */
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* Styles for the tab navigation and buttons */
+.tab-navigation {
+  margin-bottom: 20px; /* Space between tabs and content */
+}
+
+.tab-buttons-container {
+  display: flex;
+  border-bottom: 1px solid #ccc; /* A subtle line under the tabs */
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.tab-button:hover {
+  color: #b07b75;
+}
+
+.tab-button.active {
+  color: #c0392b;
+  border-bottom: 2px solid #c0392b; /* Highlight active tab */
+  font-weight: bold;
+}
+
+
+
+/* Styles for the tab content area */
+.tab-content {
+  flex-grow: 1; /* Allows the content to fill the remaining space */
+  /* You might want to add some padding to the content itself */
+  /* padding: 20px 0; */
+}

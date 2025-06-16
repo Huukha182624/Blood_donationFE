@@ -1,0 +1,237 @@
+/* EventManagement.module.css */
+
+/* ====== Layout Container ====== */
+.container {
+  padding: 20px 40px;
+  background-color: var(--bg-light);
+  min-height: calc(100vh - var(--navbar-height)); 
+  color: var(--text-color);
+  margin: 20px 40px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* ====== Sub Navigation ====== */
+.subNavigation {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  
+}
+
+.subNavigation button {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text-color);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.subNavigation button:hover,
+.subNavigation button.active {
+  color: var(--primary-color);
+}
+
+.subNavigation button.active {
+  font-weight: bold;
+  border-bottom-color: var(--primary-color);
+}
+
+/* ====== Header Section ====== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* ====== Primary Button ====== */
+.primaryButton {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.primaryButton:hover {
+  background-color: var(--button-hover);
+}
+
+/* ====== Table Styles ====== */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* ====== Action Buttons (Edit/Delete) ====== */
+.actionButtons {
+  display: flex;
+  gap: 6px;
+}
+
+
+.actionButtons button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.actionButtons button.edit {
+  background-color: #2ECC71; /* Xanh lá đậm */
+}
+
+.actionButtons button.delete {
+  background-color: #d00000; /* Đỏ */
+}
+
+.actionButtons button.check {
+  background-color: #2bdbe7; 
+}
+
+.actionButtons button.mark {
+  background-color: #c5df6a; 
+}
+
+.actionButtons button:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* ====== Form Styles ====== */
+.form {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="datetime-local"],
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* ====== Form Actions ====== */
+.formActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.formActions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.formActions .submitButton {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.formActions .cancelButton {
+  background-color: #6c757d;
+  color: white;
+}
+
+.formActions .submitButton:hover {
+  background-color: var(--button-hover);
+}
+
+.formActions .cancelButton:hover {
+  background-color: #5a6268;
+}
+
+/* ====== Search & Filter ====== */
+.searchAndFilter {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchAndFilter input,
+.searchAndFilter select {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.searchAndFilter input {
+  flex-grow: 1;
+}

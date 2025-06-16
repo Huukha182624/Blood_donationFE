@@ -1,0 +1,290 @@
+/* Sidebar.module.css */
+
+/* Variables (giữ nguyên hoặc điều chỉnh nếu cần) */
+:root {
+    --primary-red: #E74C3C;
+    --darker-red: #C0392B;
+    --text-color-dark: #333333;
+    --text-color-light: #FFFFFF;
+    --sidebar-bg: #FFFFFF;
+    --sidebar-shadow: rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.2s ease-in-out;
+    /* Tốc độ chuyển động */
+    --active-item-bg: #E74C3C;
+    --hover-item-bg: rgba(231, 76, 60, 0.1);
+    /* Nhạt hơn cho hover */
+    --hover-item-color: #E74C3C;
+}
+
+.logoContainer {
+    display: flex;
+    /* Use flexbox for alignment if you have text next to logo */
+    align-items: center;
+    /* Vertically align items */
+    justify-content: center;
+    /* Center the logo horizontally */
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    /* Space below the logo and above the list */
+    border-bottom: 1px solid #eee;
+    /* Optional: a subtle separator */
+}
+
+.logo {
+    max-width: 80%;
+    /* Adjust as needed */
+    height: auto;
+    /* Maintain aspect ratio */
+    max-height: 100px;
+    /* Limit logo height */
+}
+
+.sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100vh;
+    /* Chiếm toàn bộ chiều cao viewport */
+    background-color: var(--sidebar-bg);
+    color: var(--text-color-dark);
+    padding-top: 20px;
+    box-sizing: border-box;
+    box-shadow: 2px 0 10px var(--sidebar-shadow);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    /* Giữ sidebar cố định khi cuộn */
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    /* Cho phép cuộn nếu nội dung dài */
+    z-index: 999;
+    /* Đảm bảo sidebar luôn ở trên cùng */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebarItem {
+    /* Quan trọng: Luôn có border và padding cố định để không gian không thay đổi */
+    padding: 15px 30px;
+    border-left: 5px solid transparent;
+    /* Luôn có border 5px, màu trong suốt */
+
+    cursor: pointer;
+    /* transition cho tất cả các thuộc tính thay đổi */
+    transition: background-color var(--transition-speed),
+        color var(--transition-speed),
+        transform var(--transition-speed),
+        /* Giữ transition cho transform */
+        border-left-color var(--transition-speed);
+    /* Transition màu border */
+
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    /* Rất quan trọng để padding được tính vào width */
+    color: var(--text-color-dark);
+}
+
+/* HIỆU ỨNG HOVER */
+.sidebarItem:hover:not(.active) {
+    transform: translateY(-3px);
+    /* Chỉ dịch chuyển lên khi hover và không active */
+    background-color: var(--hover-item-bg);
+    color: var(--hover-item-color);
+}
+
+/* TRẠNG THÁI ACTIVE */
+.sidebarItem.active {
+    color: var(--text-color-light);
+    background-color: var(--active-item-bg);
+    font-weight: bold;
+    border-left-color: var(--darker-red);
+    /* Thay đổi màu border khi active */
+    transform: translateY(0);
+    /* Đảm bảo không có transform khi active */
+}
+
+/* Thêm CSS cho icon */
+.sidebarItem span:first-child {
+    /* Chọn icon (span đầu tiên) */
+    font-size: 1.2rem;
+    line-height: 1;
+    display: inline-flex;
+    /* Đảm bảo icon là flex item */
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Styles cho Hộp thoại thông tin Admin --- */
+.adminInfo {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px; /* Padding xung quanh hộp thoại */
+  background-color: #fff; /* Nền trắng như trong ảnh */
+  border-top: 1px solid #eee; /* Đường kẻ phân cách */
+  margin-top: auto; /* Đẩy hộp thoại xuống cuối sidebar */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); /* Bóng nhẹ ở trên */
+  gap: 10px; /* Khoảng cách giữa các item */
+  border-radius: 8px;
+}
+
+.adminAvatar {
+  width: 40px; /* Kích thước ảnh đại diện */
+  height: 40px;
+  border-radius: 50%; /* Làm tròn ảnh đại diện */
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
+  flex-shrink: 0; /* Ngăn ảnh bị co lại */
+}
+
+.adminText {
+  flex-grow: 1; /* Cho phép phần chữ chiếm hết không gian còn lại */
+}
+
+.adminName {
+  font-weight: bold;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.adminEmail {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.settingsIcon {
+  font-size: 1.2em;
+  color: #888;
+  cursor: pointer; /* Biểu thị đây là một phần tử có thể click */
+  padding: 5px; /* Tăng diện tích click */
+  transition: color 0.2s ease;
+}
+
+.settingsIcon:hover {
+  color: #333; /* Thay đổi màu khi hover */
+}
+
+.settingsIcon {
+    cursor: pointer;
+    margin-left: auto; /* Pushes the icon to the right */
+    font-size: 1.5rem;
+}
+
+.adminOptions {
+    position: absolute;
+    bottom: 100%; /* Position above the adminInfo div */
+    left: 0;
+    right: 0;
+    background-color: #fff; /* Or your sidebar background color */
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    z-index: 1000; /* Ensure it's above other content */
+    overflow: hidden; /* For rounded corners */
+    margin-bottom: 5px; /* Small gap above adminInfo */
+}
+
+.optionItem {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.optionItem:hover {
+    background-color: #f0f0f0;
+}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+        /* Thu nhỏ sidebar */
+        padding-top: 10px;
+        box-shadow: 1px 0 5px var(--sidebar-shadow);
+    }
+
+    .sidebarItem {
+        padding: 15px 0;
+        /* Giảm padding ngang */
+        justify-content: center;
+        /* Căn giữa icon khi text bị ẩn */
+        font-size: 0.9rem;
+        border-left: none;
+        /* Bỏ border-left khi sidebar thu nhỏ */
+        padding-left: 0;
+        /* Reset padding-left khi thu nhỏ */
+        /* Nếu muốn border active ở dưới: */
+        border-bottom: 3px solid transparent;
+        padding-bottom: calc(15px - 3px);
+        /* Đảm bảo tổng chiều cao không đổi */
+    }
+
+    .sidebarItem span:first-child {
+        /* Icon to hơn khi chỉ có icon */
+        font-size: 1.5rem;
+    }
+
+    .sidebarItem span+span {
+        /* Ẩn text đi nếu chỉ có icon */
+        display: none;
+    }
+
+    .sidebarItem.active {
+        /* Khi thu nhỏ, active item có thể cần style khác */
+        border-left: none;
+        /* Đảm bảo bỏ border-left cũ */
+        /* Nếu muốn border-bottom cho active item trên mobile */
+        border-bottom-color: var(--darker-red);
+        background-color: var(--active-item-bg);
+        /* Giữ nguyên màu nền */
+        color: var(--text-color-light);
+        /* Nếu bạn chỉ muốn icon có màu đỏ, không nền đỏ, thì chỉnh ở đây */
+        /* Ví dụ: background-color: transparent; color: var(--active-item-bg); */
+    }
+
+    .sidebarItem:hover:not(.active) {
+        transform: none;
+        /* Bỏ hiệu ứng translateY khi sidebar thu gọn */
+        background-color: var(--hover-item-bg);
+    }
+
+    .userProfile {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        margin: 0 15px 15px 15px;
+        /* Adjust margin to push it to the bottom */
+        background-color: rgba(255, 255, 255, 0.3);
+        /* Semi-transparent background */
+        border-radius: 10px;
+        color: #fff;
+    }
+
+    .userAvatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid #fff;
+        /* White border around avatar */
+    }
+
+    .userInfo h4 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .userInfo p {
+        margin: 0;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
