@@ -1,7 +1,7 @@
 // src/pages/AppointmentManagement.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import type { Appointment, Campaign, AppointmentStatus } from '../../../types/appointment';
-import '../Appointment/AppointmentManagement.css'; 
+import '../Appointment/AppointmentManagement.css';
 
 const MOCK_APPOINTMENTS: Appointment[] = [
   {
@@ -81,6 +81,19 @@ const MOCK_APPOINTMENTS: Appointment[] = [
     status: 'unqualified',
     registrationDate: '2025-06-09T12:00:00Z',
     notes: 'Không đủ cân nặng.'
+  },
+  {
+    id: 'HD20250609-007',
+    donorName: 'Hoàng Trung Lưu',
+    phoneNumber: '0906789012',
+    email: 'hvf@example.com',
+    campaignName: 'Hiến máu Tình nguyện ĐH Bách Khoa',
+    appointmentDate: '2025-06-20',
+    appointmentTime: '09:00',
+    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
+    status: 'confirmed',
+    registrationDate: '2025-06-09T12:00:00Z',
+    notes: 'Đã gọi điện xác nhận, người hiến máu rất nhiệt tình.'
   }
 ];
 
@@ -192,13 +205,13 @@ const AppointmentManagement: React.FC = () => {
 
   const getStatusText = (status: AppointmentStatus) => {
     switch (status) {
-        case 'pending': return 'Chờ xác nhận';
-        case 'confirmed': return 'Đã xác nhận';
-        case 'cancelled': return 'Đã hủy';
-        case 'completed': return 'Đã hiến máu';
-        case 'unqualified': return 'Không đủ điều kiện';
-        case 'no-show': return 'Vắng mặt';
-        default: return status;
+      case 'pending': return 'Chờ xác nhận';
+      case 'confirmed': return 'Đã xác nhận';
+      case 'cancelled': return 'Đã hủy';
+      case 'completed': return 'Đã hiến máu';
+      case 'unqualified': return 'Không đủ điều kiện';
+      case 'no-show': return 'Vắng mặt';
+      default: return status;
     }
   }
 
@@ -350,7 +363,10 @@ const AppointmentManagement: React.FC = () => {
                     const reason = prompt('Nhập lý do không đủ điều kiện:');
                     handleUpdateStatus(selectedAppointment.id, 'unqualified', reason || 'Không đủ điều kiện');
                   }}>Không đủ ĐK</button>
-                  <button className="btn-no-show" onClick={() => handleUpdateStatus(selectedAppointment.id, 'no-show')}>Vắng mặt</button>
+                  <button className="btn-no-show" onClick={() => {
+                    const reason = prompt('Nhập lý do vắng mặt (nếu có):'); // Thêm dòng này
+                    handleUpdateStatus(selectedAppointment.id, 'no-show', reason || 'Người dùng vắng mặt'); // Điều chỉnh dòng này
+                  }}>Vắng mặt</button>
                 </>
               )}
             </div>

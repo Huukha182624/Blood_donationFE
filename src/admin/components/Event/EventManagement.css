@@ -73,6 +73,10 @@
 }
 
 /* ====== Table Styles ====== */
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}s
 .table {
   width: 100%;
   border-collapse: collapse;
