@@ -37,7 +37,7 @@ export default function Navbar() {
             {/* Thanh trên gồm: logo - tiêu đề ở giữa - đăng nhập/avatar */}
             <Toolbar sx={{ px: 2, justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
                 {/* Logo bên trái */}
-                <Box component="img" src="/logo.png" alt="Logo" sx={{ height: 100 }} />
+                <Box component="img" src="/logo.png" alt="Logo" sx={{ height: 120 }} />
 
                 {/* Tiêu đề chính giữa */}
                 <Box sx={{
