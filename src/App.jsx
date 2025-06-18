@@ -6,7 +6,7 @@ import About from './pages/About'; // Giới thiệu
 import Login from './components/Login';
 import Register from './pages/Register';
 import ProfileForm from './pages/ProfileForm';
-import BloodDonation from './pages/BloodDonation';
+import RegisterForm from './pages/RegisterForm';
 import Faq from './pages/Faq';
 import Contact from './pages/Contact';
 import NewsDetail from './pages/NewsDetail';
@@ -28,7 +28,7 @@ function App() {
                         <Route path="dang-nhap" element={<Login />} />
                         <Route path="/dang-ky" element={<Register />} />
                         <Route path="/ho-so" element={<ProfileForm />} />
-                        <Route path="hien-mau" element={<BloodDonation />} />
+                        <Route path="/don-dang-ki" element={<RegisterForm />} />
                         <Route path="/hoi-dap" element={<Faq />} />
                         <Route path="/lien-he" element={<Contact />} />
                         <Route path="tin-tuc" element={<News />} />
