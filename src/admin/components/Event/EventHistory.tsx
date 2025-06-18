@@ -6,9 +6,10 @@ import './EventManagement.css';
 interface EventHistoryProps {
   events: BloodDonationEvent[];
   onViewDetails: (event: BloodDonationEvent) => void;
+  onViewDonors: (id: string) => void;
 }
 
-const EventHistory: React.FC<EventHistoryProps> = ({ events, onViewDetails }) => {
+const EventHistory: React.FC<EventHistoryProps> = ({ events, onViewDetails, onViewDonors }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterYear, setFilterYear] = useState('all');
 
@@ -39,38 +40,43 @@ const EventHistory: React.FC<EventHistoryProps> = ({ events, onViewDetails }) =>
         </select>
       </div>
 
-      <table className={"table"}>
-        <thead>
-          <tr>
-            <th>Tên sự kiện</th>
-            <th>Thời gian</th>
-            <th>Địa điểm</th>
-            <th>Số đơn vị máu thực tế</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEvents.length === 0 ? (
+      <div className="tableWrapper">
+        <table className={"table"}>
+          <thead>
             <tr>
-              <td colSpan={5} style={{ textAlign: 'center' }}>Không có sự kiện đã hoàn thành.</td>
+              <th>Tên sự kiện</th>
+              <th>Thời gian</th>
+              <th>Địa điểm</th>
+              <th>Trạng thái</th>
+              <th>Đã đăng ký</th>
+              <th>Hành động</th>
             </tr>
-          ) : (
-            filteredEvents.map(event => (
-              <tr key={event.id}>
-                <td>{event.name}</td>
-                <td>
-                  {new Date(event.startTime).toLocaleString()} - {new Date(event.endTime).toLocaleString()}
-                </td>
-                <td>{event.locationName}</td>
-                <td>{event.actualBloodUnits || 0}</td>
-                <td className={"actionButtons"}>
-                  <button className={"edit"} onClick={() => onViewDetails(event)}>Xem chi tiết</button>
-                </td>
+          </thead>
+          <tbody>
+            {filteredEvents.length === 0 ? (
+              <tr>
+                <td colSpan={6} style={{ textAlign: 'center' }}>Không có sự kiện đã hoàn thành.</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              filteredEvents.map(event => (
+                <tr key={event.id}>
+                  <td>{event.name}</td>
+                  <td>
+                    {new Date(event.startTime).toLocaleString()} - {new Date(event.endTime).toLocaleString()}
+                  </td>
+                  <td>{event.locationName}</td>
+                  <td>Đã kết thúc</td>
+                  <td>{event.registeredDonors}</td>
+                  <td className={"actionButtons"}>
+                    <button className={"check"} onClick={() => onViewDonors(event.id)}>Xem người đăng ký</button>
+                    <button className={"edit"} onClick={() => onViewDetails(event)}>Xem chi tiết</button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

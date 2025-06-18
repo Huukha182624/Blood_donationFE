@@ -8,88 +8,34 @@ import type { BloodDonationEvent } from '../../../types/Event'; // Đảm bảo 
 // Đảm bảo đường dẫn đúng
 import './EventManagement.css'; // Đảm bảo đường dẫn đúng
 import './variables.css';                       // Đảm bảo đường dẫn đúng
+import { searchCampaignsByDate } from '../../../services/blood-donation-campaign';
 
 const EventPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'current' | 'create' | 'history'>('current');
   const [events, setEvents] = useState<BloodDonationEvent[]>([]);
+  const [showEventForm, setShowEventForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<BloodDonationEvent | null>(null);
-
-  // Dữ liệu giả định để test
-  // Sử dụng useEffect để khởi tạo dữ liệu một lần khi component mount
   useEffect(() => {
-    const initialEvents: BloodDonationEvent[] = [
-      {
-        id: '1',
-        name: 'Ngày hội Hiến máu Tình nguyện 2025',
-        description: 'Sự kiện thường niên lớn nhất của chúng ta.',
-        startTime: '2025-07-20T08:00',
-        endTime: '2025-07-20T17:00',
-        locationName: 'Trung tâm Văn hóa TP.HCM',
-        locationAddress: 'Số 01 Đường Đinh Tiên Hoàng, Quận 1, TP.HCM',
-        targetAudience: 'Công dân từ 18-60 tuổi, khỏe mạnh.',
-        specialRequirements: 'Mang theo CMND/CCCD, ăn sáng đầy đủ.',
-        status: 'upcoming',
-        registeredDonors: 150,
-      },
-      {
-        id: '2',
-        name: 'Hiến máu Cộng đồng Quận 3',
-        description: 'Chương trình hiến máu tại địa phương.',
-        startTime: '2025-06-15T09:00',
-        endTime: '2025-06-15T16:00',
-        locationName: 'Nhà Văn hóa Thiếu nhi Quận 3',
-        locationAddress: '123 Đường Nam Kỳ Khởi Nghĩa, Quận 3, TP.HCM',
-        targetAudience: 'Người dân trong khu vực Quận 3.',
-        specialRequirements: 'Có giấy tờ tùy thân.',
-        status: 'ongoing',
-        registeredDonors: 80,
-      },
-      {
-        id: '3',
-        name: 'Hiến máu vì Bệnh nhân Ung thư',
-        description: 'Sự kiện đặc biệt hỗ trợ bệnh nhân ung thư.',
-        startTime: '2024-11-10T08:30',
-        endTime: '2024-11-10T15:00',
-        locationName: 'Bệnh viện Ung Bướu TP.HCM',
-        locationAddress: 'Số 47 Nguyễn Bỉnh Khiêm, Quận Bình Thạnh, TP.HCM',
-        targetAudience: 'Công dân từ 18-60 tuổi.',
-        specialRequirements: 'Kiểm tra sức khỏe kỹ càng.',
-        status: 'completed',
-        registeredDonors: 120,
-        actualBloodUnits: 95,
-      },
-      {
-        id: '4',
-        name: 'Ngày hội Hiến máu Sinh viên',
-        description: 'Chương trình dành cho sinh viên các trường đại học.',
-        startTime: '2024-03-25T07:30',
-        endTime: '2024-03-25T14:00',
-        locationName: 'Đại học Quốc gia TP.HCM',
-        locationAddress: 'Khu phố 6, P.Linh Trung, Q.Thủ Đức, TP.HCM',
-        targetAudience: 'Sinh viên, giảng viên.',
-        specialRequirements: 'Có thẻ sinh viên.',
-        status: 'completed',
-        registeredDonors: 250,
-        actualBloodUnits: 200,
-      },
-      {
-        id: '5',
-        name: 'Ngày hội Hiến máu Sinh viên',
-        description: 'Chương trình dành cho sinh viên các trường đại học.',
-        startTime: '2024-03-25T07:30',
-        endTime: '2024-03-25T14:00',
-        locationName: 'Đại học Quốc gia TP.HCM',
-        locationAddress: 'Khu phố 6, P.Linh Trung, Q.Thủ Đức, TP.HCM',
-        targetAudience: 'Sinh viên, giảng viên.',
-        specialRequirements: 'Có thẻ sinh viên.',
-        status: 'completed',
-        registeredDonors: 250,
-        actualBloodUnits: 200,
-      },
-    ];
-    setEvents(initialEvents);
-  }, []); // [] đảm bảo useEffect chỉ chạy một lần sau khi render ban đầu
-
+    async function fetchEvents() {
+      try {
+        const data = await searchCampaignsByDate();
+        const mapped = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          startTime: item.activeTime,
+          endTime: item.activeTime,
+          locationName: item.address,
+          status: item.status === 'Sắp diễn ra' ? 'upcoming' : item.status === 'Đang diễn ra' ? 'ongoing' : item.status === 'Đã kết thúc' ? 'completed' : item.status,
+          registeredDonors: item.registered,
+        }));
+        console.log('Mapped events:', mapped);
+        setEvents(mapped);
+      } catch {
+        setEvents([]);
+      }
+    }
+    fetchEvents();
+  }, []);
 
   const handleSaveEvent = (eventToSave: BloodDonationEvent) => {
     if (editingEvent) {
@@ -110,7 +56,7 @@ const EventPage: React.FC = () => {
 
   const handleEditEvent = (event: BloodDonationEvent) => {
     setEditingEvent(event);
-    setActiveTab('create'); // Chuyển sang form với dữ liệu để chỉnh sửa
+    setShowEventForm(true);
   };
 
   const handleDeleteEvent = (id: string) => {
@@ -142,7 +88,7 @@ const EventPage: React.FC = () => {
         <>
           <div className="header">
             <h2>Các sự kiện hiện tại/sắp tới</h2>
-            <button className="primaryButton" onClick={() => { setEditingEvent(null); setActiveTab('create'); }}>
+            <button className="primaryButton" onClick={() => { setEditingEvent(null); setShowEventForm(true); }}>
               + Tạo sự kiện mới
             </button>
           </div>
@@ -156,12 +102,53 @@ const EventPage: React.FC = () => {
         </>
       )}
 
-      {activeTab === 'create' && (
-        <EventForm
-          event={editingEvent}
-          onSave={handleSaveEvent}
-          onCancel={handleCancelForm}
-        />
+      {/* Popup EventForm */}
+      {showEventForm && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.35)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000
+        }}
+          onClick={() => { setShowEventForm(false); setEditingEvent(null); }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2100,
+              background: '#fff',
+              borderRadius: 18,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+              padding: 36,
+              minWidth: 480,
+              maxWidth: 600,
+              width: '100%',
+              margin: '0 16px',
+              animation: 'popupIn 0.2s'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <EventForm
+              event={editingEvent}
+              onSave={handleSaveEvent}
+              onCancel={() => { setShowEventForm(false); setEditingEvent(null); }}
+            />
+          </div>
+          <style>
+            {`
+              @keyframes popupIn {
+                from { transform: scale(0.95); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+              }
+            `}
+          </style>
+        </div>
       )}
 
       {activeTab === 'history' && (
@@ -171,7 +158,8 @@ const EventPage: React.FC = () => {
           </div>
           <EventHistory
             events={completedEvents}
-            onViewDetails={handleEditEvent} // Dùng lại form chỉnh sửa để xem chi tiết
+            onViewDetails={handleEditEvent} 
+            onViewDonors={handleViewDonors}
           />
         </>
       )}

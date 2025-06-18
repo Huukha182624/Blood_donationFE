@@ -22,12 +22,6 @@ const SubNavigation: React.FC<SubNavigationProps> = ({ activeTab, onTabChange })
       >
         Lịch sử sự kiện
       </button>
-      <button
-        className={activeTab === 'create' ? "active" : ''}
-        onClick={() => onTabChange('create')}
-      >
-        Tạo sự kiện mới
-      </button>
     </div>
   );
 };

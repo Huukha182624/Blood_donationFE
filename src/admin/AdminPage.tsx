@@ -1,5 +1,7 @@
 import { Dashboard } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../store/userStore.jsx";
 import AppointmentManagement from "./components/Appointment/AppointmentManagement";
 import BloodManagePage from "./components/Bloodmanage/BloodManagePage";
 import DonorManagementPage from "./components/Donormanage/DonorManagement";
@@ -8,10 +10,17 @@ import EventPage from "./components/Event/EventPage";
 import Sidebar from "./components/Sidebar/Sidebar";
 import MainInforPage from "./components/Dashboard/Dashboard";
 
-
-
 const AdminPage: React.FC = () => {
   const [activeSidebarItem, setActiveSidebarItem] = useState("Trang tổng quan");
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
   const handleSidebarItemClick = (itemName: string) => {
     setActiveSidebarItem(itemName);
   };
@@ -97,7 +106,7 @@ const AdminPage: React.FC = () => {
         >
           <Sidebar
             onItemClick={handleSidebarItemClick}
-            activeItem={activeSidebarItem} adminName={"Trung Luu"} adminEmail={"Admin"} adminAvatarUrl={"https://cdn.dribbble.com/userupload/26255768/file/original-de01cccd8c317f5acaea9f43e9b3c71f.png?resize=752x&vertical=center"} />
+            activeItem={activeSidebarItem} adminName={user?.full_name || "Admin"} adminEmail={user?.email || "Admin"} adminAvatarUrl={user?.avatar_image || undefined} />
         </div>
 
         {/* Main content area */}

@@ -12,34 +12,9 @@ interface EventListProps {
 }
 
 const EventList: React.FC<EventListProps> = ({ events, onEdit, onDelete, onMarkAsCompleted, onViewDonors }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'upcoming', 'ongoing'
-
-  const filteredEvents = events.filter(
-    event => {
-      const matchesSearch = event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.locationName.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = filterStatus === 'all' || event.status === filterStatus;
-      return matchesSearch && matchesStatus;
-    }
-  );
-
   return (
     <div >
-      <div className={"searchAndFilter"}>
-        <input
-          type="text"
-          placeholder="Tìm kiếm theo tên sự kiện, địa điểm..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-          <option value="all">Tất cả trạng thái</option>
-          <option value="upcoming">Sắp diễn ra</option>
-          <option value="ongoing">Đang diễn ra</option>
-        </select>
-      </div>
-
+      {/* Bỏ search/filter UI */}
       <div className="tableWrapper">
         <table className={"table"}>
           <thead>
@@ -53,12 +28,12 @@ const EventList: React.FC<EventListProps> = ({ events, onEdit, onDelete, onMarkA
             </tr>
           </thead>
           <tbody>
-            {filteredEvents.length === 0 ? (
+            {events.length === 0 ? (
               <tr>
                 <td colSpan={6} style={{ textAlign: 'center' }}>Không có sự kiện nào.</td>
               </tr>
             ) : (
-              filteredEvents.map(event => (
+              events.map(event => (
                 <tr key={event.id}>
                   <td>{event.name}</td>
                   <td>
@@ -66,8 +41,8 @@ const EventList: React.FC<EventListProps> = ({ events, onEdit, onDelete, onMarkA
                   </td>
                   <td>{event.locationName}</td>
                   <td>
-                    {event.status === 'upcoming' && 'Sắp diễn ra'}
-                    {event.status === 'ongoing' && 'Đang diễn ra'}
+                        {event.status === 'upcoming' && 'Sắp diễn ra'}
+                        {event.status === 'ongoing' && 'Đang diễn ra'}
                   </td>
                   <td>{event.registeredDonors}</td>
                   <td className={"actionButtons"}>

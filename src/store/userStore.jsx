@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { getUserById } from '../services/user.service';
 
 const UserContext = createContext();
-const USER_EXPIRE_MS = 60 * 60 * 1000; // 1 tiếng
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
@@ -10,11 +10,7 @@ export const UserProvider = ({ children }) => {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (parsed.expire && parsed.expire > Date.now()) {
-          return parsed.data;
-        } else {
-          localStorage.removeItem('user');
-        }
+        return parsed.data;
       } catch {
         localStorage.removeItem('user');
       }
@@ -22,11 +18,26 @@ export const UserProvider = ({ children }) => {
     return null;
   });
 
+  useEffect(() => {
+    async function fetchUser() {
+      if (user && user.user_id) {
+        try {
+          const freshUser = await getUserById(user.user_id);
+          setUser(freshUser);
+          localStorage.setItem('user', JSON.stringify({ data: freshUser }));
+        } catch {
+          // Nếu lỗi (ví dụ user không còn tồn tại), có thể logout hoặc giữ nguyên
+        }
+      }
+    }
+    fetchUser();
+    // eslint-disable-next-line
+  }, []);
+
   const login = (userData) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify({
-      data: userData,
-      expire: Date.now() + USER_EXPIRE_MS
+      data: userData
     }));
   };
 

@@ -1,4 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import BloodGroups from "./BloodGroups";
 
@@ -7,11 +9,34 @@ import ScheduleForm from "./Schedule";
 import DonorBenefits from "../components/DonorBenefit";
 import BloodDonationStandards from "../components/BloodDonationStandards";
 import Tips from "./Tips";
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 export default function MainContent() {
+    const query = useQuery();
+    const navigate = useNavigate();
+    const start = query.get("start");
+    const end = query.get("end");
+    const [startDate, setStartDate] = useState(start ? new Date(start) : null);
+    const [endDate, setEndDate] = useState(end ? new Date(end) : null);
+
+    // Khi chọn ngày mới, cập nhật URL
+    useEffect(() => {
+        if (startDate && endDate) {
+            navigate(`/?start=${startDate.toISOString()}&end=${endDate.toISOString()}`, { replace: true });
+        }
+    }, [startDate, endDate, navigate]);
+
     return (
         <>
-
-            <ScheduleForm />
+            <ScheduleForm
+                startDate={startDate}
+                endDate={endDate}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
+            />
             <Container sx={{ mt: 4 }}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
                     Nhóm máu và nhóm máu hiếm

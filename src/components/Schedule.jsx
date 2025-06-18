@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Schedule.css";
 import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 function ScheduleForm() {
     const [startDate, setStartDate] = useState(null);
@@ -18,6 +19,14 @@ function ScheduleForm() {
         navigate(`/events?start=${startDate.toISOString()}&end=${endDate.toISOString()}`);
     };
 
+    const handleStartDateChange = (date) => {
+        setStartDate(date);
+    };
+
+    const handleEndDateChange = (date) => {
+        setEndDate(date);
+    };
+
     return (
         <div className="schedule-container">
             <label className="schedule-label">
@@ -28,7 +37,7 @@ function ScheduleForm() {
                 <div className="date-range">
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={handleStartDateChange}
                         selectsStart
                         startDate={startDate}
                         endDate={endDate}
@@ -38,7 +47,7 @@ function ScheduleForm() {
                     <span className="date-separator">-</span>
                     <DatePicker
                         selected={endDate}
-                        onChange={(date) => setEndDate(date)}
+                        onChange={handleEndDateChange}
                         selectsEnd
                         startDate={startDate}
                         endDate={endDate}
@@ -52,5 +61,12 @@ function ScheduleForm() {
         </div>
     );
 }
+
+ScheduleForm.propTypes = {
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+    onStartDateChange: PropTypes.func,
+    onEndDateChange: PropTypes.func,
+};
 
 export default ScheduleForm;

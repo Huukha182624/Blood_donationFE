@@ -15,6 +15,7 @@ import ConfirmRegister from './pages/ConfirmRegister';
 import { UserProvider } from './store/userStore.jsx';
 import ScheduleForm from "./components/Schedule";
 import Events from "./pages/Events";
+import AdminPage from "./admin/AdminPage";
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                     </Route>
                     <Route path="/" element={<ScheduleForm />} />
                     <Route path="/events" element={<Events />} />
+                    <Route path="/admin" element={<AdminPage />} />
                 </Routes>
             </Router>
         </UserProvider>
