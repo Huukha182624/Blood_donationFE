@@ -4,7 +4,7 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 
 const Tips = () => {
     return (
-        <Box sx={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+        <Box sx={{ position: 'relative', minHeight: '80vh', overflow: 'hidden' }}>
             {/* Background mờ */}
             <Box
                 sx={{

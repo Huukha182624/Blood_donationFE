@@ -111,15 +111,29 @@ export default function MainContent() {
                     </Typography>
                 </Box>
                 <Box sx={{ mt: 4 }}>
-                    <Typography variant="h6" gutterBottom>Video giới thiệu</Typography>
+                    <Typography variant="h6" gutterBottom>Video thông tin</Typography>
+
                     <Box
-                        component="video"
-                        src="/video/intro.mp4"
-                        controls
-                        width="100%"
-                        sx={{ borderRadius: 2, boxShadow: 3 }}
-                    />
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            mt: 2
+                        }}
+                    >
+                        <Box
+                            component="video"
+                            src="/video/intro.mp4"
+                            controls
+                            sx={{
+                                width: "100%",
+                                maxWidth: 720,
+                                borderRadius: 2,
+                                boxShadow: 3
+                            }}
+                        />
+                    </Box>
                 </Box>
+
             </Container>
 
             <BloodGroups />

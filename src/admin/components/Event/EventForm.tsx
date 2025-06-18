@@ -60,7 +60,7 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel }) => {
     return dateStr;
   };
 
-  const parseDate = (str) => parse(str, 'dd/mm/yyyy', new Date());
+  const parseDate = (str) => parse(str, 'dd/MM/yyyy', new Date());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,7 +126,7 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel }) => {
             onChange={(date: Date | null) => {
               setFormData(prev => ({
                 ...prev,
-                activeTime: date ? format(date, 'dd/mm/yyyy') : ''
+                activeTime: date ? format(date, 'dd/MM/yyyy') : ''
               }));
             }}
             dateFormat="dd/MM/yyyy"
