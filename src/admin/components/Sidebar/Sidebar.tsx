@@ -14,6 +14,8 @@ interface SidebarProps {
   onViewProfileClick?: () => void; // New: Hàm xử lý khi click View Profile
 }
 
+
+
 const Sidebar: React.FC<SidebarProps> = ({
   onItemClick,
   activeItem,
@@ -37,6 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     { name: "Tổ chức sự kiện hiến máu", icon: "🎉" },
     { name: "Quản lý nhân sự", icon: "👥" },
     { name: "Cài đặt hệ thống", icon: "⚙️" },
+    { name: "📥 Đơn cần máu", icon: "📥" },
   ];
 
   const logoUrl = "https://cdn.dribbble.com/userupload/26255768/file/original-de01cccd8c317f5acaea9f43e9b3c71f.png?resize=752x&vertical=center";
