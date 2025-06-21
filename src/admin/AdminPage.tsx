@@ -9,6 +9,7 @@ import EmployeeManagement from "./components/EmployeeManagement/EmployeeManageme
 import EventPage from "./components/Event/EventPage";
 import Sidebar from "./components/Sidebar/Sidebar";
 import MainInforPage from "./components/Dashboard/Dashboard";
+import BloodRequestPage from "./components/BloodRequestPage";
 
 const AdminPage: React.FC = () => {
   const [activeSidebarItem, setActiveSidebarItem] = useState("Trang tổng quan");
@@ -34,6 +35,8 @@ const AdminPage: React.FC = () => {
         return <AppointmentManagement />;
       case "Quản lý kho máu":
         return <BloodManagePage />;
+      case "Đơn cần máu":
+        return <BloodRequestPage />;
       case "Báo cáo & thống kê":
         return (
           <div style={{ padding: "20px" }}>
