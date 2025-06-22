@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../store/userStore.jsx";
 import Sidebar from "./components/Sidebar/Sidebar";
+import MainInforPage from "./components/Dashboard/Dashboard";
+import BloodRequestPage from "./components/BloodRequestPage";
 
 const AdminPage: React.FC = () => {
   const { user } = useUser();
@@ -26,6 +28,62 @@ const AdminPage: React.FC = () => {
     if (pathname.includes("nhan-su")) return "Quản lý nhân sự";
     if (pathname.includes("cai-dat")) return "Cài đặt hệ thống";
     return "";
+  const handleSidebarItemClick = (itemName: string) => {
+    setActiveSidebarItem(itemName);
+  };
+  const renderMainContent = () => {
+    switch (activeSidebarItem) {
+      case "Trang tổng quan":
+        return <MainInforPage />;
+      case "Quản lý người hiến máu":
+        return <DonorManagementPage />;
+      case "Lịch hẹn người hiến máu":
+        return <AppointmentManagement />;
+      case "Quản lý kho máu":
+        return <BloodManagePage />;
+      case "Đơn cần máu":
+        return <BloodRequestPage />;
+      case "Báo cáo & thống kê":
+        return (
+          <div style={{ padding: "20px" }}>
+            <h1
+              style={{
+                color: "#333",
+                borderBottom: "2px solid #E74C3C",
+                paddingBottom: "10px",
+              }}
+            >
+              📈 Báo cáo & thống kê
+            </h1>
+            <p>Nội dung báo cáo và thống kê sẽ hiển thị ở đây.</p>
+          </div>
+        );
+      case "Tổ chức sự kiện hiến máu":
+        return <EventPage />;
+      case "Quản lý nhân sự":
+        return <EmployeeManagement />;
+      case "Cài đặt hệ thống":
+        return (
+          <div style={{ padding: "20px" }}>
+            <h1
+              style={{
+                color: "#333",
+                borderBottom: "2px solid #E74C3C",
+                paddingBottom: "10px",
+              }}
+            >
+              ⚙️ Cài đặt hệ thống
+            </h1>
+            <p>Nội dung cài đặt hệ thống sẽ hiển thị ở đây.</p>
+          </div>
+        );
+      default:
+        return (
+          <div style={{ padding: "20px", color: "#E74C3C" }}>
+            Trang không tìm thấy.
+          </div>
+        );
+    }
   };
 
   const activeSidebarItem = mapPathToTabName(location.pathname);
