@@ -6,7 +6,6 @@ import About from './pages/About'; // Giới thiệu
 import Login from './components/Login';
 import Register from './pages/Register';
 import ProfileForm from './pages/ProfileForm';
-import RegisterForm from './pages/RegisterForm';
 import Faq from './pages/Faq';
 import Contact from './pages/Contact';
 import NewsDetail from './pages/NewsDetail';
@@ -22,6 +21,7 @@ import AppointmentManagement from "./admin/components/Appointment/AppointmentMan
 import BloodManagePage from "./admin/components/Bloodmanage/BloodManagePage";
 import EventPage from "./admin/components/Event/EventPage";
 import EmployeeManagement from "./admin/components/EmployeeManagement/EmployeeManagement";
+import BloodRequestForm from './pages/blood_request_form';
 
 function App() {
     return (
@@ -34,7 +34,7 @@ function App() {
                         <Route path="dang-nhap" element={<Login />} />
                         <Route path="/dang-ky" element={<Register />} />
                         <Route path="/ho-so" element={<ProfileForm />} />
-                        <Route path="/don-dang-ki" element={<RegisterForm />} />
+                        <Route path="/don-dang-ki" element={<BloodRequestForm />} />
                         <Route path="/hoi-dap" element={<Faq />} />
                         <Route path="/lien-he" element={<Contact />} />
                         <Route path="tin-tuc" element={<News />} />

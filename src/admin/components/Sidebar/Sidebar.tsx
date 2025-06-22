@@ -14,6 +14,8 @@ interface SidebarProps {
   onViewProfileClick?: () => void;
 }
 
+
+
 const Sidebar: React.FC<SidebarProps> = ({
   onItemClick,
   activeItem,
