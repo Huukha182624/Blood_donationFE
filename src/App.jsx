@@ -15,6 +15,12 @@ import { UserProvider } from './store/userStore.jsx';
 import ScheduleForm from "./components/Schedule";
 import Events from "./pages/Events";
 import AdminPage from "./admin/AdminPage";
+import MainInforPage from "./admin/components/Dashboard/Dashboard";
+import DonorManagementPage from "./admin/components/Donormanage/DonorManagement";
+import AppointmentManagement from "./admin/components/Appointment/AppointmentManagement";
+import BloodManagePage from "./admin/components/Bloodmanage/BloodManagePage";
+import EventPage from "./admin/components/Event/EventPage";
+import EmployeeManagement from "./admin/components/EmployeeManagement/EmployeeManagement";
 import BloodRequestForm from './pages/blood_request_form';
 
 function App() {
@@ -37,7 +43,16 @@ function App() {
                     </Route>
                     <Route path="/" element={<ScheduleForm />} />
                     <Route path="/events" element={<Events />} />
-                    <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/admin" element={<AdminPage />}>
+                        <Route index element={<MainInforPage />} />
+                        <Route path="nguoi-hien-mau" element={<DonorManagementPage />} />
+                        <Route path="lich-hen" element={<AppointmentManagement />} />
+                        <Route path="kho-mau" element={<BloodManagePage />} />
+                        <Route path="su-kien" element={<EventPage />} />
+                        <Route path="nhan-su" element={<EmployeeManagement />} />
+                        <Route path="thong-ke" element={<div style={{ padding: "20px" }}><h1>📈 Báo cáo & thống kê</h1><p>Nội dung...</p></div>} />
+                        <Route path="cai-dat" element={<div style={{ padding: "20px" }}><h1>⚙️ Cài đặt hệ thống</h1><p>Nội dung...</p></div>} />
+                    </Route>
                 </Routes>
             </Router>
         </UserProvider>

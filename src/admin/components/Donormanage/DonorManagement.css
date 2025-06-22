@@ -123,27 +123,130 @@
     border: 1px solid #EF9A9A;
 }
 
-/* --- CSS cho DonorTable (nếu bạn muốn các nút action có màu sắc) --- */
-/* (Thêm vào nếu DonorTable.tsx không có styles riêng hoặc bạn muốn override) */
-/* .action-button {
-    background-color: #3498DB; 
-    color: white;
+/* Donor Management Form Styles */
+
+.form-overlay { /* Changed from .formOverlay to .form-overlay */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay for consistency */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s forwards;
+}
+
+.donor-form { /* Changed from .employeeForm to .donor-form */
+    background-color: var(--white);
+    padding: 35px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 30px var(--shadow-medium);
+    width: 90%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    color: var(--text-color);
+    position: relative;
+    animation: slideIn 0.4s forwards cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.donor-form h3 { /* Changed from .employeeForm h2 to .donor-form h3 */
+    color: var(--primary-red);
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.form-group { /* Changed from .formGroup to .form-group */
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label { /* Changed from .formGroup label to .form-group label */
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+.form-group input[type="text"], /* Changed from .formGroup input to .form-group input */
+.form-group input[type="date"],
+.form-group input[type="tel"],
+.form-group input[type="email"],
+.form-group select {
+    width: 100%;
+    padding: 12px 15px; /* Consistent padding with search input */
+    border: 1px solid var(--border-color); /* Consistent border color */
+    border-radius: 5px; /* Consistent border radius */
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    color: var(--text-color); /* Ensure text color is dark */
+}
+
+.form-group input[type="text"]:focus, /* Changed from .formGroup input:focus to .form-group input:focus */
+.form-group input[type="date"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="email"]:focus,
+.form-group select:focus {
+    border-color: var(--primary-red);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--input-focus-shadow); /* Consistent focus shadow */
+}
+
+.form-actions { /* Changed from .formActions to .form-actions */
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.submit-button, .cancel-button { /* Changed from .submitButton, .cancelButton to .submit-button, .cancel-button */
+    padding: 12px 28px;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-right: 5px;
-    transition: background-color 0.3s ease;
+    font-size: 1em;
+    font-weight: 600;
+    transition: var(--transition-speed);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    outline: none;
 }
 
-.action-button.edit {
-    background-color: #2ECC71; 
+.submit-button { /* Changed from .submitButton to .submit-button */
+    background-color: var(--primary-red);
+    color: var(--white);
 }
 
-.action-button.delete {
-    background-color: #E74C3C;
+.submit-button:hover { /* Changed from .submitButton:hover to .submit-button:hover */
+    background-color: var(--darker-red);
+    box-shadow: 0 4px 10px var(--shadow-medium);
+    transform: translateY(-1px);
 }
 
-.action-button:hover {
-    opacity: 0.9;
-} */
+.cancel-button { /* Changed from .cancelButton to .cancel-button */
+    background-color: #BDC3C7; /* Xám bạc */
+    color: var(--text-color);
+}
+
+.cancel-button:hover { /* Changed from .cancelButton:hover to .cancel-button:hover */
+    background-color: #95A5A6; /* Xám đậm hơn */
+    box-shadow: 0 4px 10px var(--shadow-medium);
+    transform: translateY(-1px);
+}

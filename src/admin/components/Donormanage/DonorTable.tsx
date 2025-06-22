@@ -33,7 +33,7 @@ const DonorTable: React.FC<DonorTableProps> = ({ donors, onViewDetails, onEdit, 
                 <td><p>{donor.phone}</p></td>
                 <td><p>{donor.lastDonationDate || 'N/A'}</p></td>
                 <td><p>{donor.totalDonations}</p></td>
-                <td className="actions"> {/* Thêm class cho các nút hành động */}
+                <td className="actions"> 
                   <button onClick={() => onViewDetails(donor)} className="btn-view">
                     Xem
                   </button>
