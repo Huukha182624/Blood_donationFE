@@ -1,26 +1,33 @@
-// src/types/index.ts
+// types/appointment.ts (Gợi ý cập nhật)
 
+// Trạng thái dùng trong frontend (tiếng Anh để nhất quán)
+export type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'unqualified' | 'no-show';
+
+// Dữ liệu cuộc hẹn đã được xử lý để hiển thị
 export interface Appointment {
-  id: string;
+  id: number; // ID gốc từ API
+  displayId: string; // ID dùng để hiển thị (ví dụ: HD-1)
   donorName: string;
   phoneNumber: string;
   email: string;
   campaignName: string;
-  appointmentDate: string; // YYYY-MM-DD
-  appointmentTime: string; // HH:MM
+  appointmentDate: string;
+  appointmentTime: string;
   location: string;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'unqualified' | 'no-show';
-  registrationDate: string; // YYYY-MM-DDTHH:MM:SSZ (ISO string)
-  notes?: string; // Ghi chú nội bộ của admin
+  status: AppointmentStatus;
+  registrationDate: string;
+  notes: string;
 }
 
+// Dữ liệu chiến dịch đã được xử lý
 export interface Campaign {
-  id: string;
+  id: number; // ID gốc từ API
   name: string;
   startDate: string;
   endDate: string;
   location: string;
-  availableTimeSlots: string[]; // ví dụ: ['08:00-09:00', '09:00-10:00']
+  donateTime: {
+    start: string;
+    end: string;
+  };
 }
-
-export type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'unqualified' | 'no-show';

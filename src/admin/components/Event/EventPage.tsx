@@ -1,16 +1,17 @@
 // src/App.tsx
-import React, { useState, useEffect } from 'react'; // Import useEffect
-import SubNavigation from './SubNavigation'; // Đảm bảo đường dẫn đúng
-import EventList from './EventList';       // Đảm bảo đường dẫn đúng
-import EventForm from './EventForm';       // Đảm bảo đường dẫn đúng
-import EventHistory from './EventHistory'; // Đảm bảo đường dẫn đúng
-import type { BloodDonationEvent } from '../../../types/Event'; // Đảm bảo đường dẫn đúng
-// Đảm bảo đường dẫn đúng
-import './EventManagement.css'; // Đảm bảo đường dẫn đúng
-import './variables.css';                       // Đảm bảo đường dẫn đúng
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. IMPORT useNavigate
+import SubNavigation from './SubNavigation';
+import EventList from './EventList';
+import EventForm from './EventForm';
+import EventHistory from './EventHistory';
+import type { BloodDonationEvent } from '../../../types/Event';
+import './EventManagement.css';
+import './variables.css';
 import { searchCampaignsByDate } from '../../../services/blood-donation-campaign';
 
 const EventPage: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'current' | 'create' | 'history'>('current');
   const [events, setEvents] = useState<BloodDonationEvent[]>([]);
   const [showEventForm, setShowEventForm] = useState(false);
@@ -72,9 +73,11 @@ const EventPage: React.FC = () => {
     alert('Sự kiện đã được đánh dấu là hoàn thành.');
   };
 
-  const handleViewDonors = (id: string) => {
-    // Đây là nơi bạn sẽ điều hướng đến trang/modal hiển thị danh sách người đăng ký
-    alert(`Xem danh sách người đăng ký cho sự kiện ID: ${id}. (Chức năng này cần được phát triển thêm)`);
+  const handleViewDonors = (campaignName: string) => {
+    const encodedCampaignName = encodeURIComponent(campaignName);
+    const targetUrl = `/admin/lich-hen?campaign=${encodedCampaignName}`;
+    console.log(`Navigating to: ${targetUrl}`);
+    navigate(targetUrl);
   };
 
   const currentEvents = events.filter(e => e.status === 'upcoming' || e.status === 'ongoing');
@@ -158,7 +161,7 @@ const EventPage: React.FC = () => {
           </div>
           <EventHistory
             events={completedEvents}
-            onViewDetails={handleEditEvent} 
+            onViewDetails={handleEditEvent}
             onViewDonors={handleViewDonors}
           />
         </>

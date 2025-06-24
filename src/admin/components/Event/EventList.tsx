@@ -47,7 +47,7 @@ const EventList: React.FC<EventListProps> = ({ events, onEdit, onDelete, onMarkA
                   <td>{event.registeredDonors}</td>
                   <td className={"actionButtons"}>
                     <button className={"edit"} onClick={() => onEdit(event)}>Chỉnh sửa</button>
-                    <button className={"check"} onClick={() => onViewDonors(event.id)}>Xem người đăng ký</button>
+                    <button className={"check"} onClick={() => onViewDonors(event.name)}>Xem người đăng ký</button>
                     {event.status !== 'completed' && (
                       <button className={"mark"} onClick={() => onMarkAsCompleted(event.id)}>Đánh dấu hoàn thành</button>
                     )}
