@@ -1,148 +1,128 @@
-// src/pages/AppointmentManagement.tsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import type { Appointment, Campaign, AppointmentStatus } from '../../../types/appointment';
 import '../Appointment/AppointmentManagement.css';
 
-const MOCK_APPOINTMENTS: Appointment[] = [
-  {
-    id: 'HD20250609-001',
-    donorName: 'Nguyễn Văn A',
-    phoneNumber: '0901234567',
-    email: 'nva@example.com',
-    campaignName: 'Hiến máu Tình nguyện ĐH Bách Khoa',
-    appointmentDate: '2025-06-15',
-    appointmentTime: '09:00',
-    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
-    status: 'pending',
-    registrationDate: '2025-06-09T10:00:00Z',
-    notes: ''
-  },
-  {
-    id: 'HD20250609-002',
-    donorName: 'Trần Thị B',
-    phoneNumber: '0902345678',
-    email: 'ttb@example.com',
-    campaignName: 'Hiến máu Chữ thập đỏ Quận 1',
-    appointmentDate: '2025-06-12',
-    appointmentTime: '14:00',
-    location: 'Trung tâm Y tế Quận 1',
-    status: 'confirmed',
-    registrationDate: '2025-06-08T15:30:00Z',
-    notes: 'Đã gọi điện xác nhận, người hiến máu rất nhiệt tình.'
-  },
-  {
-    id: 'HD20250609-003',
-    donorName: 'Lê Văn C',
-    phoneNumber: '0903456789',
-    email: 'lvc@example.com',
-    campaignName: 'Hiến máu Tình nguyện ĐH Bách Khoa',
-    appointmentDate: '2025-06-15',
-    appointmentTime: '10:00',
-    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
-    status: 'cancelled',
-    registrationDate: '2025-06-07T08:00:00Z',
-    notes: 'Người hiến máu báo bị ốm đột xuất, không thể tham gia.'
-  },
-  {
-    id: 'HD20250609-004',
-    donorName: 'Phạm Thị D',
-    phoneNumber: '0904567890',
-    email: 'ptd@example.com',
-    campaignName: 'Hiến máu Bệnh viện Truyền máu Huyết học',
-    appointmentDate: '2025-06-10',
-    appointmentTime: '08:30',
-    location: 'Bệnh viện Truyền máu Huyết học TP.HCM',
-    status: 'completed',
-    registrationDate: '2025-06-05T11:45:00Z',
-    notes: 'Đã hiến 350ml máu, sức khỏe tốt.'
-  },
-  {
-    id: 'HD20250609-005',
-    donorName: 'Nguyễn Văn E',
-    phoneNumber: '0905678901',
-    email: 'nve@example.com',
-    campaignName: 'Hiến máu Tình nguyện ĐH Bách Khoa',
-    appointmentDate: '2025-06-15',
-    appointmentTime: '09:00',
-    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
-    status: 'no-show',
-    registrationDate: '2025-06-09T11:00:00Z',
-    notes: 'Không đến theo lịch hẹn.'
-  },
-  {
-    id: 'HD20250609-006',
-    donorName: 'Hoàng Văn F',
-    phoneNumber: '0906789012',
-    email: 'hvf@example.com',
-    campaignName: 'Hiến máu Tình nguyện ĐH Bách Khoa',
-    appointmentDate: '2025-06-15',
-    appointmentTime: '09:00',
-    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
-    status: 'unqualified',
-    registrationDate: '2025-06-09T12:00:00Z',
-    notes: 'Không đủ cân nặng.'
-  },
-  {
-    id: 'HD20250609-007',
-    donorName: 'Hoàng Trung Lưu',
-    phoneNumber: '0906789012',
-    email: 'hvf@example.com',
-    campaignName: 'Hiến máu Tình nguyện ĐH Bách Khoa',
-    appointmentDate: '2025-06-20',
-    appointmentTime: '09:00',
-    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
-    status: 'confirmed',
-    registrationDate: '2025-06-09T12:00:00Z',
-    notes: 'Đã gọi điện xác nhận, người hiến máu rất nhiệt tình.'
-  }
-];
+const API_BASE_URL = 'http://localhost:3123';
 
-const MOCK_CAMPAIGNS: Campaign[] = [
-  {
-    id: 'BK_HM_2025',
-    name: 'Hiến máu Tình nguyện ĐH Bách Khoa',
-    startDate: '2025-06-15',
-    endDate: '2025-06-15',
-    location: 'Cơ sở 1, ĐH Bách Khoa TP.HCM',
-    availableTimeSlots: ['08:00-09:00', '09:00-10:00', '10:00-11:00']
-  },
-  {
-    id: 'CTD_Q1_2025',
-    name: 'Hiến máu Chữ thập đỏ Quận 1',
-    startDate: '2025-06-12',
-    endDate: '2025-06-12',
-    location: 'Trung tâm Y tế Quận 1',
-    availableTimeSlots: ['13:00-14:00', '14:00-15:00']
-  },
-  {
-    id: 'BV_TMHH_2025',
-    name: 'Hiến máu Bệnh viện Truyền máu Huyết học',
-    startDate: '2025-06-10',
-    endDate: '2025-06-30',
-    location: 'Bệnh viện Truyền máu Huyết học TP.HCM',
-    availableTimeSlots: ['08:00-08:30', '08:30-09:00', '09:00-09:30']
+const mapApiStatusToLocal = (apiStatus: string): AppointmentStatus => {
+  switch (apiStatus) {
+    case 'Đã xác nhận': return 'confirmed';
+    case 'Đã hủy': return 'cancelled';
+    case 'Đã hiến máu': return 'completed';
+    case 'Không đủ điều kiện': return 'unqualified';
+    case 'Vắng mặt': return 'no-show';
+    case 'Chờ xác nhận':
+    default:
+      return 'pending';
   }
-];
+};
+
+const mapLocalStatusToApi = (localStatus: AppointmentStatus): string => {
+  switch (localStatus) {
+    case 'confirmed': return 'Đã xác nhận';
+    case 'cancelled': return 'Đã hủy';
+    case 'completed': return 'Đã hiến máu';
+    case 'unqualified': return 'Không đủ điều kiện';
+    case 'no-show': return 'Vắng mặt';
+    case 'pending':
+    default:
+      return 'Chờ xác nhận';
+  }
+}
+
 
 const AppointmentManagement: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const campaignFromUrl = searchParams.get('campaign');
+
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
 
   // Filter states
   const [filterDate, setFilterDate] = useState<string>('');
-  const [filterCampaign, setFilterCampaign] = useState<string>('');
+  const [filterCampaign, setFilterCampaign] = useState<string>(campaignFromUrl || '');
   const [filterStatus, setFilterStatus] = useState<AppointmentStatus | ''>('');
   const [searchKeyword, setSearchKeyword] = useState<string>('');
 
-  useEffect(() => {
-    // Simulate fetching data from an API
-    setAppointments(MOCK_APPOINTMENTS);
-    setCampaigns(MOCK_CAMPAIGNS);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [registrationsRes, campaignsRes, usersRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/campaign-registration`),
+        fetch(`${API_BASE_URL}/blood-donation-campaign/search`),
+        fetch(`${API_BASE_URL}/user`),
+      ]);
+
+      if (!registrationsRes.ok || !campaignsRes.ok || !usersRes.ok) {
+        throw new Error('Không thể tải dữ liệu từ máy chủ.');
+      }
+
+      const apiRegistrations = await registrationsRes.json();
+      const apiCampaigns = await campaignsRes.json();
+      const apiUsers = await usersRes.json();
+
+      // Xử lý và tạo map cho các chiến dịch (giữ nguyên)
+      const campaignsMap = new Map<number, any>();
+      const processedCampaigns: Campaign[] = apiCampaigns.map((camp: any) => {
+        campaignsMap.set(camp.id, camp);
+        return {
+          id: camp.id,
+          name: camp.name,
+          startDate: camp.activeTime,
+          endDate: camp.activeTime,
+          location: camp.address,
+          donateTime: camp.donateTime,
+        };
+      });
+      setCampaigns(processedCampaigns);
+
+      const usersMap = new Map<number, any>();
+      apiUsers.forEach((user: any) => {
+        usersMap.set(user.user_id, user);
+      });
+
+      // Xử lý dữ liệu đăng ký và kết hợp với thông tin chiến dịch VÀ người dùng
+      const processedAppointments: Appointment[] = apiRegistrations.map((reg: any) => {
+        const campaignDetails = campaignsMap.get(reg.campaignId);
+        // 3. TRA CỨU THÔNG TIN NGƯỜI DÙNG TỪ MAP
+        const userDetails = usersMap.get(reg.userId);
+
+        return {
+          id: reg.id,
+          displayId: `HD-${reg.id.toString().padStart(3, '0')}`,
+          donorName: reg.userName,
+          phoneNumber: reg.phone,
+          email: userDetails?.email || 'Không tìm thấy',
+          campaignName: reg.campaignName,
+          appointmentDate: reg.campaignDate,
+          appointmentTime: campaignDetails?.donateTime?.start || 'N/A',
+          location: reg.address,
+          status: mapApiStatusToLocal(reg.status),
+          registrationDate: reg.registeredAt,
+          notes: reg.note || '',
+        };
+      });
+      setAppointments(processedAppointments);
+
+    } catch (err: any) {
+      setError(err.message || 'Đã có lỗi xảy ra.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // Filtered and searched appointments
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   const filteredAppointments = useMemo(() => {
     let filtered = appointments;
 
@@ -160,7 +140,7 @@ const AppointmentManagement: React.FC = () => {
       filtered = filtered.filter(app =>
         app.donorName.toLowerCase().includes(lowercasedKeyword) ||
         app.phoneNumber.includes(lowercasedKeyword) ||
-        app.id.toLowerCase().includes(lowercasedKeyword)
+        app.displayId.toLowerCase().includes(lowercasedKeyword)
       );
     }
     return filtered;
@@ -176,20 +156,57 @@ const AppointmentManagement: React.FC = () => {
     setSelectedAppointment(null);
   };
 
-  const handleUpdateStatus = (
-    id: string,
+  // File: src/pages/AppointmentManagement.tsx
+
+  const handleUpdateStatus = async (
+    id: number,
     newStatus: AppointmentStatus,
     notes?: string
   ) => {
-    setAppointments(prevApps =>
-      prevApps.map(app =>
-        app.id === id ? { ...app, status: newStatus, notes: notes || app.notes } : app
-      )
-    );
-    // In a real application, you'd send this update to your backend API
-    console.log(`Updated appointment ${id} to status: ${newStatus}`);
-    handleCloseModal(); // Close modal after update
+
+    const currentAppointment = appointments.find(app => app.id === id);
+    if (!currentAppointment) {
+      console.error("Không tìm thấy cuộc hẹn để cập nhật!");
+      return;
+    }
+
+    const payload = {
+      status: mapLocalStatusToApi(newStatus),
+      note: notes !== undefined ? notes : currentAppointment.notes,
+    };
+
+    const url = `${API_BASE_URL}/campaign-registration/${id}/status`;
+
+    console.log(`Đang gửi yêu cầu PUT đến ${url}`);
+    console.log("Payload:", payload);
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Authorization': `Bearer ${your_auth_token}`
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Cập nhật trạng thái thất bại.');
+      }
+
+      const updatedData = await response.json();
+      console.log('Cập nhật thành công:', updatedData);
+
+      handleCloseModal();
+      fetchData();
+
+    } catch (err: any) {
+      alert(`Lỗi: ${err.message}`);
+      console.error("Lỗi khi cập nhật trạng thái:", err);
+    }
   };
+
 
   const getStatusClassName = (status: AppointmentStatus) => {
     switch (status) {
@@ -215,11 +232,17 @@ const AppointmentManagement: React.FC = () => {
     }
   }
 
+  // --- RENDER ---
+  if (loading) {
+    return <div className="loading-container"><h2>Đang tải dữ liệu...</h2></div>;
+  }
+
+  if (error) {
+    return <div className="error-container"><h2>Lỗi: {error}</h2> <button onClick={fetchData}>Thử lại</button></div>;
+  }
 
   return (
     <div className="appointment-management-container1">
-      {/* <h1 className="page-title">Quản lý Lịch hẹn Hiến máu</h1> */}
-
       <div className="filters-section">
         <h2>Quản lý Lịch hẹn Hiến máu</h2>
         <div className="filters-grid">
@@ -306,11 +329,11 @@ const AppointmentManagement: React.FC = () => {
               <tbody>
                 {filteredAppointments.map(app => (
                   <tr key={app.id}>
-                    <td>{app.id}</td>
+                    <td>{app.displayId}</td>
                     <td>{app.donorName}</td>
                     <td>{app.phoneNumber}</td>
                     <td>{app.campaignName}</td>
-                    <td>{app.appointmentDate}</td>
+                    <td>{new Date(app.appointmentDate).toLocaleDateString('vi-VN')}</td>
                     <td>{app.appointmentTime}</td>
                     <td>{app.location}</td>
                     <td>
@@ -318,7 +341,7 @@ const AppointmentManagement: React.FC = () => {
                         {getStatusText(app.status)}
                       </span>
                     </td>
-                    <td>{new Date(app.registrationDate).toLocaleDateString()}</td>
+                    <td>{new Date(app.registrationDate).toLocaleDateString('vi-VN')}</td>
                     <td>
                       <button className="btn-view" onClick={() => handleViewDetails(app)}>Chi tiết</button>
                     </td>
@@ -336,36 +359,36 @@ const AppointmentManagement: React.FC = () => {
             <span className="close-button" onClick={handleCloseModal}>&times;</span>
             <h2>Chi tiết Lịch hẹn</h2>
             <div className="appointment-details">
-              <p><strong>Mã hẹn:</strong> {selectedAppointment.id}</p>
+              <p><strong>Mã hẹn:</strong> {selectedAppointment.displayId}</p>
               <p><strong>Tên người hiến:</strong> {selectedAppointment.donorName}</p>
               <p><strong>Số điện thoại:</strong> {selectedAppointment.phoneNumber}</p>
               <p><strong>Email:</strong> {selectedAppointment.email}</p>
               <p><strong>Chiến dịch:</strong> {selectedAppointment.campaignName}</p>
-              <p><strong>Ngày hẹn:</strong> {selectedAppointment.appointmentDate}</p>
+              <p><strong>Ngày hẹn:</strong> {new Date(selectedAppointment.appointmentDate).toLocaleDateString('vi-VN')}</p>
               <p><strong>Giờ hẹn:</strong> {selectedAppointment.appointmentTime}</p>
               <p><strong>Địa điểm:</strong> {selectedAppointment.location}</p>
               <p><strong>Trạng thái:</strong> <span className={`status-badge ${getStatusClassName(selectedAppointment.status)}`}>{getStatusText(selectedAppointment.status)}</span></p>
-              <p><strong>Ngày đăng ký:</strong> {new Date(selectedAppointment.registrationDate).toLocaleString()}</p>
+              <p><strong>Ngày đăng ký:</strong> {new Date(selectedAppointment.registrationDate).toLocaleString('vi-VN')}</p>
               <p><strong>Ghi chú:</strong> {selectedAppointment.notes || 'Không có'}</p>
             </div>
             <div className="modal-actions">
               {selectedAppointment.status === 'pending' && (
                 <button className="btn-confirm" onClick={() => handleUpdateStatus(selectedAppointment.id, 'confirmed')}>Xác nhận</button>
               )}
-              {selectedAppointment.status !== 'cancelled' && selectedAppointment.status !== 'completed' && (
+              {!['cancelled', 'completed'].includes(selectedAppointment.status) && (
                 <>
                   <button className="btn-cancel" onClick={() => {
                     const reason = prompt('Nhập lý do hủy (nếu có):');
                     handleUpdateStatus(selectedAppointment.id, 'cancelled', reason || 'Admin hủy');
                   }}>Hủy</button>
-                  <button className="btn-complete" onClick={() => handleUpdateStatus(selectedAppointment.id, 'completed')}>Đã hiến máu</button>
+                  <button className="btn-complete" onClick={() => handleUpdateStatus(selectedAppointment.id, 'completed', 'Đã hiến máu thành công')}>Đã hiến máu</button>
                   <button className="btn-unqualified" onClick={() => {
                     const reason = prompt('Nhập lý do không đủ điều kiện:');
                     handleUpdateStatus(selectedAppointment.id, 'unqualified', reason || 'Không đủ điều kiện');
                   }}>Không đủ ĐK</button>
                   <button className="btn-no-show" onClick={() => {
-                    const reason = prompt('Nhập lý do vắng mặt (nếu có):'); // Thêm dòng này
-                    handleUpdateStatus(selectedAppointment.id, 'no-show', reason || 'Người dùng vắng mặt'); // Điều chỉnh dòng này
+                    const reason = prompt('Nhập lý do vắng mặt (nếu có):');
+                    handleUpdateStatus(selectedAppointment.id, 'no-show', reason || 'Người dùng vắng mặt');
                   }}>Vắng mặt</button>
                 </>
               )}
