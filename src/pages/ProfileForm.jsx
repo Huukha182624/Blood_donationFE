@@ -87,7 +87,7 @@ const ProfileForm = () => {
                 Thông tin người dùng
             </Typography>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} direction="column">
                 {/* Họ tên */}
                 <Grid item xs={12}>
                     <TextField
@@ -95,32 +95,32 @@ const ProfileForm = () => {
                         label="Họ và tên"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1, mb: 2 }}
                     />
                 </Grid>
                 {/* Email */}
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         label="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1, mb: 2 }}
                     />
                 </Grid>
                 {/* Số điện thoại */}
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         label="Số điện thoại"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1, mb: 2 }}
                     />
                 </Grid>
                 {/* Giới tính */}
-                <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
+                <Grid item xs={12}>
+                    <FormControl fullWidth sx={{ mb: 2 }}>
                         <FormLabel>Giới tính</FormLabel>
                         <RadioGroup
                             row
@@ -134,7 +134,7 @@ const ProfileForm = () => {
                     </FormControl>
                 </Grid>
                 {/* Ngày sinh */}
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         label="Ngày sinh"
@@ -142,12 +142,12 @@ const ProfileForm = () => {
                         InputLabelProps={{ shrink: true }}
                         value={birthday}
                         onChange={(e) => setBirthday(e.target.value)}
-                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1, mb: 2 }}
                     />
                 </Grid>
                 {/* Nhóm máu */}
-                <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
+                <Grid item xs={12}>
+                    <FormControl fullWidth sx={{ mb: 2 }}>
                         <InputLabel>Nhóm máu</InputLabel>
                         <Select
                             value={bloodType}
@@ -162,13 +162,13 @@ const ProfileForm = () => {
                     </FormControl>
                 </Grid>
                 {/* Địa chỉ */}
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         label="Địa chỉ"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        sx={{ backgroundColor: '#fff', borderRadius: 1 }}
+                        sx={{ backgroundColor: '#fff', borderRadius: 1, mb: 2 }}
                     />
                 </Grid>
                 {/* Nút Submit */}

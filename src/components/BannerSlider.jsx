@@ -25,18 +25,22 @@ const BannerSlider = () => {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100vw', maxWidth: '100vw', mx: 0, px: 0, my: 0 }}>
             <Slider {...settings}>
                 {banners.map((img, index) => (
-                    <Box key={index}>
+                    <Box key={index} sx={{ height: { xs: 250, sm: 400, md: 600 }, width: '100vw', m: 0, p: 0 }}>
                         <img
                             src={img}
                             alt={`Banner ${index + 1}`}
                             style={{
-                                width: '100%',
-                                maxHeight: '400px',
+                                width: '100vw',
+                                height: '100%',
                                 objectFit: 'cover',
-                                borderRadius: '8px'
+                                objectPosition: 'center 110px',
+                                borderRadius: 0,
+                                display: 'block',
+                                margin: 0,
+                                padding: 0
                             }}
                         />
                     </Box>

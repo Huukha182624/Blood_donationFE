@@ -39,10 +39,10 @@ export default function News() {
                 <h1>News</h1>
             </Box>
             <Box sx={{ marginTop: 3 }}>
-                <Grid container spacing={4}>
+                <Grid container spacing={4} alignItems="stretch">
                     {newsList.map((news) => (
-                        <Grid item xs={12} key={news.id}>
-                            <Link to={news.link} style={{ textDecoration: "none", color: "inherit" }}>
+                        <Grid item xs={12} key={news.id} sx={{ display: "flex" }}>
+                            <Link to={news.link} style={{ textDecoration: "none", color: "inherit", width: "100%" }}>
                                 <Box
                                     sx={{
                                         border: "1px solid #ccc",
@@ -53,13 +53,23 @@ export default function News() {
                                         "&:hover": { boxShadow: 6 },
                                         background: "#fff",
                                         display: "flex",
-                                        alignItems: "flex-start",
+                                        alignItems: "center",
                                         gap: 3,
-                                        minHeight: 200,
+                                        minHeight: 220,
+                                        height: 220,
                                     }}
                                 >
                                     {/* Ảnh và caption */}
-                                    <Box sx={{ minWidth: 220, maxWidth: 300, flex: "0 0 220px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                    <Box sx={{
+                                        minWidth: 220,
+                                        maxWidth: 300,
+                                        flex: "0 0 220px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "flex-start",
+                                        height: "100%",
+                                    }}>
                                         <img
                                             src={news.img}
                                             alt="News Thumbnail"
@@ -98,7 +108,13 @@ export default function News() {
                                         )}
                                     </Box>
                                     {/* Nội dung */}
-                                    <Box sx={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                                    <Box sx={{
+                                        flex: 1,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        minHeight: 160,
+                                    }}>
                                         <Typography
                                             variant="h6"
                                             component="h2"

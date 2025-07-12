@@ -33,14 +33,14 @@ const Contact = () => {
                 }}
             >
                 {/* CỘT TRÁI - LIÊN HỆ */}
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={6}>
                     <Paper
                         elevation={3}
                         sx={{
                             padding: 3,
                             height: '100%',
                             borderRadius: 3,
-                            backgroundColor: '#1976d2',
+                            backgroundColor: '#d32f2f',
                             color: 'white',
                             display: 'flex',
                             flexDirection: 'column',
@@ -81,7 +81,7 @@ const Contact = () => {
                 </Grid>
 
                 {/* CỘT PHẢI - GỬI LỜI NHẮN */}
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={6}>
                     <Paper
                         elevation={3}
                         sx={{
@@ -101,7 +101,7 @@ const Contact = () => {
                                 textAlign: 'center',
                             }}
                         >
-                            <Typography variant="h6" color="primary" fontWeight="bold" gutterBottom>
+                            <Typography variant="h6" sx={{ color: '#f44336', fontWeight: 'bold' }} gutterBottom>
                                 Gửi lời nhắn cho chúng tôi
                             </Typography>
 
@@ -113,8 +113,8 @@ const Contact = () => {
                                 }}
                             >
                                 Nếu bạn có bất kỳ thắc mắc nào liên quan đến các hoạt động hiến máu tình nguyện,
-                                xin vui lòng liên hệ với chúng tôi qua địa chỉ email{" "}
-                                <strong style={{ color: "#1a73e8" }}>gmv@intelin.vn</strong> hoặc gửi thông tin
+                                xin vui lòng liên hệ với chúng tôi qua địa chỉ email{' '}
+                                <strong style={{ color: "#f44336" }}>gmv@intelin.vn</strong> hoặc gửi thông tin
                                 cho chúng tôi theo mẫu bên dưới:
                             </Typography>
 
@@ -154,6 +154,7 @@ const Contact = () => {
                                     fullWidth
                                     type="submit"
                                     className="contact-submit-button"
+                                    sx={{ background: '#f44336', color: '#fff', fontWeight: 'bold', '&:hover': { background: '#d32f2f' } }}
                                 >
                                     Gửi lời nhắn
                                 </Button>
