@@ -5,10 +5,14 @@ export default function HeaderTopBar() {
     return (
         <Box
             sx={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 1100,
+                background: '#fff',
+                width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                backgroundColor: '#f5f5f5',
                 px: 2,
                 py: 1,
             }}

@@ -144,15 +144,19 @@ const BloodDetailsTab: React.FC = () => {
       {/* Filter and Search Controls */}
       <div className="filter-controls">
         <div className="filter-grid">
+          <label htmlFor="searchTerm">Tìm kiếm theo mã đơn vị</label>
           <input
             type="text"
+            id="searchTerm"
             name="searchTerm"
             placeholder="Tìm kiếm theo mã đơn vị"
             value={filters.searchTerm}
             onChange={handleFilterChange}
             className="filter-input"
           />
+          <label htmlFor="bloodGroup">Nhóm máu</label>
           <select
+            id="bloodGroup"
             name="bloodGroup"
             value={filters.bloodGroup}
             onChange={handleFilterChange}
@@ -168,7 +172,9 @@ const BloodDetailsTab: React.FC = () => {
             <option value="O+">O+</option>
             <option value="O-">O-</option>
           </select>
+          <label htmlFor="componentType">Thành phần máu</label>
           <select
+            id="componentType"
             name="componentType"
             value={filters.componentType}
             onChange={handleFilterChange}
@@ -180,7 +186,9 @@ const BloodDetailsTab: React.FC = () => {
             <option value="Tiểu cầu">Tiểu cầu</option>
             <option value="Máu toàn phần">Máu toàn phần</option>
           </select>
+          <label htmlFor="status">Trạng thái</label>
           <select
+            id="status"
             name="status"
             value={filters.status}
             onChange={handleFilterChange}
@@ -190,18 +198,7 @@ const BloodDetailsTab: React.FC = () => {
             <option value="available">Có sẵn</option>
             <option value="issued">Đã cấp phát</option>
             <option value="cancelled">Đã hủy</option>
-            <option value="pending_qa">Đang chờ kiểm định</option>
-          </select>
-          <select
-            name="expiryRange"
-            value={filters.expiryRange}
-            onChange={handleFilterChange}
-            className="filter-select"
-          >
-            <option value="">Thời hạn</option>
-            <option value="expired">Đã hết hạn</option>
-            <option value="7days">Trong 7 ngày tới</option>
-            <option value="30days">Trong 30 ngày tới</option>
+            <option value="pending_qa">Đang chờ KĐ</option>
           </select>
         </div>
         <div className="filter-buttons">

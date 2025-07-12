@@ -33,7 +33,7 @@ export default function Navbar() {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: 'rgb(240, 221, 221)', boxShadow: 'none' }}>
+        <AppBar position="fixed" sx={{ backgroundColor: 'rgb(240, 221, 221)', boxShadow: 'none', zIndex: 1300 }}>
             {/* Thanh trên gồm: logo - tiêu đề ở giữa - đăng nhập/avatar */}
             <Toolbar sx={{ px: 2, justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
                 {/* Logo bên trái */}
@@ -47,7 +47,7 @@ export default function Navbar() {
                     textAlign: 'center',
                     zIndex: 1
                 }}>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'rgb(114, 6, 17)' }}>
                         HIẾN MÁU NHÂN ÁI VIỆT
                     </Typography>
                     <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#343a40' }}>
@@ -59,7 +59,7 @@ export default function Navbar() {
                 {user ? (
                     <>
                         <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
-                            <Avatar src={user.avatar_image || undefined} alt={user.full_name || 'User'} />
+                            <Avatar src={user.avatar_image || undefined} alt={user.full_name || 'User'} sx={{ width: 48, height: 48 }} />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                             <MenuItem onClick={handleProfile}>Xem hồ sơ</MenuItem>
@@ -104,7 +104,8 @@ export default function Navbar() {
                             color: '#fff',
                             textTransform: 'none',
                             mx: 2,
-                            fontWeight: 500,
+                            fontWeight: 'bold',
+                            fontSize: '18px',
                             '&:hover': {
                                 backgroundColor: 'rgba(255,255,255,0.2)'
                             }
