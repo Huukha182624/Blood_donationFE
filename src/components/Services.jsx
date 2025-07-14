@@ -58,7 +58,7 @@ export default function OutstandingServices() {
                 DỊCH VỤ NỔI BẬT
             </Typography>
             <Typography textAlign="center" sx={{ mb: 4 }}>
-                Các dịch vụ thế mạnh và nổi bật của Viện Huyết học - Truyền máu Trung ương
+                Các dịch vụ thế mạnh và nổi bật của Hiến Máu Nhân Ái Việt
             </Typography>
 
             <Box
