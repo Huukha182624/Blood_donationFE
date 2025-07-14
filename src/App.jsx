@@ -22,7 +22,6 @@ import BloodManagePage from "./admin/components/Bloodmanage/BloodManagePage";
 import EventPage from "./admin/components/Event/EventPage";
 import EmployeeManagement from "./admin/components/EmployeeManagement/EmployeeManagement";
 import BloodRequestForm from './pages/blood_request_form';
-import GeocodeGoogle from './admin/components/Test/test';
 import AdminRequestManagementPage from './admin/components/Bloodrequest/bloodrequest';
 
 function App() {
