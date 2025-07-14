@@ -1,0 +1,46 @@
+.map-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.map-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80vw;
+  height: 80vh;
+  max-width: 1000px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.map-modal-content .leaflet-container {
+  flex-grow: 1;
+  border-radius: 4px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}

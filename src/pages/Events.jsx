@@ -1,12 +1,11 @@
-import  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ScheduleForm from "../components/Schedule";
-import MedicalForm from "./RegisterForm";
+// Đổi tên import để rõ ràng hơn
+import HealthScreeningForm from "./RegisterForm"; 
 import { searchCampaignsByDate } from '../services/blood-donation-campaign';
-
-// Data mẫu
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -28,8 +27,9 @@ function Events() {
     const [showMedicalForm, setShowMedicalForm] = useState(false);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
+    // CẬP NHẬT: State để lưu sự kiện được chọn
+    const [selectedCampaign, setSelectedCampaign] = useState(null);
 
-    // Convert start/end to Date if exists
     const startDate = start ? new Date(start) : null;
     const endDate = end ? new Date(end) : null;
 
@@ -51,7 +51,6 @@ function Events() {
         fetchEvents();
     }, [start, end]);
 
-    // Chặn scroll màn hình chính khi mở popup
     useEffect(() => {
         if (showMedicalForm) {
             document.body.style.overflow = "hidden";
@@ -63,8 +62,17 @@ function Events() {
         };
     }, [showMedicalForm]);
 
-    // Nếu muốn lọc theo ngày, bạn có thể xử lý ở đây (bỏ qua nếu chỉ demo)
-    // const filteredEvents = eventsData.filter(...);
+    // CẬP NHẬT: Hàm để mở form và lưu sự kiện đã chọn
+    const handleOpenForm = (event) => {
+        setSelectedCampaign(event);
+        setShowMedicalForm(true);
+    };
+
+    // CẬP NHẬT: Hàm để đóng form và reset sự kiện đã chọn
+    const handleCloseForm = () => {
+        setShowMedicalForm(false);
+        setSelectedCampaign(null);
+    };
 
     return (
         <div>
@@ -80,9 +88,9 @@ function Events() {
             </h2>
             <div style={{ background: "#f7fafd", padding: 24 }}>
                 {loading ? (
-                  <div>Đang tải dữ liệu...</div>
+                    <div>Đang tải dữ liệu...</div>
                 ) : events.length === 0 ? (
-                  <div>Không có sự kiện nào trong khoảng thời gian này.</div>
+                    <div>Không có sự kiện nào trong khoảng thời gian này.</div>
                 ) : events.map(event => (
                     <div key={event.id} style={{
                         display: "flex",
@@ -116,7 +124,8 @@ function Events() {
                                     padding: "8px 24px",
                                     cursor: "pointer"
                                 }}
-                                onClick={() => setShowMedicalForm(true)}
+                                // CẬP NHẬT: Gọi hàm handleOpenForm và truyền vào event
+                                onClick={() => handleOpenForm(event)}
                             >
                                 Đặt lịch
                             </button>
@@ -124,6 +133,7 @@ function Events() {
                     </div>
                 ))}
             </div>
+            
             {/* Popup MedicalForm */}
             {showMedicalForm && (
                 <div style={{
@@ -138,9 +148,9 @@ function Events() {
                     justifyContent: "center",
                     zIndex: 1000
                 }}>
-                    {/* Nút đóng ở góc phải màn hình */}
                     <button
-                        onClick={() => setShowMedicalForm(false)}
+                        // CẬP NHẬT: Gọi hàm handleCloseForm
+                        onClick={handleCloseForm}
                         style={{
                             position: "fixed",
                             top: 32,
@@ -167,7 +177,11 @@ function Events() {
                         maxHeight: "90vh",
                         overflowY: "auto"
                     }}>
-                        <MedicalForm />
+                        {/* CẬP NHẬT: Truyền prop vào form */}
+                        <HealthScreeningForm 
+                            selectedCampaign={selectedCampaign}
+                            onClose={handleCloseForm}
+                        />
                     </div>
                 </div>
             )}

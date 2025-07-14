@@ -1,10 +1,10 @@
-// src/components/SubNavigation.tsx
 import React from 'react';
 import  './EventManagement.css';
 
 interface SubNavigationProps {
-  activeTab: 'current' | 'create' | 'history';
-  onTabChange: (tab: 'current' | 'create' | 'history') => void;
+  // Thêm 'hospitals' vào các giá trị có thể có của activeTab
+  activeTab: 'current' | 'history' | 'hospitals';
+  onTabChange: (tab: 'current' | 'history' | 'hospitals') => void;
 }
 
 const SubNavigation: React.FC<SubNavigationProps> = ({ activeTab, onTabChange }) => {
@@ -21,6 +21,13 @@ const SubNavigation: React.FC<SubNavigationProps> = ({ activeTab, onTabChange })
         onClick={() => onTabChange('history')}
       >
         Lịch sử sự kiện
+      </button>
+      {/* NÚT MỚI CHO TAB BỆNH VIỆN */}
+      <button
+        className={activeTab === 'hospitals' ? "active" : ''}
+        onClick={() => onTabChange('hospitals')}
+      >
+        Bệnh viện phối hợp
       </button>
     </div>
   );

@@ -22,6 +22,8 @@ import BloodManagePage from "./admin/components/Bloodmanage/BloodManagePage";
 import EventPage from "./admin/components/Event/EventPage";
 import EmployeeManagement from "./admin/components/EmployeeManagement/EmployeeManagement";
 import BloodRequestForm from './pages/blood_request_form';
+import GeocodeGoogle from './admin/components/Test/test';
+import AdminRequestManagementPage from './admin/components/Bloodrequest/bloodrequest';
 
 function App() {
     return (
@@ -50,8 +52,8 @@ function App() {
                         <Route path="kho-mau" element={<BloodManagePage />} />
                         <Route path="su-kien" element={<EventPage />} />
                         <Route path="nhan-su" element={<EmployeeManagement />} />
-                        <Route path="thong-ke" element={<div style={{ padding: "20px" }}><h1>📈 Báo cáo & thống kê</h1><p>Nội dung...</p></div>} />
-                        <Route path="cai-dat" element={<div style={{ padding: "20px" }}><h1>⚙️ Cài đặt hệ thống</h1><p>Nội dung...</p></div>} />
+                        <Route path="yeu-cau" element={<AdminRequestManagementPage/>}/>
+                        {/* <Route path="cai-dat" element={<div style={{ padding: "20px" }}><h1>⚙️ Cài đặt hệ thống</h1><p>Nội dung...</p></div>} /> */}
                     </Route>
                 </Routes>
             </Router>

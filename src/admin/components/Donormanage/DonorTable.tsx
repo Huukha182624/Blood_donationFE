@@ -1,4 +1,3 @@
-// src/components/donor/DonorTable.tsx
 import React from 'react';
 import { type IDonor } from '../../../types/donor';
 import './DonorTable.css'; // Import file CSS
@@ -10,9 +9,15 @@ interface DonorTableProps {
   onDelete: (donorId: string) => void;
 }
 
+
+const mapBloodTypeToDisplay = (bloodType: string): string => {
+    if (!bloodType || bloodType === 'None') return 'Chưa rõ';
+    return bloodType.replace('_POS', '+').replace('_NEG', '-');
+};
+
 const DonorTable: React.FC<DonorTableProps> = ({ donors, onViewDetails, onEdit, onDelete }) => {
   return (
-    <div className="donor-table-container"> {/* Thay đổi class Tailwind sang class CSS thuần */}
+    <div className="donor-table-container"> 
       <table className="donor-table">
         <thead>
           <tr>
@@ -29,7 +34,8 @@ const DonorTable: React.FC<DonorTableProps> = ({ donors, onViewDetails, onEdit, 
             donors.map((donor) => (
               <tr key={donor.id}>
                 <td><p>{donor.name}</p></td>
-                <td><p>{donor.bloodGroup}</p></td>
+                {/* SỬA LỖI: Sử dụng hàm helper để hiển thị */}
+                <td><p>{mapBloodTypeToDisplay(donor.bloodGroup)}</p></td>
                 <td><p>{donor.phone}</p></td>
                 <td><p>{donor.lastDonationDate || 'N/A'}</p></td>
                 <td><p>{donor.totalDonations}</p></td>

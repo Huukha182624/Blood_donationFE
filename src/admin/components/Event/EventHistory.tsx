@@ -68,7 +68,7 @@ const EventHistory: React.FC<EventHistoryProps> = ({ events, onViewDetails, onVi
                   <td>Đã kết thúc</td>
                   <td>{event.registeredDonors}</td>
                   <td className={"actionButtons"}>
-                    <button className={"check"} onClick={() => onViewDonors(event.id)}>Xem người đăng ký</button>
+                    <button className={"check"} onClick={() => onViewDonors(event.name)}>Xem người đăng ký</button>
                     <button className={"edit"} onClick={() => onViewDetails(event)}>Xem chi tiết</button>
                   </td>
                 </tr>

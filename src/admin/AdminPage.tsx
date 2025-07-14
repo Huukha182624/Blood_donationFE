@@ -10,7 +10,7 @@ const AdminPage: React.FC = () => {
 
   // Check quyền admin
   useEffect(() => {
-    if (!user || user.role !== "admin") {
+    if (!user || (user.role !== "Admin" && user.role !== "Staff")) {
       navigate("/");
     }
   }, [user, navigate]);
@@ -21,10 +21,10 @@ const AdminPage: React.FC = () => {
     if (pathname.includes("nguoi-hien-mau")) return "Quản lý người hiến máu";
     if (pathname.includes("lich-hen")) return "Lịch hẹn người hiến máu";
     if (pathname.includes("kho-mau")) return "Quản lý kho máu";
-    if (pathname.includes("thong-ke")) return "Báo cáo & thống kê";
+    if (pathname.includes("yeu-cau")) return "Xử lí yêu cầu máu";
     if (pathname.includes("su-kien")) return "Tổ chức sự kiện hiến máu";
     if (pathname.includes("nhan-su")) return "Quản lý nhân sự";
-    if (pathname.includes("cai-dat")) return "Cài đặt hệ thống";
+    // if (pathname.includes("cai-dat")) return "Cài đặt hệ thống";
     return "";
   };
 
@@ -37,10 +37,10 @@ const AdminPage: React.FC = () => {
         <div style={{ position: "fixed", left: 0, bottom: 0, zIndex: 999, minWidth: "250px" }}>
           <Sidebar
             onItemClick={() => {}}
-            activeItem={activeSidebarItem}
-            adminName={user?.full_name || "Admin"}
-            adminEmail={user?.email || "admin@example.com"}
-            adminAvatarUrl={user?.avatar_image || ""}
+            // activeItem={activeSidebarItem}
+            // adminName={user?.fullName || "Admin"}
+            // adminEmail={user?.email || "admin@example.com"}
+            // adminAvatarUrl={user?.avatarImage || ""}
           />
         </div>
 

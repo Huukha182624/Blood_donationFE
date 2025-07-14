@@ -12,11 +12,15 @@ export interface Appointment {
   email: string;
   campaignName: string;
   appointmentDate: string;
-  appointmentTime: string;
+
   location: string;
   status: AppointmentStatus;
   registrationDate: string;
   notes: string;
+  appointmentTime: string;
+  donorBloodType: string;
+  userId: number;
+  campaignId: number;
 }
 
 // Dữ liệu chiến dịch đã được xử lý

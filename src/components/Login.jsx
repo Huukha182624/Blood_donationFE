@@ -28,10 +28,15 @@ const Login = () => {
         setError('');
         setLoading(true);
         try {
-            const res = await loginUser(email, password);
+            // --- BẮT ĐẦU PHẦN SỬA LỖI ---
+            // 1. Gửi email và password trong một đối tượng duy nhất
+            const res = await loginUser({ email, password });
+            
             if (res.user) {
-                const userDetail = await getUserById(res.user.user_id);
-                login(userDetail);
+                // 2. Sử dụng đúng tên thuộc tính 'userId' (camelCase)
+                // Chúng ta có thể dùng trực tiếp đối tượng user trả về từ API login
+                // mà không cần gọi lại getUserById để tối ưu hóa.
+                login(res.user); 
                 navigate('/');
             } else {
                 setError(res.message || 'Đăng nhập thất bại');

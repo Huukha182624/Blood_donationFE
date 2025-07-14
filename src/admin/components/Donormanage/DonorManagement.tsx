@@ -1,8 +1,98 @@
-// src/pages/DonorManagement/index.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+
+// Import các components và types
 import DonorTable from './DonorTable';
-import { type IDonor, type IDonationRecord } from '../../../types/donor'; // Import both interfaces
+import DonorMapModal from './DonorMapModal';
+import { type IDonor } from '../../../types/donor';
 import './DonorManagement.css';
+
+// --- SỬA LỖI: Import các hàm service đã được đồng bộ ---
+import { fetchAllUsersWithHistory } from '../../../services/userService';
+import api from '../../../services/api';
+
+// =================================================================
+// CÁC HÀM API SERVICE MỚI (Nên được chuyển vào file service riêng)
+// =================================================================
+
+const adminCreateUser = async (payload) => {
+    try {
+        const response = await api.post('/users/admin/create', payload);
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+};
+
+const adminUpdateUser = async (userId, payload) => {
+    try {
+        const response = await api.put(`/users/${userId}`, payload);
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+};
+
+const adminDeleteUser = async (userId) => {
+    try {
+        const response = await api.delete(`/users/${userId}`);
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+};
+
+/**
+ * Chuyển đổi địa chỉ thành tọa độ (lat, lng) sử dụng Google Geocoding API.
+ * QUAN TRỌNG: Bạn cần thay thế 'YOUR_GOOGLE_MAPS_API_KEY' bằng API Key của bạn
+ * từ Google Cloud Platform để hàm này hoạt động.
+ * @param {string} address Địa chỉ cần chuyển đổi.
+ * @returns {Promise<{lat: number, lng: number}>} Tọa độ của địa chỉ.
+ */
+
+
+export const getCoordinatesFromAddress = async (address) => {
+    const apiKey = import.meta.env.VITE_Maps_API_KEY;
+    if (!apiKey) {
+        console.error("VITE_Maps_API_KEY is not configured in .env file");
+        return null;
+    }
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.status === 'OK' && data.results.length > 0) {
+            return data.results[0].geometry.location;
+        } else {
+            console.error('Geocoding failed:', data.status, data.error_message);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching geocoding data:', error);
+        return null;
+    }
+};
+
+
+// =================================================================
+
+const initialDonorState: IDonor = {
+    id: '',
+    name: '',
+    dob: '',
+    gender: 'Nam',
+    idCard: '',
+    address: '',
+    bloodGroup: 'None',
+    phone: '',
+    email: '',
+    role: 'Member',
+    totalDonations: 0,
+    totalVolume: 0,
+    lastDonationDate: '',
+    donationHistory: [],
+    lat: null,
+    lng: null,
+};
 
 const DonorManagementPage: React.FC = () => {
     const [donors, setDonors] = useState<IDonor[]>([]);
@@ -11,182 +101,146 @@ const DonorManagementPage: React.FC = () => {
 
     const [showDonorForm, setShowDonorForm] = useState<boolean>(false);
     const [editingDonor, setEditingDonor] = useState<IDonor | null>(null);
-    const [newDonor, setNewDonor] = useState<IDonor>({
-        id: '',
-        name: '',
-        dob: '',
-        gender: 'Nam',
-        idCard: '', // Added
-        address: '', // Added
-        bloodGroup: 'O+',
-        phone: '',
-        email: '', // Added
-        totalDonations: 0,
-        lastDonationDate: '',
-        donationHistory: [],
+    const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+    const [selectedDonorForMap, setSelectedDonorForMap] = useState<IDonor | null>(null);
+    const [newDonor, setNewDonor] = useState<IDonor>(initialDonorState);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // CẢI TIẾN: Thêm state để quản lý trạng thái tải của form
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; donorId: string | null }>({
+        isOpen: false,
+        donorId: null,
     });
 
-    const fetchDonors = async () => {
+
+    const fetchDonors = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
-            const dummyData: IDonor[] = [
-                {
-                    id: '1',
-                    name: 'Nguyễn Thanh Tùng',
-                    dob: '1990-03-25',
-                    gender: 'Nam',
-                    idCard: '001123456789',
-                    address: '123 Nguyễn Văn Cừ, Quận 1, TP.HCM',
-                    bloodGroup: 'O+',
-                    phone: '0901123456',
-                    email: 'tungnt@example.com',
-                    totalDonations: 8,
-                    lastDonationDate: '2025-05-28',
-                    donationHistory: [
-                        { date: '2025-05-28', volume: 350, location: 'BV Chợ Rẫy' },
-                        { date: '2024-12-10', volume: 350, location: 'Trạm Y tế P.1' },
-                    ],
-                },
-                {
-                    id: '2',
-                    name: 'Phạm Thị Lan',
-                    dob: '1992-09-10',
-                    gender: 'Nữ',
-                    idCard: '002987654321',
-                    address: '456 Lê Lợi, Quận 3, TP.HCM',
-                    bloodGroup: 'A-',
-                    phone: '0912987654',
-                    email: 'lanpt@example.com',
-                    totalDonations: 3,
-                    lastDonationDate: '2025-06-12',
-                    donationHistory: [
-                        { date: '2025-06-12', volume: 250, location: 'TT Huyết học' },
-                        { date: '2024-11-05', volume: 250, location: 'ĐH Y Dược TPHCM' },
-                    ],
-                },
-                {
-                    id: '3',
-                    name: 'Lê Văn Khải',
-                    dob: '1985-01-01',
-                    gender: 'Nam',
-                    idCard: '003123123123',
-                    address: '789 Trần Hưng Đạo, Quận 5, TP.HCM',
-                    bloodGroup: 'B+',
-                    phone: '0987123456',
-                    email: 'khailv@example.com',
-                    totalDonations: 12,
-                    lastDonationDate: '2025-04-01',
-                    donationHistory: [
-                        { date: '2025-04-01', volume: 450, location: 'Bệnh viện Huyết học - Truyền máu TP.HCM' },
-                        { date: '2024-10-15', volume: 450, location: 'Trung tâm Hiến máu Nhân đạo' },
-                    ],
-                },
-                {
-                    id: '4',
-                    name: 'Trần Thị Mai',
-                    dob: '1998-07-20',
-                    gender: 'Nữ',
-                    idCard: '004456456456',
-                    address: '101 Nguyễn Đình Chiểu, Quận 3, TP.HCM',
-                    bloodGroup: 'AB+',
-                    phone: '0905567890',
-                    email: 'maitt@example.com',
-                    totalDonations: 1,
-                    lastDonationDate: '2025-06-05',
-                    donationHistory: [
-                        { date: '2025-06-05', volume: 250, location: 'Trạm Y tế P.2' },
-                    ],
-                },
-                {
-                    id: '5',
-                    name: 'Hoàng Minh Đức',
-                    dob: '1993-11-11',
-                    gender: 'Nam',
-                    idCard: '005789789789',
-                    address: '222 Hai Bà Trưng, Quận 1, TP.HCM',
-                    bloodGroup: 'O-',
-                    phone: '0919123123',
-                    email: 'duchm@example.com',
-                    totalDonations: 5,
-                    lastDonationDate: '2025-03-18',
-                    donationHistory: [
-                        { date: '2025-03-18', volume: 350, location: 'BV Đại học Y Dược' },
-                        { date: '2024-09-22', volume: 350, location: 'Trung tâm Truyền máu' },
-                    ],
-                },
-                {
-                    id: '6',
-                    name: 'Vũ Thị Kim Anh',
-                    dob: '1980-02-14',
-                    gender: 'Nữ',
-                    idCard: '006111222333',
-                    address: '333 Cách Mạng Tháng 8, Quận 10, TP.HCM',
-                    bloodGroup: 'A+',
-                    phone: '0977888999',
-                    email: 'anhvtk@example.com',
-                    totalDonations: 15,
-                    lastDonationDate: '2025-05-01',
-                    donationHistory: [
-                        { date: '2025-05-01', volume: 450, location: 'Bệnh viện Chợ Rẫy' },
-                        { date: '2024-11-11', volume: 450, location: 'Trung tâm Hiến máu Tình nguyện' },
-                    ],
-                }
-            ];
-            setDonors(dummyData);
-        } catch (err) {
+            const mappedDonors = await fetchAllUsersWithHistory();
+            const memberDonors = mappedDonors.filter(d => d.role === 'Member');
+            setDonors(memberDonors);
+        } catch (err: any) {
             console.error("Lỗi khi tải dữ liệu người hiến máu:", err);
-            setError("Không thể tải dữ liệu người hiến máu. Vui lòng thử lại sau.");
+            setError(err.message || "Đã xảy ra lỗi không xác định.");
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchDonors();
-    }, []);
+    }, [fetchDonors]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setNewDonor({ ...newDonor, [name]: value });
     };
 
-    const handleAddOrUpdateDonor = (e: React.FormEvent) => {
+    const handleAddOrUpdateDonor = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingDonor) {
-            setDonors(
-                donors.map((donor) =>
-                    donor.id === editingDonor.id ? { ...newDonor, id: donor.id } : donor
-                )
-            );
+        setIsSubmitting(true);
+        setError(null);
+
+        try {
+            let coordinates = { lat: newDonor.lat ?? 0, lng: newDonor.lng ?? 0 };
+
+            // CẢI TIẾN: Nếu có địa chỉ, thực hiện chuyển đổi sang tọa độ
+            if (newDonor.address && newDonor.address.trim() !== '') {
+                try {
+                    coordinates = await getCoordinatesFromAddress(newDonor.address);
+                } catch (geoError: any) {
+                    // Nếu chuyển đổi lỗi, hiển thị thông báo và dừng lại
+                    setError(geoError.message);
+                    setIsSubmitting(false);
+                    return;
+                }
+            }
+             const genderForApi = {
+                'Nam': 'Male',
+                'Nữ': 'Female',
+                'Khác': 'Other'
+            }[newDonor.gender] || 'Other';
+            const payload = {
+                fullName: newDonor.name,
+                email: newDonor.email,
+                phoneNumber: newDonor.phone,
+                birthday: newDonor.dob ? new Date(newDonor.dob).toISOString() : null,
+                gender: genderForApi,
+                address: newDonor.address,
+                bloodType: newDonor.bloodGroup === 'Chưa rõ' ? 'None' : newDonor.bloodGroup,
+                lat: coordinates.lat, // Sử dụng tọa độ đã chuyển đổi
+                lng: coordinates.lng, // Sử dụng tọa độ đã chuyển đổi
+            };
+
+            const isEditing = !!editingDonor;
+
+            if (isEditing) {
+                await adminUpdateUser(editingDonor.id, payload);
+            } else {
+                await adminCreateUser(payload);
+            }
+
+            setShowDonorForm(false);
             setEditingDonor(null);
-        } else {
-            // Simple client-side ID generation - replace with backend logic in real app
-            const newId = String(donors.length > 0 ? Math.max(...donors.map(d => parseInt(d.id, 10))) + 1 : 1);
-            setDonors([...donors, { ...newDonor, id: newId }]);
+            setNewDonor(initialDonorState);
+            await fetchDonors(); // Tải lại danh sách để đồng bộ
+
+        } catch (err: any) {
+            console.error("Lỗi khi thêm/cập nhật:", err);
+            const errorMessage = err.message || (err.errors ? JSON.stringify(err.errors) : 'Đã xảy ra lỗi không xác định.');
+            setError(errorMessage);
+        } finally {
+            setIsSubmitting(false); // Kết thúc trạng thái tải
         }
-        // Reset form and close it
-        setNewDonor({
-            id: '', name: '', dob: '', gender: 'Nam', idCard: '', address: '',
-            bloodGroup: 'O+', phone: '', email: '', totalDonations: 0, lastDonationDate: '', donationHistory: [],
-        });
-        setShowDonorForm(false);
     };
 
-    const handleViewDetails = (donor: IDonor) => { console.log('Xem chi tiết người hiến máu:', donor); };
+    const handleViewDetails = (donor: IDonor) => {
+        if (donor.lat && donor.lng) {
+            setSelectedDonorForMap(donor);
+            setIsMapModalOpen(true);
+        } else {
+            alert('Người hiến máu này chưa có thông tin vị trí.');
+        }
+    };
 
     const handleEditDonor = (donor: IDonor) => {
         setEditingDonor(donor);
-        setNewDonor(donor); // Populate form with existing donor data
+        setNewDonor({
+            ...donor,
+            dob: donor.dob ? new Date(donor.dob).toISOString().slice(0, 10) : '',
+        });
         setShowDonorForm(true);
     };
 
     const handleDeleteDonor = (donorId: string) => {
-        if (window.confirm('Bạn có chắc chắn muốn xóa người hiến máu này không?')) {
-            console.log('Xóa người hiến máu với ID:', donorId);
-            setDonors(donors.filter(donor => donor.id !== donorId));
+        setDeleteConfirm({ isOpen: true, donorId });
+    };
+
+    const executeDelete = async () => {
+        if (!deleteConfirm.donorId) return;
+
+        try {
+            await adminDeleteUser(deleteConfirm.donorId);
+            await fetchDonors();
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || 'Đã xảy ra lỗi không xác định.');
+        } finally {
+            setDeleteConfirm({ isOpen: false, donorId: null });
         }
     };
+
+    const filteredDonors = donors.filter(donor => {
+        const term = searchTerm.toLowerCase();
+        return (
+            donor.name.toLowerCase().includes(term) ||
+            donor.phone.toLowerCase().includes(term) ||
+            donor.email.toLowerCase().includes(term)
+        );
+    });
 
     return (
         <div className="admin-layout">
@@ -198,11 +252,8 @@ const DonorManagementPage: React.FC = () => {
                             className="add-button-dm"
                             onClick={() => {
                                 setShowDonorForm(true);
-                                setEditingDonor(null); // Clear editing state for new add
-                                setNewDonor({ // Reset form fields for new donor, including new fields
-                                    id: '', name: '', dob: '', gender: 'Nam', idCard: '', address: '',
-                                    bloodGroup: 'O+', phone: '', email: '', totalDonations: 0, lastDonationDate: '', donationHistory: [],
-                                });
+                                setEditingDonor(null);
+                                setNewDonor(initialDonorState);
                             }}
                         >
                             Thêm Người Hiến Máu
@@ -214,6 +265,8 @@ const DonorManagementPage: React.FC = () => {
                             type="text"
                             placeholder="Tìm kiếm theo tên, SĐT, Email..."
                             className="search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
 
@@ -222,80 +275,70 @@ const DonorManagementPage: React.FC = () => {
 
                     {!loading && !error && (
                         <DonorTable
-                            donors={donors}
+                            donors={filteredDonors}
                             onViewDetails={handleViewDetails}
                             onEdit={handleEditDonor}
                             onDelete={handleDeleteDonor}
                         />
                     )}
 
-                    {/* Donor Add/Edit Form Overlay */}
                     {showDonorForm && (
                         <div className="form-overlay">
                             <form className="donor-form" onSubmit={handleAddOrUpdateDonor}>
-                                <h3>{editingDonor ? 'Chỉnh sửa Thông tin Người Hiến Máu' : 'Thêm Người Hiến Máu Mới'}</h3>
-
+                                <h3>{editingDonor ? 'Chỉnh sửa Thông tin' : 'Thêm Người Hiến Máu Mới'}</h3>
+                                {/* Hiển thị lỗi ngay trên form */}
+                                {error && <div className="error-message" style={{ marginBottom: '15px' }}>{error}</div>}
                                 <div className="form-group">
                                     <label htmlFor="name">Họ và tên:</label>
                                     <input type="text" id="name" name="name" value={newDonor.name} onChange={handleInputChange} required />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="dob">Ngày sinh:</label>
                                     <input type="date" id="dob" name="dob" value={newDonor.dob} onChange={handleInputChange} required />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="gender">Giới tính:</label>
                                     <select id="gender" name="gender" value={newDonor.gender} onChange={handleInputChange}>
-                                        <option value="Nam">Nam</option>
-                                        <option value="Nữ">Nữ</option>
-                                        <option value="Khác">Khác</option>
+                                        <option value="Male">Nam</option>
+                                        <option value="Female">Nữ</option>
+                                        <option value="Other">Khác</option>
                                     </select>
                                 </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="idCard">CMND/CCCD:</label>
-                                    <input type="text" id="idCard" name="idCard" value={newDonor.idCard || ''} onChange={handleInputChange} />
-                                </div>
-
                                 <div className="form-group">
                                     <label htmlFor="address">Địa chỉ:</label>
-                                    <input type="text" id="address" name="address" value={newDonor.address || ''} onChange={handleInputChange} />
+                                    <input type="text" id="address" name="address" value={newDonor.address || ''} onChange={handleInputChange} placeholder="VD: 1600 Amphitheatre Parkway, Mountain View, CA" />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="bloodGroup">Nhóm máu:</label>
                                     <select id="bloodGroup" name="bloodGroup" value={newDonor.bloodGroup} onChange={handleInputChange}>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
+                                        <option value="None">Chưa rõ</option>
+                                        <option value="A_POS">A+</option>
+                                        <option value="A_NEG">A-</option>
+                                        <option value="B_POS">B+</option>
+                                        <option value="B_NEG">B-</option>
+                                        <option value="O_POS">O+</option>
+                                        <option value="O_NEG">O-</option>
+                                        <option value="AB_POS">AB+</option>
+                                        <option value="AB_NEG">AB-</option>
                                     </select>
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="phone">Số điện thoại:</label>
                                     <input type="tel" id="phone" name="phone" value={newDonor.phone} onChange={handleInputChange} required />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="email">Email:</label>
                                     <input type="email" id="email" name="email" value={newDonor.email || ''} onChange={handleInputChange} />
                                 </div>
-
                                 <div className="form-actions">
-                                    <button type="submit" className="submit-button">
-                                        {editingDonor ? 'Cập nhật' : 'Thêm'}
+                                    <button type="submit" className="submit-button" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Đang xử lý...' : (editingDonor ? 'Cập nhật' : 'Thêm')}
                                     </button>
                                     <button
                                         type="button"
                                         className="cancel-button"
                                         onClick={() => setShowDonorForm(false)}
+                                        disabled={isSubmitting}
                                     >
                                         Hủy
                                     </button>
@@ -303,6 +346,30 @@ const DonorManagementPage: React.FC = () => {
                             </form>
                         </div>
                     )}
+
+                    {deleteConfirm.isOpen && (
+                        <div className="form-overlay">
+                            <div className="donor-form" style={{ maxWidth: '400px', textAlign: 'center' }}>
+                                <h3>Xác nhận Xóa</h3>
+                                <p>Bạn có chắc chắn muốn xóa người hiến máu này không?</p>
+                                <div className="form-actions" style={{ justifyContent: 'center' }}>
+                                    <button onClick={executeDelete} className="submit-button" style={{ backgroundColor: '#dc3545' }}>
+                                        Xóa
+                                    </button>
+                                    <button type="button" className="cancel-button" onClick={() => setDeleteConfirm({ isOpen: false, donorId: null })}>
+                                        Hủy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <DonorMapModal
+                        isOpen={isMapModalOpen}
+                        onClose={() => setIsMapModalOpen(false)}
+                        selectedDonor={selectedDonorForMap}
+                        allDonors={donors}
+                    />
                 </div>
             </div>
         </div>

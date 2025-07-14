@@ -1,271 +1,288 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import type { IDonor } from '../../../types/donor'; // Sử dụng lại type IDonor vì cấu trúc tương tự
 import './EmployeeManagement.css';
+import api from '../../../services/api';
+import { fetchAllUsersWithHistory } from '../../../services/userService'; // Import hàm lấy tất cả user
 
-interface Employee {
-    id: string;
-    fullName: string;
-    dateOfBirth: string;
-    gender: 'Nam' | 'Nữ' | 'Khác';
-    phone: string;
-    email: string;
-    position: string;   
-    bloodGroup: string;
-    rhFactor: 'Rh+' | 'Rh-';
-    accessLevel: string;
+// =================================================================
+// CÁC HÀM API SERVICE MỚI (Nên được chuyển vào file service riêng)
+// =================================================================
+
+const getCoordinatesFromAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
+  const apiKey = import.meta.env.VITE_Maps_API_KEY;
+  if (!apiKey) {
+    console.error("VITE_Maps_API_KEY is not configured in .env file");
+    alert("Lỗi cấu hình: Không tìm thấy API key cho bản đồ.");
+    return null;
+  }
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.status === 'OK' && data.results.length > 0) {
+      return data.results[0].geometry.location;
+    } else {
+      console.error('Geocoding failed:', data.status, data.error_message);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching geocoding data:', error);
+    return null;
+  }
+};
+
+const adminCreateStaff = async (payload) => {
+  try {
+    const response = await api.post('/users/staff/create', payload);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error;
+  }
+};
+
+const adminUpdateUser = async (userId, payload) => {
+    try {
+      const response = await api.put(`/users/${userId}`, payload);
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error;
+    }
+  };
+
+const adminDeleteUser = async (userId) => {
+  try {
+    const response = await api.delete(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error;
+  }
+};
+
+// =================================================================
+// CÁC HÀM HELPER ĐỂ CHUYỂN ĐỔI DỮ LIỆU
+// =================================================================
+
+const mapEnglishToVietnamese = (gender: 'Male' | 'Female' | 'Other' | string | null): 'Nam' | 'Nữ' | 'Khác' => {
+    if (gender === 'Male') return 'Nam';
+    if (gender === 'Female') return 'Nữ';
+    return 'Khác';
+};
+
+const mapVietnameseToEnglish = (gender: 'Nam' | 'Nữ' | 'Khác'): 'Male' | 'Female' | 'Other' => {
+    if (gender === 'Nam') return 'Male';
+    if (gender === 'Nữ') return 'Female';
+    return 'Other';
+};
+
+const mapBloodTypeToDisplay = (bloodType: string): string => {
+    if (!bloodType || bloodType === 'None') return 'Chưa rõ';
+    return bloodType.replace('_POS', '+').replace('_NEG', '-');
+};
+
+// Định nghĩa lại kiểu dữ liệu Employee cho rõ ràng hơn
+interface Employee extends IDonor {
+    position: string;
 }
 
-const initialEmployees: Employee[] = [
-    {
-        id: 'NV001',
-        fullName: 'Nguyễn Văn A',
-        dateOfBirth: '1990-05-15',
-        gender: 'Nam',
-        phone: '0901234567',
-        email: 'anv@bloodcenter.vn',
-        position: 'Y tá',
-        bloodGroup: 'A',
-        rhFactor: 'Rh+',
-        accessLevel: 'Nhập liệu & Tiếp nhận',
-    },
-    {
-        id: 'NV002',
-        fullName: 'Trần Thị B',
-        dateOfBirth: '1988-11-20',
-        gender: 'Nữ',
-        phone: '0907654321',
-        email: 'btt@bloodcenter.vn',
-        position: 'Bác sĩ',
-        bloodGroup: 'O',
-        rhFactor: 'Rh+',
-        accessLevel: 'Y tế & Xét nghiệm',
-    },
-    {
-        id: 'NV003',
-        fullName: 'Lê Văn C',
-        dateOfBirth: '1995-03-01',
-        gender: 'Nam',
-        phone: '0912345678',
-        email: 'cvl@bloodcenter.vn',
-        position: 'Điều phối viên',
-        bloodGroup: 'B',
-        rhFactor: 'Rh-',
-        accessLevel: 'Quản lý chiến dịch',
-    },
-    {
-        "id": "NV004",
-        "fullName": "Nguyễn Thị D",
-        "dateOfBirth": "1992-07-15",
-        "gender": "Nữ",
-        "phone": "0934567890",
-        "email": "dnt@bloodcenter.vn",
-        "position": "Bác sĩ",
-        "bloodGroup": "A",
-        "rhFactor": "Rh+",
-        "accessLevel": "Quản lý hiến máu"
-    },
-    {
-        "id": "NV005",
-        "fullName": "Phạm Văn E",
-        "dateOfBirth": "1989-11-21",
-        "gender": "Nam",
-        "phone": "0987654321",
-        "email": "evp@bloodcenter.vn",
-        "position": "Nhân viên kỹ thuật",
-        "bloodGroup": "O",
-        "rhFactor": "Rh+",
-        "accessLevel": "Xét nghiệm"
-    },
-    {
-        "id": "NV006",
-        "fullName": "Trần Thị F",
-        "dateOfBirth": "1996-04-30",
-        "gender": "Nữ",
-        "phone": "0978123456",
-        "email": "ftt@bloodcenter.vn",
-        "position": "Thư ký",
-        "bloodGroup": "AB",
-        "rhFactor": "Rh-",
-        "accessLevel": "Nhập liệu"
-    },
-    {
-        "id": "NV007",
-        "fullName": "Đỗ Minh G",
-        "dateOfBirth": "1990-10-09",
-        "gender": "Nam",
-        "phone": "0903456789",
-        "email": "gdm@bloodcenter.vn",
-        "position": "Trưởng phòng",
-        "bloodGroup": "B",
-        "rhFactor": "Rh+",
-        "accessLevel": "Quản trị hệ thống"
-    },
-    {
-        "id": "NV008",
-        "fullName": "Lý Thị H",
-        "dateOfBirth": "1993-12-12",
-        "gender": "Nữ",
-        "phone": "0967890123",
-        "email": "hlt@bloodcenter.vn",
-        "position": "Điều dưỡng",
-        "bloodGroup": "O",
-        "rhFactor": "Rh-",
-        "accessLevel": "Chăm sóc người hiến"
-    }
-];
+const initialEmployeeState: Employee = {
+    id: '',
+    name: '',
+    dob: '',
+    gender: 'Nam',
+    idCard: '',
+    address: '',
+    bloodGroup: 'None',
+    phone: '',
+    email: '',
+    role: 'Staff',
+    position: 'Staff',
+    totalDonations: 0,
+    totalVolume: 0,
+    lastDonationDate: '',
+    donationHistory: [],
+    lat: null,
+    lng: null,
+};
 
 const EmployeeManagement: React.FC = () => {
-    const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
+    const [employees, setEmployees] = useState<Employee[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
     const [showAddForm, setShowAddForm] = useState<boolean>(false);
     const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+    const [newEmployee, setNewEmployee] = useState<Employee>(initialEmployeeState);
 
-    const [newEmployee, setNewEmployee] = useState<Employee>({
-        id: '',
-        fullName: '',
-        dateOfBirth: '',
-        gender: 'Nam',
-        phone: '',
-        email: '',
-        position: '',
-        bloodGroup: 'A',
-        rhFactor: 'Rh+',
-        accessLevel: 'Nhập liệu & Tiếp nhận',
-    });
+    const fetchEmployees = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const allUsers = await fetchAllUsersWithHistory();
+            const staffMembers = allUsers.filter(user => user.role === 'Admin' || user.role === 'Staff');
+            
+            const mappedEmployees = staffMembers.map(staff => ({
+                ...staff,
+                gender: mapEnglishToVietnamese(staff.gender),
+                position: staff.role,
+            }));
+
+            setEmployees(mappedEmployees);
+        } catch (err: any) {
+            console.error("Lỗi khi tải dữ liệu nhân viên:", err);
+            setError(err.message || "Đã xảy ra lỗi không xác định.");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchEmployees();
+    }, [fetchEmployees]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setNewEmployee({ ...newEmployee, [name]: value });
     };
 
-    const handleAddEmployee = (e: React.FormEvent) => {
+    const handleAddOrUpdateEmployee = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingEmployee) {
-            setEmployees(
-                employees.map((emp) => (emp.id === editingEmployee.id ? { ...newEmployee, id: emp.id } : emp))
-            );
+
+        // --- BẮT ĐẦU PHẦN CẬP NHẬT ---
+        // Lấy tọa độ từ địa chỉ trước khi tạo payload
+        const coordinates = await getCoordinatesFromAddress(newEmployee.address);
+        
+        const payload = {
+            fullName: newEmployee.name,
+            email: newEmployee.email,
+            phoneNumber: newEmployee.phone,
+            birthday: newEmployee.dob ? new Date(newEmployee.dob).toISOString() : null,
+            gender: mapVietnameseToEnglish(newEmployee.gender),
+            address: newEmployee.address,
+            bloodType: newEmployee.bloodGroup, // Gửi đi giá trị gốc (A_POS)
+            role: newEmployee.position,
+            password: 'password123',
+            // Thêm lat và lng vào payload
+            lat: coordinates?.lat || null,
+            lng: coordinates?.lng || null,
+        };
+        // --- KẾT THÚC PHẦN CẬP NHẬT ---
+
+        const isEditing = !!editingEmployee;
+
+        try {
+            if (isEditing) {
+                const updatePayload = { ...payload };
+                delete updatePayload.password;
+                await adminUpdateUser(editingEmployee.id, updatePayload);
+            } else {
+                await adminCreateStaff(payload);
+            }
+            
+            setShowAddForm(false);
             setEditingEmployee(null);
-        } else {
-            setEmployees([...employees, { ...newEmployee, id: `NV${String(employees.length + 1).padStart(3, '0')}` }]);
+            setNewEmployee(initialEmployeeState);
+            await fetchEmployees();
+
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || 'Đã xảy ra lỗi không xác định.');
         }
-        setNewEmployee({
-            id: '',
-            fullName: '',
-            dateOfBirth: '',
-            gender: 'Nam',
-            phone: '',
-            email: '',
-            position: '',
-            bloodGroup: 'A',
-            rhFactor: 'Rh+',
-            accessLevel: 'Nhập liệu & Tiếp nhận',
-        });
-        setShowAddForm(false);
     };
 
     const handleEditEmployee = (employee: Employee) => {
         setEditingEmployee(employee);
-        setNewEmployee(employee);
+        setNewEmployee({
+            ...employee,
+            dob: employee.dob ? new Date(employee.dob).toISOString().slice(0, 10) : '',
+        });
         setShowAddForm(true);
     };
 
-    const handleDeleteEmployee = (id: string) => {
-        if (window.confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
-            setEmployees(employees.filter((employee) => employee.id !== id));
+    const handleDeleteEmployee = async (employeeId: string) => {
+        if (window.confirm('Bạn có chắc chắn muốn xóa nhân viên này không?')) {
+            try {
+                await adminDeleteUser(employeeId);
+                await fetchEmployees();
+            } catch (err: any) {
+                console.error(err);
+                setError(err.message || 'Đã xảy ra lỗi không xác định.');
+            }
         }
     };
 
     return (
-        <div className={"employeeManagementContainer"}>
-            <div className={"pageHeader"}>
-                <h1 className={"pageTitle"}>Quản lý Nhân viên Cơ sở Hiến máu</h1>
-
-                <button className={"addButton"} onClick={() => {
+        <div className="employeeManagementContainer">
+            <div className="pageHeader">
+                <h1 className="pageTitle">Quản lý Nhân viên</h1>
+                <button className="addButton" onClick={() => {
                     setShowAddForm(true);
-                    setEditingEmployee(null); // Reset editing state when opening for add
-                    setNewEmployee({ // Clear form fields
-                        id: '', fullName: '', dateOfBirth: '', gender: 'Nam', phone: '', email: '',
-                        position: '',  bloodGroup: 'A', rhFactor: 'Rh+', 
-                        accessLevel: 'Nhập liệu & Tiếp nhận'
-                    });
+                    setEditingEmployee(null);
+                    setNewEmployee(initialEmployeeState);
                 }}>
                     Thêm Nhân viên Mới
                 </button>
             </div>
 
-
             {showAddForm && (
-                <div className={"formOverlay"}>
-                    <form className={"employeeForm"} onSubmit={handleAddEmployee}>
+                <div className="formOverlay">
+                    <form className="employeeForm" onSubmit={handleAddOrUpdateEmployee}>
                         <h2>{editingEmployee ? 'Chỉnh sửa Thông tin Nhân viên' : 'Thêm Nhân viên Mới'}</h2>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="fullName">Họ và tên:</label>
-                            <input type="text" id="fullName" name="fullName" value={newEmployee.fullName} onChange={handleInputChange} required />
+                        <div className="form-grid">
+                            <div className="formGroup">
+                                <label>Họ và tên:</label>
+                                <input type="text" name="name" value={newEmployee.name} onChange={handleInputChange} required />
+                            </div>
+                            <div className="formGroup">
+                                <label>Ngày sinh:</label>
+                                <input type="date" name="dob" value={newEmployee.dob} onChange={handleInputChange} required />
+                            </div>
+                            <div className="formGroup">
+                                <label>Giới tính:</label>
+                                <select name="gender" value={newEmployee.gender} onChange={handleInputChange}>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                            <div className="formGroup">
+                                <label>Số điện thoại:</label>
+                                <input type="tel" name="phone" value={newEmployee.phone} onChange={handleInputChange} required />
+                            </div>
+                            <div className="formGroup">
+                                <label>Email:</label>
+                                <input type="email" name="email" value={newEmployee.email} onChange={handleInputChange} required />
+                            </div>
+                            <div className="formGroup">
+                                <label>Địa chỉ:</label>
+                                <input type="text" name="address" value={newEmployee.address} onChange={handleInputChange} required />
+                            </div>
+                            <div className="formGroup">
+                                <label>Vị trí (Vai trò):</label>
+                                <select name="position" value={newEmployee.position} onChange={handleInputChange}>
+                                    <option value="Staff">Nhân viên (Staff)</option>
+                                    <option value="Admin">Quản trị viên (Admin)</option>
+                                </select>
+                            </div>
+                            <div className="formGroup">
+                                <label>Nhóm máu:</label>
+                                <select name="bloodGroup" value={newEmployee.bloodGroup} onChange={handleInputChange}>
+                                    <option value="None">Chưa rõ</option>
+                                    <option value="A_POS">A+</option>
+                                    <option value="A_NEG">A-</option>
+                                    <option value="B_POS">B+</option>
+                                    <option value="B_NEG">B-</option>
+                                    <option value="AB_POS">AB+</option>
+                                    <option value="AB_NEG">AB-</option>
+                                    <option value="O_POS">O+</option>
+                                    <option value="O_NEG">O-</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="dateOfBirth">Ngày sinh:</label>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" value={newEmployee.dateOfBirth} onChange={handleInputChange} required />
-                        </div>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="gender">Giới tính:</label>
-                            <select id="gender" name="gender" value={newEmployee.gender} onChange={handleInputChange}>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                                <option value="Khác">Khác</option>
-                            </select>
-                        </div>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="phone">Số điện thoại:</label>
-                            <input type="tel" id="phone" name="phone" value={newEmployee.phone} onChange={handleInputChange} required />
-                        </div>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="email">Email:</label>
-                            <input type="email" id="email" name="email" value={newEmployee.email} onChange={handleInputChange} required />
-                        </div>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="position">Vị trí/Chức danh:</label>
-                            <input type="text" id="position" name="position" value={newEmployee.position} onChange={handleInputChange} required />
-                        </div>
-
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="bloodGroup">Nhóm máu:</label>
-                            <select id="bloodGroup" name="bloodGroup" value={newEmployee.bloodGroup} onChange={handleInputChange}>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="O">O</option>
-                                <option value="AB">AB</option>
-                            </select>
-                        </div>
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="rhFactor">Yếu tố Rh:</label>
-                            <select id="rhFactor" name="rhFactor" value={newEmployee.rhFactor} onChange={handleInputChange}>
-                                <option value="Rh+">Rh+</option>
-                                <option value="Rh-">Rh-</option>
-                            </select>
-                        </div>
-
-
-                        <div className={"formGroup"}>
-                            <label htmlFor="accessLevel">Quyền truy cập:</label>
-                            <select id="accessLevel" name="accessLevel" value={newEmployee.accessLevel} onChange={handleInputChange}>
-                                <option value="Nhập liệu & Tiếp nhận">Nhập liệu & Tiếp nhận</option>
-                                <option value="Y tế & Xét nghiệm">Y tế & Xét nghiệm</option>
-                                <option value="Quản lý chiến dịch">Quản lý chiến dịch</option>
-                                <option value="Quản trị viên">Quản trị viên</option>
-                            </select>
-                        </div>
-
-                        <div className={"formActions"}>
-                            <button type="submit" className={"submitButton"}>
+                        <div className="formActions">
+                            <button type="submit" className="submitButton">
                                 {editingEmployee ? 'Cập nhật' : 'Thêm'}
                             </button>
-                            <button type="button" className={"cancelButton"} onClick={() => setShowAddForm(false)}>
+                            <button type="button" className="cancelButton" onClick={() => setShowAddForm(false)}>
                                 Hủy
                             </button>
                         </div>
@@ -273,44 +290,44 @@ const EmployeeManagement: React.FC = () => {
                 </div>
             )}
 
-            <div className={"employeeTableContainer"}>
-                <table className={"employeeTable"}>
-                    <thead>
-                        <tr>
-                            <th>Mã NV</th>
-                            <th>Họ và tên</th>
-                            <th>Ngày sinh</th>
-                            <th>Giới tính</th>
-                            <th>SĐT</th>
-                            <th>Email</th>
-                            <th>Vị trí</th>
-                            <th>Nhóm máu</th>
-                            <th>Rh</th>
-                            <th>Quyền truy cập</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {employees.map((employee) => (
-                            <tr key={employee.id}>
-                                <td>{employee.id}</td>
-                                <td>{employee.fullName}</td>
-                                <td>{employee.dateOfBirth}</td>
-                                <td>{employee.gender}</td>
-                                <td>{employee.phone}</td>
-                                <td>{employee.email}</td>
-                                <td>{employee.position}</td>
-                                <td>{employee.bloodGroup}</td>
-                                <td>{employee.rhFactor}</td>
-                                <td>{employee.accessLevel}</td>
-                                <td className={"actionsCell"}>
-                                    <button className={"editButton"} onClick={() => handleEditEmployee(employee)}>Sửa</button>
-                                    <button className={"deleteButton"} onClick={() => handleDeleteEmployee(employee.id)}>Xóa</button>
-                                </td>
+            <div className="employeeTableContainer">
+                {loading ? (
+                    <p>Đang tải dữ liệu...</p>
+                ) : error ? (
+                    <div className="error-message">Lỗi: {error}</div>
+                ) : (
+                    <table className="employeeTable">
+                        <thead>
+                            <tr>
+                                <th>Mã NV</th>
+                                <th>Họ và tên</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th>Địa chỉ</th>
+                                <th>Vị trí</th>
+                                <th>Nhóm máu</th>
+                                <th>Hành động</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {employees.map((employee) => (
+                                <tr key={employee.id}>
+                                    <td>{employee.id}</td>
+                                    <td>{employee.name}</td>
+                                    <td>{employee.email}</td>
+                                    <td>{employee.phone}</td>
+                                    <td>{employee.address}</td>
+                                    <td>{employee.position}</td>
+                                    <td>{mapBloodTypeToDisplay(employee.bloodGroup)}</td>
+                                    <td className="actionsCell">
+                                        <button className="editButton" onClick={() => handleEditEmployee(employee)}>Sửa</button>
+                                        <button className="deleteButton" onClick={() => handleDeleteEmployee(employee.id)}>Xóa</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );

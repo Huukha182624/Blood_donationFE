@@ -8,7 +8,6 @@ const BloodManagePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'details'>('overview');
 
   return (
-    // Sử dụng class CSS thuần thay vì Tailwind
     <div className="blood-manage-page">
       <main className="main-content-blood-mn">
         <div className="tab-navigation">

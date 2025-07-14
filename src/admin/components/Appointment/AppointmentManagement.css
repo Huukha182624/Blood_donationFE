@@ -322,6 +322,144 @@ table tbody tr:hover {
   margin-left: 10px;
 }
 
+/* ============================================== */
+/* === CSS cho Modal Xác nhận Hoàn thành === */
+/* ============================================== */
+
+/* Lớp phủ nền mờ cho modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Hiệu ứng mờ dần khi xuất hiện */
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Khung nội dung của modal con */
+/* Chúng ta dùng class 'modal-content-b' để có thể style riêng biệt với modal chính */
+.modal-content-b {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px; /* Giới hạn chiều rộng tối đa */
+  /* Hiệu ứng trượt xuống khi xuất hiện */
+  animation: slideDown 0.4s ease-out;
+}
+
+/* Tiêu đề của modal */
+.modal-content-b h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: center;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+/* Nhóm chứa label và input/select */
+.modal-content-b .form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nhãn (label) của các trường input */
+.modal-content-b .form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Style chung cho ô input và select */
+.modal-content-b .form-group input[type="number"],
+.modal-content-b .form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box; /* Quan trọng để padding không làm vỡ layout */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Hiệu ứng khi focus vào ô input/select */
+.modal-content-b .form-group input[type="number"]:focus,
+.modal-content-b .form-group select:focus {
+  outline: none;
+  border-color: #007bff; /* Màu xanh dương */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Khu vực chứa các nút hành động (Hủy, Xác nhận) */
+.modal-content-b .modal-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end; /* Đẩy các nút về phía bên phải */
+  gap: 12px; /* Khoảng cách giữa các nút */
+}
+
+/* Style chung cho các nút trong modal */
+.modal-content-b .modal-actions button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Hiệu ứng khi di chuột qua nút */
+.modal-content-b .modal-actions button:hover {
+  opacity: 0.9;
+}
+
+/* Hiệu ứng khi nhấn nút */
+.modal-content-b .modal-actions button:active {
+  transform: scale(0.98);
+}
+
+/* Nút Hủy (màu xám) */
+.modal-content-b .btn-cancel {
+  background-color: #6c757d;
+  color: white;
+  border: 1px solid #6c757d;
+}
+.modal-content-b .btn-cancel:hover {
+   background-color: #5a6268;
+}
+
+/* Nút Xác nhận (màu xanh lá) */
+.modal-content-b .btn-confirm {
+  background-color: #28a745; /* Màu xanh thành công */
+  color: white;
+}
+.modal-content-b .btn-confirm:hover {
+  background-color: #218838;
+}
+
+/* ============================================== */
+/* === Hiệu ứng Animation (Tùy chọn) === */
+/* ============================================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .appointment-management-container {
@@ -362,4 +500,5 @@ table tbody tr:hover {
     justify-content: flex-end;
     gap: 10px;
   }
+  
 }

@@ -32,11 +32,11 @@ const Register = () => {
     if (!phone) newErrors.phone = "Số điện thoại là bắt buộc";
     if (!email) newErrors.email = "Email là bắt buộc";
     if (!address) newErrors.address = "Địa chỉ là bắt buộc";
-    if (!birthday) newErrors.birthday = "Sinh nhật là bắt buộc";
+    if (!birthday) newErrors.birthday = "Ngày sinh là bắt buộc";
     if (!gender) newErrors.gender = "Giới tính là bắt buộc";
     if (!password) newErrors.password = "Mật khẩu là bắt buộc";
-    if (!confirmPassword)
-      newErrors.confirmPassword = "Xác nhận mật khẩu là bắt buộc";
+    if (password.length < 6) newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
+    if (!confirmPassword) newErrors.confirmPassword = "Xác nhận mật khẩu là bắt buộc";
     if (password && confirmPassword && password !== confirmPassword)
       newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
     setErrors(newErrors);
@@ -47,13 +47,14 @@ const Register = () => {
     if (!validate()) return;
     try {
       await registerUser({
-        password,
-        full_name: fullName,
+        fullName,
+        phoneNumber: phone,
         email,
-        phone_number: phone,
         address,
         birthday,
         gender,
+        password,
+        confirmPassword,
       });
       setSuccess("Vui lòng kiểm tra email để xác nhận tài khoản.");
       setError("");
