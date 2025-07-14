@@ -34,122 +34,125 @@ const newsList = [
 
 export default function News() {
     return (
-        <Container maxWidth="xl">
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 5 }}>
-                <h1>News</h1>
-            </Box>
-            <Box sx={{ marginTop: 3 }}>
-                <Grid container spacing={4} alignItems="stretch">
-                    {newsList.map((news) => (
-                        <Grid item xs={12} key={news.id} sx={{ display: "flex" }}>
-                            <Link to={news.link} style={{ textDecoration: "none", color: "inherit", width: "100%" }}>
-                                <Box
-                                    sx={{
-                                        border: "1px solid #ccc",
-                                        padding: 2,
-                                        borderRadius: 2,
-                                        boxShadow: 2,
-                                        transition: "box-shadow 0.2s",
-                                        "&:hover": { boxShadow: 6 },
-                                        background: "#fff",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 3,
-                                        minHeight: 220,
-                                        height: 220,
-                                    }}
-                                >
-                                    {/* Ảnh và caption */}
-                                    <Box sx={{
-                                        minWidth: 220,
-                                        maxWidth: 300,
-                                        flex: "0 0 220px",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        justifyContent: "flex-start",
-                                        height: "100%",
-                                    }}>
-                                        <img
-                                            src={news.img}
-                                            alt="News Thumbnail"
-                                            style={{
-                                                width: "100%",
-                                                maxWidth: 260,
-                                                height: 160,
-                                                objectFit: "cover",
-                                                borderRadius: 8,
-                                                marginBottom: 8,
-                                            }}
-                                        />
-                                        {news.caption && (
-                                            <Typography
-                                                variant="caption"
-                                                align="center"
-                                                color="text.secondary"
-                                                sx={{
-                                                    display: "block",
-                                                    background: "#f5f5f5",
-                                                    borderRadius: 1,
-                                                    px: 1,
-                                                    py: 0.5,
-                                                    fontStyle: "italic",
-                                                    fontWeight: 500,
-                                                    textAlign: "center",
-                                                    marginBottom: 1,
+        <>
+            <Box sx={{ height: 140 }} />
+            <Container maxWidth="xl">
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 5 }}>
+                    <h1>News</h1>
+                </Box>
+                <Box sx={{ marginTop: 3 }}>
+                    <Grid container spacing={4} alignItems="stretch">
+                        {newsList.map((news) => (
+                            <Grid item xs={12} key={news.id} sx={{ display: "flex" }}>
+                                <Link to={news.link} style={{ textDecoration: "none", color: "inherit", width: "100%" }}>
+                                    <Box
+                                        sx={{
+                                            border: "1px solid #ccc",
+                                            padding: 2,
+                                            borderRadius: 2,
+                                            boxShadow: 2,
+                                            transition: "box-shadow 0.2s",
+                                            "&:hover": { boxShadow: 6 },
+                                            background: "#fff",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 3,
+                                            minHeight: 220,
+                                            height: 220,
+                                        }}
+                                    >
+                                        {/* Ảnh và caption */}
+                                        <Box sx={{
+                                            minWidth: 220,
+                                            maxWidth: 300,
+                                            flex: "0 0 220px",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "center",
+                                            justifyContent: "flex-start",
+                                            height: "100%",
+                                        }}>
+                                            <img
+                                                src={news.img}
+                                                alt="News Thumbnail"
+                                                style={{
+                                                    width: "100%",
                                                     maxWidth: 260,
+                                                    height: 160,
+                                                    objectFit: "cover",
+                                                    borderRadius: 8,
+                                                    marginBottom: 8,
+                                                }}
+                                            />
+                                            {news.caption && (
+                                                <Typography
+                                                    variant="caption"
+                                                    align="center"
+                                                    color="text.secondary"
+                                                    sx={{
+                                                        display: "block",
+                                                        background: "#f5f5f5",
+                                                        borderRadius: 1,
+                                                        px: 1,
+                                                        py: 0.5,
+                                                        fontStyle: "italic",
+                                                        fontWeight: 500,
+                                                        textAlign: "center",
+                                                        marginBottom: 1,
+                                                        maxWidth: 260,
+                                                        overflow: "hidden",
+                                                        textOverflow: "ellipsis",
+                                                        whiteSpace: "nowrap"
+                                                    }}
+                                                >
+                                                    {news.caption}
+                                                </Typography>
+                                            )}
+                                        </Box>
+                                        {/* Nội dung */}
+                                        <Box sx={{
+                                            flex: 1,
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "center",
+                                            minHeight: 160,
+                                        }}>
+                                            <Typography
+                                                variant="h6"
+                                                component="h2"
+                                                sx={{
+                                                    display: "-webkit-box",
+                                                    WebkitLineClamp: 2,
+                                                    WebkitBoxOrient: "vertical",
                                                     overflow: "hidden",
-                                                    textOverflow: "ellipsis",
-                                                    whiteSpace: "nowrap"
+                                                    minHeight: 56,
                                                 }}
                                             >
-                                                {news.caption}
+                                                {news.title}
                                             </Typography>
-                                        )}
+                                            <Typography
+                                                variant="body2"
+                                                color="text.secondary"
+                                                sx={{
+                                                    marginTop: 1,
+                                                    display: "-webkit-box",
+                                                    WebkitLineClamp: 2,
+                                                    WebkitBoxOrient: "vertical",
+                                                    overflow: "hidden",
+                                                    minHeight: 48,
+                                                }}
+                                            >
+                                                {news.desc}
+                                            </Typography>
+                                        </Box>
                                     </Box>
-                                    {/* Nội dung */}
-                                    <Box sx={{
-                                        flex: 1,
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        justifyContent: "center",
-                                        minHeight: 160,
-                                    }}>
-                                        <Typography
-                                            variant="h6"
-                                            component="h2"
-                                            sx={{
-                                                display: "-webkit-box",
-                                                WebkitLineClamp: 2,
-                                                WebkitBoxOrient: "vertical",
-                                                overflow: "hidden",
-                                                minHeight: 56,
-                                            }}
-                                        >
-                                            {news.title}
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            color="text.secondary"
-                                            sx={{
-                                                marginTop: 1,
-                                                display: "-webkit-box",
-                                                WebkitLineClamp: 2,
-                                                WebkitBoxOrient: "vertical",
-                                                overflow: "hidden",
-                                                minHeight: 48,
-                                            }}
-                                        >
-                                            {news.desc}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </Link>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-        </Container>
+                                </Link>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            </Container>
+        </>
     );
 }
 
