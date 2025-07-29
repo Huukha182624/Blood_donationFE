@@ -89,23 +89,27 @@ const faqs = [
 
 const Faq = () => {
     return (
-        <Container maxWidth="md" sx={{ my: 4 }}>
-            <Typography variant="h4" align="center" gutterBottom fontWeight="bold">
-                Lưu ý quan trọng
-            </Typography>
-            <Box>
-                {faqs.map((faq, index) => (
-                    <Accordion key={index}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography sx={{ fontWeight: 'bold' }}>{faq.question}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography whiteSpace="pre-line">{faq.answer}</Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
-            </Box>
-        </Container>
+        <>
+            
+            <Container maxWidth="md" sx={{ my: 4 }}>
+                <Typography variant="h4" align="center" gutterBottom fontWeight="bold"
+                    sx={{ color: 'rgb(120, 2, 14)', fontWeight: 'bold', fontSize: 38 }}>
+                    Lưu ý quan trọng
+                </Typography>
+                <Box>
+                    {faqs.map((faq, index) => (
+                        <Accordion key={index}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography sx={{ fontWeight: 'bold', color: '#b71c1c', fontSize: 20 }}>{faq.question}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography whiteSpace="pre-line">{faq.answer}</Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
+                </Box>
+            </Container>
+        </>
     );
 };
 
