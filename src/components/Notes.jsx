@@ -18,7 +18,7 @@ export default function ImportantNotes() {
                 variant="h4"
                 fontWeight="bold"
                 gutterBottom
-                sx={{ color: '#1a4aa8', fontSize: { xs: '28px', md: '36px' } }}
+                sx={{ color: 'rgb(120, 2, 14)', fontSize: { xs: '28px', md: '36px' } }}
             >
                 Lưu ý quan trọng cần biết
             </Typography>
@@ -60,7 +60,7 @@ export default function ImportantNotes() {
                         }}
                     >
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography sx={{ fontWeight: 'bold', fontSize: '18px', color: '#1a4aa8' }}>
+                            <Typography sx={{ fontWeight: 'bold', fontSize: '18px', color: '#b71c1c' }}>
                                 {item.title}
                             </Typography>
                         </AccordionSummary>
@@ -76,7 +76,7 @@ export default function ImportantNotes() {
             </Box>
 
             <Button
-                sx={{ mt: 2, color: '#1a4aa8', fontWeight: 'bold', textTransform: 'none' }}
+                sx={{ mt: 2, color: '#b71c1c', fontWeight: 'bold', textTransform: 'none' }}
                 variant="text"
                 onClick={() => navigate("/hoi-dap")}
             >
