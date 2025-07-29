@@ -29,6 +29,12 @@
     border-bottom: 1px solid #eee;
     /* Optional: a subtle separator */
 }
+.adminEmail {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
 
 .logo {
     max-width: 80%;
@@ -40,8 +46,7 @@
 }
 
 .sidebar {
-    min-width: 250px;
-    max-width: 250px;
+width: 300px;
     height: 100vh;
     /* Chiếm toàn bộ chiều cao viewport */
     background-color: var(--sidebar-bg);
