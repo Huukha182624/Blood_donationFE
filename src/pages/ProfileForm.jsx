@@ -131,13 +131,13 @@ const ProfileForm = () => {
             {successMessage && <Alert severity="success" sx={{ mb: 2 }}>{successMessage}</Alert>}
             {errorMessage && <Alert severity="error" sx={{ mb: 2 }}>{errorMessage}</Alert>}
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} direction="column">
                 {/* Họ tên */}
                 <Grid item xs={12}>
                     <TextField fullWidth label="Họ và tên" value={fullName} onChange={(e) => setFullName(e.target.value)} />
                 </Grid>
                 {/* Email */}
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
                     <TextField fullWidth label="Email" value={email} disabled />
                 </Grid>
                 {/* Số điện thoại */}
