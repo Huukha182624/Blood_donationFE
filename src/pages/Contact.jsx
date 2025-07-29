@@ -180,11 +180,11 @@ const BloodRequestManagementPage = () => {
 
                 {/* --- TAB 1: FORM TẠO YÊU CẦU --- */}
                 <TabPanel value={tabValue} index={0}>
-                    <Typography variant="h5" gutterBottom fontWeight="bold" color="text.primary">
+                    <Typography variant="h5" gutterBottom fontWeight="bold" color='rgb(114, 6, 17)'>
                         Liên hệ Máu khẩn cấp
                     </Typography>
                     <Box component="form" onSubmit={handleFormSubmit} noValidate>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={2} direction="column">
                             <Grid item xs={12}>
                                 <TextField required fullWidth id="patientName" label="Tên Bệnh nhân" name="patientName" value={formData.patientName} onChange={handleFormChange} />
                             </Grid>
