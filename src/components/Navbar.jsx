@@ -63,9 +63,11 @@ export default function Navbar() {
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                             <MenuItem onClick={handleProfile}>Xem hồ sơ</MenuItem>
-                            {user.role === 'Admin' && 'Staff' && (
-                                <MenuItem onClick={() => { handleClose(); navigate('/admin'); }}>Quản lý</MenuItem>
-                            )}
+                            {
+                                (user.role === 'Admin' || user.role === 'Staff') && (
+                                    <MenuItem onClick={() => { handleClose(); navigate('/admin'); }}>Quản lý</MenuItem>
+                                )
+                            }
                             <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                         </Menu>
                     </>

@@ -21,7 +21,14 @@ const mapBloodTypeToDisplay = (bloodType: string): string => {
     return bloodType.replace('_POS', '+').replace('_NEG', '-');
 };
 
-
+const mapGenderToVietnamese = (gender?: string): string => {
+    if (!gender) return 'Chưa rõ';
+    switch (gender.toLowerCase()) {
+        case 'male': return 'Nam';
+        case 'female': return 'Nữ';
+        default: return 'Khác';
+    }
+};
 const DonorMapModal: React.FC<DonorMapModalProps> = ({ isOpen, onClose, selectedDonor, allDonors }) => {
   const [activeMarker, setActiveMarker] = useState<IDonor | null>(null);
 
@@ -100,7 +107,7 @@ const DonorMapModal: React.FC<DonorMapModalProps> = ({ isOpen, onClose, selected
               {activeMarker.dob && (
                 <p><strong>Tuổi:</strong> {calculateAge(activeMarker.dob)}</p>
               )}
-              <p><strong>Giới tính:</strong> {activeMarker.gender}</p>
+              <p><strong>Giới tính:</strong> {mapGenderToVietnamese(activeMarker.gender)}</p>
               <p><strong>Nhóm máu:</strong> {mapBloodTypeToDisplay(activeMarker.bloodGroup)}</p>
               <p><strong>SĐT:</strong> {activeMarker.phone}</p>
               {activeMarker.email && (

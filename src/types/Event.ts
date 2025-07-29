@@ -34,7 +34,7 @@ export interface CampaignFromAPI {
 export interface BloodDonationEvent {
   /** ID của sự kiện, đã được chuyển thành string. */
   id: string;
-  
+
   /** Tên chính thức của sự kiện. */
   name: string;
 
@@ -49,7 +49,7 @@ export interface BloodDonationEvent {
 
   /** Tên của địa điểm tổ chức (ví dụ: "Trường Đại học Bách Khoa TP.HCM"). */
   locationName: string;
-  
+
   /** Địa chỉ chi tiết của địa điểm. */
   locationAddress: string;
 
@@ -87,8 +87,5 @@ export interface BloodDonationEvent {
   lng: number;
 
   /** Thời gian có thể hiến máu trong ngày. */
-  donateTime: {
-    sang: string;
-    chieu: string;
-  };
+  donateTime: string;
 }

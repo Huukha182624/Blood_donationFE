@@ -66,6 +66,7 @@ export async function fetchAllUsersWithHistory(): Promise<IDonor[]> {
         totalDonations: totalDonations,
         lastDonationDate: lastDonationDate,
         donationHistory: donationHistory,
+        isAvailable: user.isAvailable,
       };
     });
 

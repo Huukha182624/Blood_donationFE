@@ -21,6 +21,8 @@ export interface Appointment {
   donorBloodType: string;
   userId: number;
   campaignId: number;
+  productType:string;
+  donationType: string;
 }
 
 // Dữ liệu chiến dịch đã được xử lý

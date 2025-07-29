@@ -31,26 +31,26 @@ const mapLocalStatusToApiValue = (localStatus: AppointmentStatus): string => {
 };
 
 const mapBloodTypeToDisplay = (bloodType: string): string => {
-    if (!bloodType || bloodType === 'None') return 'Chưa rõ';
-    return bloodType.replace('_POS', '+').replace('_NEG', '-');
+  if (!bloodType || bloodType === 'None') return 'Chưa rõ';
+  return bloodType.replace('_POS', '+').replace('_NEG', '-');
 };
 // =================================================================
 // CÁC HÀM API SERVICE (Nên được chuyển vào file service riêng)
 // =================================================================
 
 const fetchAllRegistrations = async () => {
-    const response = await api.get('/campaign-registrations');
-    return response.data;
+  const response = await api.get('/campaign-registrations');
+  return response.data;
 };
 
 const fetchAllCampaigns = async () => {
-    const response = await api.get('/blood-donation-campaigns');
-    return response.data;
+  const response = await api.get('/blood-donation-campaigns');
+  return response.data;
 };
 
 const updateRegistrationStatus = async (id: number, payload: any) => {
-    const response = await api.patch(`/campaign-registrations/${id}`, payload);
-    return response.data;
+  const response = await api.patch(`/campaign-registrations/${id}`, payload);
+  return response.data;
 }
 
 // =================================================================
@@ -109,6 +109,8 @@ const AppointmentManagement: React.FC = () => {
         registrationDate: reg.registeredAt,
         notes: reg.note || '',
         donorBloodType: reg.user.bloodType || 'None',
+        donationType: reg.productType || 'Toàn phần',
+
       }));
       setAppointments(processedAppointments);
 
@@ -128,8 +130,8 @@ const AppointmentManagement: React.FC = () => {
     let filtered = appointments;
 
     if (filterDate) {
-        const selectedDate = new Date(filterDate).setHours(0,0,0,0);
-        filtered = filtered.filter(app => new Date(app.appointmentDate).setHours(0,0,0,0) === selectedDate);
+      const selectedDate = new Date(filterDate).setHours(0, 0, 0, 0);
+      filtered = filtered.filter(app => new Date(app.appointmentDate).setHours(0, 0, 0, 0) === selectedDate);
     }
     if (filterCampaign) {
       filtered = filtered.filter(app => app.campaignName === filterCampaign);
@@ -161,17 +163,17 @@ const AppointmentManagement: React.FC = () => {
   const handleUpdateStatus = async (appointmentId: number, data: Record<string, any>) => {
     const apiStatus = mapLocalStatusToApiValue(data.status);
     const payload = { ...data, status: apiStatus };
-    
+
     console.log(`Đang gửi yêu cầu PATCH đến /campaign-registrations/${appointmentId} với payload:`, payload);
 
     try {
-        // SỬA LỖI: Sử dụng hàm service đã được đồng bộ
-        await updateRegistrationStatus(appointmentId, payload);
-        alert('Cập nhật trạng thái thành công!');
-        handleCloseModal();
-        fetchData();
+      // SỬA LỖI: Sử dụng hàm service đã được đồng bộ
+      await updateRegistrationStatus(appointmentId, payload);
+      alert('Cập nhật trạng thái thành công!');
+      handleCloseModal();
+      fetchData();
     } catch (err: any) {
-        alert(`Lỗi: ${err.message}`);
+      alert(`Lỗi: ${err.message}`);
     }
   };
 
@@ -263,6 +265,23 @@ const AppointmentManagement: React.FC = () => {
       default: return status;
     }
   }
+
+  const mapDonationTypeToVietnamese = (donationType: string): string => {
+    switch (donationType) {
+      case 'Plasma':
+        return 'Huyết tương';
+      case 'Platelets':
+        return 'Tiểu cầu';
+      case 'RedCells':
+        return 'Hồng cầu';
+      case 'WholeBlood':
+        return 'Máu toàn phần';
+      case 'Toàn phần': 
+        return 'Máu toàn phần';
+      default:
+        return donationType; // Trả về giá trị gốc nếu không khớp
+    }
+  };
 
   return (
     <div className="appointment-management-container1">
@@ -385,6 +404,7 @@ const AppointmentManagement: React.FC = () => {
               <p><strong>Số điện thoại:</strong> {selectedAppointment.phoneNumber}</p>
               <p><strong>Email:</strong> {selectedAppointment.email}</p>
               <p><strong>Nhóm máu:</strong> {mapBloodTypeToDisplay(selectedAppointment.donorBloodType)}</p>
+              <p><strong>Thành phần hiến:</strong> {mapDonationTypeToVietnamese(selectedAppointment.donationType)}</p>
               <p><strong>Chiến dịch:</strong> {selectedAppointment.campaignName}</p>
               <p><strong>Ngày hẹn:</strong> {new Date(selectedAppointment.appointmentDate).toLocaleDateString('vi-VN')}</p>
               <p><strong>Giờ hẹn:</strong> {selectedAppointment.appointmentTime}</p>
