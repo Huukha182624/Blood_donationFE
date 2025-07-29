@@ -22,5 +22,6 @@ export interface IDonor {
     lat?: number | null;
     lng?: number | null;
     avatar_image?: string; // URL ảnh đại diện
+    isAvailable: boolean;
 
 }

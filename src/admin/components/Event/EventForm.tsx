@@ -53,21 +53,21 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel }) => {
   // Chuẩn hóa dữ liệu khi điền vào form ở chế độ sửa
   useEffect(() => {
     if (event) { // Chế độ Sửa
-        let parsedDonateTime = { sang: { start: '', end: '' }, chieu: { start: '', end: '' } };
-        try {
-          // Backend trả về donateTime là một chuỗi JSON, cần parse nó
-          if (event.donateTime && typeof event.donateTime === 'string') {
-              const times = JSON.parse(event.donateTime);
-              const sangTimes = times.sang ? times.sang.split('-') : ['', ''];
-              const chieuTimes = times.chieu ? times.chieu.split('-') : ['', ''];
-              parsedDonateTime = {
-                  sang: { start: sangTimes[0] || '', end: sangTimes[1] || '' },
-                  chieu: { start: chieuTimes[0] || '', end: chieuTimes[1] || '' }
-              };
-          }
-        } catch (e) {
-          console.error("Failed to parse donateTime JSON:", e);
+      let parsedDonateTime = { sang: { start: '', end: '' }, chieu: { start: '', end: '' } };
+      try {
+        // Backend trả về donateTime là một chuỗi JSON, cần parse nó
+        if (event.donateTime && typeof event.donateTime === 'string') {
+          const times = JSON.parse(event.donateTime);
+          const sangTimes = times.sang ? times.sang.split('-') : ['', ''];
+          const chieuTimes = times.chieu ? times.chieu.split('-') : ['', ''];
+          parsedDonateTime = {
+            sang: { start: sangTimes[0] || '', end: sangTimes[1] || '' },
+            chieu: { start: chieuTimes[0] || '', end: chieuTimes[1] || '' }
+          };
         }
+      } catch (e) {
+        console.error("Failed to parse donateTime JSON:", e);
+      }
 
       setFormData({
         name: event.name || '',
@@ -111,13 +111,15 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel }) => {
     }
 
     const coordinates = await getCoordinatesFromAddress(formData.address);
-    
+
     // --- SỬA LỖI: Chuẩn bị payload cho API, khớp với DTO của backend ---
+    const localDate = parse(formData.activeTime, 'dd/MM/yyyy', new Date());
+    const utcDate = new Date(localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
     const payload = {
       name: formData.name,
       address: formData.address,
-      // Chuyển đổi ngày từ 'dd/MM/yyyy' sang định dạng ISO mà backend có thể hiểu
-      activeTime: parse(formData.activeTime, 'dd/MM/yyyy', new Date()).toISOString(),
+      // Sử dụng ngày đã được điều chỉnh
+      activeTime: utcDate.toISOString(),
       // Chuyển đổi object thành chuỗi JSON
       donateTime: JSON.stringify({
         sang: `${formData.donateTime.sang.start}-${formData.donateTime.sang.end}`,

@@ -10,7 +10,7 @@ import {
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../services/user.service";
+import { registerUser ,getCoordinatesFromAddress } from "../services/user.service";
 
 const Register = () => {
   const [fullName, setFullName] = useState("");
@@ -43,26 +43,44 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSendOtp = async () => {
+const handleSendOtp = async () => {
     if (!validate()) return;
+
     try {
-      await registerUser({
-        fullName,
-        phoneNumber: phone,
-        email,
-        address,
-        birthday,
-        gender,
-        password,
-        confirmPassword,
-      });
-      setSuccess("Vui lòng kiểm tra email để xác nhận tài khoản.");
-      setError("");
+      
+        setError("");
+        setSuccess("");
+
+        // 1. Lấy tọa độ từ địa chỉ
+        const coordinates = await getCoordinatesFromAddress(address);
+
+        // 2. Xử lý nếu không tìm thấy tọa độ
+        if (!coordinates) {
+            setError("Không thể tìm thấy tọa độ cho địa chỉ này. Vui lòng kiểm tra lại.");
+            return; // Dừng thực thi
+        }
+
+        // 3. Gọi API đăng ký với đầy đủ tọa độ
+        await registerUser({
+            fullName,
+            phoneNumber: phone,
+            email,
+            address,
+            birthday,
+            gender,
+            password,
+            confirmPassword,
+            latitude: coordinates.lat,  // Thêm latitude
+            longitude: coordinates.lng, // Thêm longitude
+        });
+
+        setSuccess("Vui lòng kiểm tra email để xác nhận tài khoản.");
+
     } catch (err) {
-      setError(err.message || "Đăng ký thất bại. Vui lòng thử lại.");
-      setSuccess("");
+        setError(err.message || "Đăng ký thất bại. Vui lòng thử lại.");
+        setSuccess("");
     }
-  };
+};
   return (
     <Box
       sx={{

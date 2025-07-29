@@ -15,13 +15,29 @@ import {
     Alert
 } from '@mui/material';
 import { useUser } from '../store/userStore.jsx';
-import { updateUserProfile } from '../services/user.service.js';
+import { updateUserProfile, getCoordinatesFromAddress } from '../services/user.service.js';
 
-const bloodTypes = ["None", "A_POS", "A_NEG", "B_POS", "B_NEG", "AB_POS", "AB_NEG", "O_POS", "O_NEG"];
-const genders = ["Male", "Female", "Other"];
+// THAY ĐỔI 1: Chuyển mảng thành mảng đối tượng để có cả value và label
+const bloodTypeOptions = [
+    { value: "None", label: "Không rõ" },
+    { value: "A_POS", label: "A+" },
+    { value: "A_NEG", label: "A-" },
+    { value: "B_POS", label: "B+" },
+    { value: "B_NEG", label: "B-" },
+    { value: "AB_POS", label: "AB+" },
+    { value: "AB_NEG", label: "AB-" },
+    { value: "O_POS", label: "O+" },
+    { value: "O_NEG", label: "O-" }
+];
+
+const genderOptions = [
+    { value: "Male", label: "Nam" },
+    { value: "Female", label: "Nữ" },
+    { value: "Other", label: "Khác" }
+];
 
 const ProfileForm = () => {
-    const { user, login } = useUser(); // Lấy hàm login để cập nhật state toàn cục
+    const { user, login } = useUser();
 
     // Khởi tạo state ban đầu
     const [avatarUrl, setAvatarUrl] = useState(null);
@@ -36,8 +52,6 @@ const ProfileForm = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    // --- BẮT ĐẦU PHẦN SỬA LỖI ---
-    // Sử dụng useEffect để đồng bộ state của form với user context
     useEffect(() => {
         if (user) {
             setAvatarUrl(user.avatarImage || null);
@@ -49,8 +63,7 @@ const ProfileForm = () => {
             setBloodType(user.bloodType || '');
             setAddress(user.address || '');
         }
-    }, [user]); // Dependency array: Chạy lại hiệu ứng này mỗi khi đối tượng 'user' thay đổi
-    // --- KẾT THÚC PHẦN SỬA LỖI ---
+    }, [user]);
 
 
     const handleAvatarChange = (event) => {
@@ -68,21 +81,43 @@ const ProfileForm = () => {
         setSuccessMessage('');
         setErrorMessage('');
 
-        const payload = {
-            fullName,
-            phoneNumber: phone,
-            address,
-            gender,
-            birthday: birthday ? new Date(birthday).toISOString() : null,
-            bloodType,
-            avatarImage: avatarUrl, // Giả sử bạn sẽ xử lý việc upload ảnh và lấy URL
-        };
-
         try {
-            const updatedUser = await updateUserProfile(payload);
-            // Cập nhật lại thông tin user trong state toàn cục (Zustand)
-            login(updatedUser); 
+            // Tạo payload cơ bản với các thông tin luôn được cập nhật
+            const basePayload = {
+                fullName,
+                phoneNumber: phone,
+                gender,
+                birthday: birthday ? new Date(birthday).toISOString() : null,
+                bloodType,
+                avatarImage: avatarUrl,
+            };
+
+            let finalPayload = { ...basePayload, address };
+
+            // Chỉ gọi API Geocoding nếu địa chỉ đã thay đổi
+            if (address !== user.address) {
+                console.log("Địa chỉ đã thay đổi, đang lấy tọa độ mới...");
+                const coordinates = await getCoordinatesFromAddress(address);
+
+                if (coordinates) {
+                    // Nếu lấy tọa độ thành công, thêm vào payload
+                    finalPayload = {
+                        ...finalPayload,
+                        latitude: coordinates.lat,
+                        longitude: coordinates.lng,
+                    };
+                } else {
+                    // Nếu thất bại, báo lỗi và không cho cập nhật
+                    setErrorMessage("Không thể tìm thấy tọa độ cho địa chỉ mới. Vui lòng kiểm tra lại.");
+                    return;
+                }
+            }
+
+            // Gọi API cập nhật với payload cuối cùng
+            const updatedUser = await updateUserProfile(finalPayload);
+            login(updatedUser); // Cập nhật lại user trong store
             setSuccessMessage('Cập nhật thông tin thành công!');
+
         } catch (error) {
             setErrorMessage(error.message || 'Cập nhật thất bại. Vui lòng thử lại.');
         }
@@ -148,8 +183,13 @@ const ProfileForm = () => {
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                         <InputLabel>Giới tính</InputLabel>
+                        {/* THAY ĐỔI 2: Cập nhật vòng lặp để dùng object */}
                         <Select value={gender} label="Giới tính" onChange={(e) => setGender(e.target.value)}>
-                            {genders.map((g) => (<MenuItem key={g} value={g}>{g}</MenuItem>))}
+                            {genderOptions.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>
@@ -161,8 +201,18 @@ const ProfileForm = () => {
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                         <InputLabel>Nhóm máu</InputLabel>
-                        <Select value={bloodType} label="Nhóm máu" onChange={(e) => setBloodType(e.target.value)}>
-                            {bloodTypes.map((type) => (<MenuItem key={type} value={type}>{type}</MenuItem>))}
+                        <Select
+                            value={bloodType}
+                            label="Nhóm máu"
+                            onChange={(e) => setBloodType(e.target.value)}
+                            // ---> THÊM DÒNG NÀY VÀO <---
+                            disabled={!!user.bloodType && user.bloodType !== 'None'}
+                        >
+                            {bloodTypeOptions.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>
