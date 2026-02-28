@@ -1,8 +1,42 @@
-# React + Vite
+# 🩸 Blood Donation Management System (Front-end)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application built to support blood donation management processes, helping donation centers manage donors, track blood supply, and organize donation events efficiently.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Project Overview
+
+This project was developed as part of Semester 5 coursework.
+
+The system provides an intuitive and user-friendly interface for:
+- Donor registration
+- Donation history tracking
+- Blood inventory monitoring
+- Event coordination
+- Location integration using Google Maps
+
+---
+
+## 🛠 Tech Stack
+
+- ReactJS
+- JavaScript (ES6+)
+- Redux
+- Google Maps API
+- .NET (Backend integration)
+- JWT Authentication
+
+---
+
+## 🚀 Features
+
+- 🔐 User authentication & authorization
+- 🧾 Manage donor information
+- 📊 Track donation history
+- 🏥 Monitor blood stock levels
+- 📍 Map-based location search
+- 📅 Event management interface
+
+---
+
+
